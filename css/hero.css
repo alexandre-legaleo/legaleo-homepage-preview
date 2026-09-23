@@ -22,7 +22,7 @@
 }
 
 .hp-h1 {
-  margin-top: 22px;
+  margin-top: 0;
   font-family: var(--font-serif);
   font-size: 50px;
   font-weight: 500;
@@ -45,9 +45,8 @@
 }
 
 /* Décalage d'apparition du hero */
-.hp-hero-copy > :nth-child(2) { --reveal-delay: 80ms; }
-.hp-hero-copy > :nth-child(3) { --reveal-delay: 160ms; }
-.hp-hero-copy > :nth-child(4) { --reveal-delay: 240ms; }
+.hp-hero-copy > :nth-child(2) { --reveal-delay: 100ms; }
+.hp-hero-copy > :nth-child(3) { --reveal-delay: 200ms; }
 .hp-hero-visual { --reveal-delay: 200ms; }
 
 /* ---------- Mockup dashboard ---------- */

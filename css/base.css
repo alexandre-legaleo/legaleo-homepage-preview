@@ -115,30 +115,6 @@ body {
   color: var(--color-cyan);
 }
 
-.hp-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--color-teal-text);
-  background-color: var(--color-teal-bg);
-  border: 1px solid rgb(0 0 0 / 0.04);
-  border-radius: var(--radius-pill);
-  padding: 7px 15px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.hp-eyebrow::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--color-teal);
-  box-shadow: 0 0 0 3px rgb(8 127 131 / 0.18);
-}
-
 /* Mise en valeur dans les titres : couleur seule, pas d'italique. */
 .hp-em {
   font-style: normal;
