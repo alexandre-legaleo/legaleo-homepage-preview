@@ -96,6 +96,27 @@
   transform: none;
 }
 
+/* Blocs inversés (visuel à gauche) : titre en miroir, calé à droite. Le trait
+   part du verbe, donc de la droite. Desktop seulement, comme l'inversion des
+   colonnes (en une colonne, tout redevient aligné à gauche). */
+@media (min-width: 992px) {
+  .hp-feature--rev .hp-step {
+    flex-direction: row-reverse;
+  }
+
+  .hp-feature--rev .hp-step-line::after {
+    transform-origin: right;
+  }
+
+  .js-reveal .hp-feature--rev .hp-step-verb {
+    transform: translateX(10px);
+  }
+
+  .js-reveal .hp-feature--rev .hp-step.is-reached .hp-step-verb {
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hp-step-verb,
   .hp-step-line::after,
