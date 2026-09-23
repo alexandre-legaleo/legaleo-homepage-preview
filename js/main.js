@@ -153,8 +153,8 @@
   }
 
   // ---------- Plateforme : titres-verbes des étapes ----------
-  // Chaque bloc (.hp-feature) porte un titre-verbe [data-step]. On observe le
-  // bloc entier plutôt que le titre : sans rootMargin (ignoré dans l'iframe),
+  // Chaque bloc (.hp-feature) porte un titre-verbe [data-step] en tête de sa
+  // colonne texte. On observe le bloc entier plutôt que le titre : sans rootMargin (ignoré dans l'iframe),
   // c'est la part visible du bloc qui dit qu'on « arrive » vraiment dessus,
   // et pas seulement que le titre effleure le bas de l'écran.
   //   - 40 % du bloc visible → .is-reached (définitif, lance l'animation) ;
@@ -162,7 +162,7 @@
   function initStepTitles() {
     const steps = $$("[data-step]");
     if (!steps.length) return;
-    const blocks = steps.map((step) => step.parentElement);
+    const blocks = steps.map((step) => step.closest(".hp-feature"));
     const ratios = new Map();
     if (reduced) steps.forEach((step) => step.classList.add("is-reached"));
 
@@ -181,7 +181,7 @@
             current = block;
           }
         });
-        steps.forEach((step) => step.classList.toggle("is-current", step.parentElement === current));
+        steps.forEach((step) => step.classList.toggle("is-current", step.closest(".hp-feature") === current));
       },
       { threshold: [0, 0.1, 0.2, 0.3, 0.45, 0.6, 0.75, 0.9, 1] }
     );

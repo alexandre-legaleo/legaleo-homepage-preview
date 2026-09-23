@@ -1,6 +1,7 @@
 /* ---------- Titres-verbes des 5 étapes ----------
-   Un par bloc (Générer, Valider…), sur toute la largeur. Quand on arrive sur
-   le bloc, js/main.js (initStepTitles) pose :
+   Un par bloc (Générer, Valider…), en tête de sa colonne texte
+   (.hp-feature-copy). Quand on arrive sur le bloc, js/main.js
+   (initStepTitles) pose :
    - .is-reached (définitif) : le verbe se remplit de gauche à droite, le
      trait se dessine ;
    - .is-current (un seul à la fois, le bloc le plus visible) : le numéro
@@ -8,10 +9,10 @@
    L'état « pas encore atteint » n'existe qu'avec JS (.js-reveal) : sans JS,
    les titres s'affichent normalement. */
 .hp-step {
-  grid-column: 1 / -1;
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 18px;
+  margin-bottom: 28px;
 }
 
 .hp-step-n {
@@ -39,7 +40,7 @@
   padding: 0 0.12em 0.06em 0;
   color: var(--color-black);
   font-family: var(--font-serif);
-  font-size: 76px;
+  font-size: 60px;
   font-style: italic;
   font-weight: 400;
   line-height: 1;
@@ -96,27 +97,6 @@
   transform: none;
 }
 
-/* Blocs inversés (visuel à gauche) : titre en miroir, calé à droite. Le trait
-   part du verbe, donc de la droite. Desktop seulement, comme l'inversion des
-   colonnes (en une colonne, tout redevient aligné à gauche). */
-@media (min-width: 992px) {
-  .hp-feature--rev .hp-step {
-    flex-direction: row-reverse;
-  }
-
-  .hp-feature--rev .hp-step-line::after {
-    transform-origin: right;
-  }
-
-  .js-reveal .hp-feature--rev .hp-step-verb {
-    transform: translateX(10px);
-  }
-
-  .js-reveal .hp-feature--rev .hp-step.is-reached .hp-step-verb {
-    transform: none;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .hp-step-verb,
   .hp-step-line::after,
@@ -130,7 +110,7 @@
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   align-items: center;
-  gap: 48px 72px;
+  gap: 72px;
   padding: 64px 0;
   scroll-margin-top: 24px;
 }
@@ -172,7 +152,7 @@
   }
 
   .hp-step-verb {
-    font-size: 60px;
+    font-size: 56px;
   }
 
   .hp-feature--rev .hp-feature-copy {
