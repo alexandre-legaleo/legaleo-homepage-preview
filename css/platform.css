@@ -35,14 +35,13 @@
 
 .hp-step-verb {
   flex-shrink: 0;
-  /* Le « f » / « r » final en italique dépasse de la boîte : on lui laisse
-     de la place pour que le remplissage (background-clip) ne le coupe pas. */
-  padding: 0 0.12em 0.06em 0;
+  /* Un peu d'air autour des glyphes pour que le remplissage
+     (background-clip: text) ne rogne pas la dernière lettre. */
+  padding: 0 0.04em 0.06em 0;
   color: var(--color-black);
   font-family: var(--font-serif);
   font-size: 60px;
-  font-style: italic;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1;
   letter-spacing: -2px;
 }

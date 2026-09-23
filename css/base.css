@@ -139,8 +139,9 @@ body {
   box-shadow: 0 0 0 3px rgb(8 127 131 / 0.18);
 }
 
+/* Mise en valeur dans les titres : couleur seule, pas d'italique. */
 .hp-em {
-  font-style: italic;
+  font-style: normal;
   font-weight: 500;
   color: inherit;
 }
