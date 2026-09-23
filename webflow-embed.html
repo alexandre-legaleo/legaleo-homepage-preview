@@ -1,0 +1,56 @@
+<!--
+  À COLLER DANS WEBFLOW : élément « Embed » (Add > Components > Code Embed),
+  placé sous la nav de la homepage (et avant la section newsletter + le
+  footer, qui restent natifs Webflow). Tout ce qui est entre les deux lignes
+  de commentaire "COLLER" ci-dessous.
+
+  Ce que ça fait
+  - Affiche la page hébergée sur GitHub Pages dans un iframe pleine largeur.
+  - La page (js/embed.js) envoie sa hauteur ; le script ci-dessous ajuste
+    l'iframe pour qu'elle n'ait pas de barre de défilement propre.
+  - Clic sur une ancre de la page (« Découvrir la plateforme », étapes de la
+    plateforme) : c'est la page Webflow qui défile, pas l'iframe.
+
+  À régler
+  - NAV_OFFSET : hauteur en px de la nav fixe de legaleo.ai (mesurée : 80 sur
+    desktop, 78 sur mobile), pour que la section ciblée ne passe pas dessous.
+  - Si la page source change d'adresse (autre domaine que github.io), changer
+    PAGE_ORIGIN ET le src de l'iframe.
+
+  Sécurité : le script ignore tout message qui ne vient pas de PAGE_ORIGIN
+  ET de cet iframe précis.
+
+  Ce snippet fonctionne dans la preview ou sur le site publié, pas dans le
+  canvas du Designer (il n'y exécute pas les scripts).
+
+  Coexistence avec l'iframe de la page Leo : types de messages différents
+  (legaleo-home:* ici, leo-agent:* là-bas), aucun risque de collision.
+-->
+
+<!-- COLLER DEPUIS ICI -->
+<iframe
+  id="legaleo-home-frame"
+  src="https://alexandre-legaleo.github.io/legaleo-homepage-preview/"
+  title="Legaleo, la plateforme juridique des réseaux de franchise"
+  style="display:block;width:100%;height:100vh;border:0"
+></iframe>
+<script>
+  (function () {
+    var PAGE_ORIGIN = "https://alexandre-legaleo.github.io";
+    var NAV_OFFSET = 80;
+    var frame = document.getElementById("legaleo-home-frame");
+
+    window.addEventListener("message", function (e) {
+      if (e.origin !== PAGE_ORIGIN || e.source !== frame.contentWindow) return;
+      var data = e.data || {};
+
+      if (data.type === "legaleo-home:height") {
+        frame.style.height = data.height + "px";
+      } else if (data.type === "legaleo-home:scroll") {
+        var top = frame.getBoundingClientRect().top + window.pageYOffset + data.y - NAV_OFFSET;
+        window.scrollTo({ top: top, behavior: "smooth" });
+      }
+    });
+  })();
+</script>
+<!-- JUSQU'ICI -->

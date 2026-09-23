@@ -1,0 +1,111 @@
+.hp-audiences {
+  color: var(--color-white);
+  background:
+    radial-gradient(60% 80% at 100% 0%, rgb(252 157 31 / 0.18), transparent 70%),
+    var(--color-brick);
+}
+
+.hp-audiences .hp-h2 {
+  max-width: 760px;
+}
+
+.hp-aud-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 52px;
+}
+
+.hp-aud-grid > :nth-child(2) { --reveal-delay: 80ms; }
+.hp-aud-grid > :nth-child(3) { --reveal-delay: 160ms; }
+
+.hp-aud {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid rgb(255 254 251 / 0.16);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  background-color: rgb(255 254 251 / 0.06);
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.35s var(--ease-out);
+}
+
+a.hp-aud:hover {
+  border-color: rgb(255 254 251 / 0.34);
+  background-color: rgb(255 254 251 / 0.11);
+  transform: translateY(-3px);
+}
+
+.hp-aud-k {
+  color: var(--color-cyan);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hp-aud-k--lime {
+  color: var(--color-lime);
+}
+
+.hp-aud-h {
+  margin-top: 16px;
+  font-family: var(--font-serif);
+  font-size: 23px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.hp-aud-p {
+  margin-top: 10px;
+  margin-bottom: 26px;
+  color: rgb(255 254 251 / 0.78);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.hp-aud-link {
+  display: inline-flex;
+  gap: 6px;
+  margin-top: auto;
+  color: var(--color-cyan);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.hp-aud-link span {
+  transition: transform 0.3s var(--ease-out);
+}
+
+a.hp-aud:hover .hp-aud-link span {
+  transform: translateX(4px);
+}
+
+.hp-aud-link--lime {
+  color: var(--color-lime);
+}
+
+.hp-aud-badge {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  color: var(--color-black);
+  background-color: var(--color-lime);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+@media (max-width: 900px) {
+  .hp-aud-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .hp-aud {
+    padding: 24px;
+  }
+}

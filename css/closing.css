@@ -1,0 +1,89 @@
+/* ---------- CTA final ---------- */
+.hp-cta {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(32% 42% at 14% 58%, rgb(98 231 235 / 0.2), transparent 70%),
+    radial-gradient(32% 42% at 86% 40%, rgb(226 230 47 / 0.14), transparent 70%),
+    var(--color-white);
+}
+
+.hp-cta .hp-h2 {
+  margin-top: 18px;
+}
+
+/* ---------- FAQ ---------- */
+.hp-faq-wrap {
+  max-width: 820px;
+}
+
+.hp-faq {
+  margin-top: 48px;
+  border-top: 1px solid var(--color-border);
+}
+
+.hp-faq-i {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.hp-faq-i summary {
+  position: relative;
+  display: block;
+  padding: 24px 48px 24px 4px;
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.35;
+  cursor: pointer;
+  list-style: none;
+  transition: color 0.2s ease;
+}
+
+.hp-faq-i summary::-webkit-details-marker {
+  display: none;
+}
+
+.hp-faq-i summary:hover {
+  color: var(--color-teal);
+}
+
+/* + qui devient − */
+.hp-faq-i summary::before,
+.hp-faq-i summary::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 14px;
+  height: 2px;
+  border-radius: 1px;
+  background-color: currentColor;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.hp-faq-i summary::after {
+  transform: rotate(90deg);
+}
+
+.hp-faq-i[open] summary::after {
+  transform: rotate(0);
+}
+
+.hp-faq-a {
+  overflow: hidden;
+}
+
+.hp-faq-a p {
+  max-width: 680px;
+  padding: 0 4px 24px;
+  color: var(--color-muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .hp-faq-i summary {
+    padding: 20px 40px 20px 0;
+    font-size: 17px;
+  }
+}

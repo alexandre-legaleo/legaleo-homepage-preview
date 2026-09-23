@@ -1,0 +1,229 @@
+/* Bento « 3 raisons » (+ carte Leo) */
+.hp-bento {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 56px;
+}
+
+.hp-bcard {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  background-color: var(--color-white);
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s ease;
+}
+
+.hp-bcard:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card);
+}
+
+.hp-bcard--time { grid-column: span 2; }
+.hp-bcard--cost { grid-column: span 4; }
+.hp-bcard--simple { grid-column: span 3; --reveal-delay: 80ms; }
+.hp-bcard--leo { grid-column: span 3; --reveal-delay: 160ms; }
+
+.hp-bcard-h {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.hp-bcard-p {
+  margin-top: 10px;
+  color: var(--color-muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* 5–10 h */
+.hp-bcard--time {
+  background:
+    radial-gradient(80% 70% at 100% 0%, rgb(98 231 235 / 0.22), transparent 70%),
+    var(--color-white);
+}
+
+.hp-bcard-big {
+  margin-bottom: 18px;
+  color: var(--color-teal);
+  font-family: var(--font-serif);
+  font-size: 64px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -1.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Mini graphique coûts : barres irrégulières vs barres constantes */
+.hp-bcard--cost {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 28px;
+  align-items: center;
+}
+
+.hp-bcard--cost > .hp-bcard-h,
+.hp-bcard--cost > .hp-bcard-p {
+  grid-column: 1;
+}
+
+.hp-bcard--cost > .hp-bcard-h {
+  align-self: end;
+}
+
+.hp-bcard--cost > .hp-bcard-p {
+  align-self: start;
+  margin-top: -18px;
+}
+
+.hp-costchart {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: grid;
+  gap: 16px;
+  border-radius: var(--radius-md);
+  padding: 18px;
+  background-color: var(--color-beige);
+}
+
+.hp-costchart-row {
+  display: grid;
+  gap: 8px;
+}
+
+.hp-costchart-l {
+  color: var(--color-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.hp-costchart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 56px;
+}
+
+.hp-costchart-bars i {
+  flex: 1;
+  height: var(--h);
+  border-radius: 5px 5px 2px 2px;
+  transform-origin: bottom;
+  transition: transform 0.8s var(--ease-out);
+}
+
+.hp-costchart-bars--spiky i {
+  background-color: #f2c6b6;
+}
+
+.hp-costchart-bars--flat i {
+  background-color: var(--color-teal);
+}
+
+.js-reveal .hp-bcard--cost:not(.is-visible) .hp-costchart-bars i {
+  transform: scaleY(0.05);
+}
+
+.hp-costchart-bars i:nth-child(2) { transition-delay: 60ms; }
+.hp-costchart-bars i:nth-child(3) { transition-delay: 120ms; }
+.hp-costchart-bars i:nth-child(4) { transition-delay: 180ms; }
+.hp-costchart-bars i:nth-child(5) { transition-delay: 240ms; }
+.hp-costchart-bars i:nth-child(6) { transition-delay: 300ms; }
+
+/* Flux Générer → Suivre */
+.hp-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.hp-flow span {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.hp-flow span:last-child {
+  border-color: transparent;
+  color: var(--color-white);
+  background-color: var(--color-teal);
+}
+
+.hp-flow i {
+  width: 14px;
+  height: 2px;
+  border-radius: 1px;
+  background-color: var(--color-cyan);
+}
+
+/* Carte Leo */
+.hp-bcard--leo {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 20px;
+  border-color: transparent;
+  color: var(--color-white);
+  background:
+    radial-gradient(70% 90% at 100% 100%, rgb(98 231 235 / 0.2), transparent 70%),
+    var(--color-leo-badge);
+}
+
+.hp-bcard--leo .hp-leo-tile {
+  background-color: rgb(98 231 235 / 0.12);
+  box-shadow: inset 0 0 0 1px rgb(98 231 235 / 0.2);
+}
+
+.hp-bcard--leo .hp-bcard-p {
+  color: rgb(255 254 251 / 0.72);
+}
+
+@media (max-width: 991px) {
+  .hp-bcard--time { grid-column: span 6; }
+  .hp-bcard--cost { grid-column: span 6; }
+  .hp-bcard--simple { grid-column: span 6; }
+  .hp-bcard--leo { grid-column: span 6; }
+}
+
+@media (max-width: 640px) {
+  .hp-bento {
+    gap: 14px;
+    margin-top: 40px;
+  }
+
+  .hp-bcard {
+    padding: 24px;
+  }
+
+  .hp-bcard-big {
+    font-size: 52px;
+  }
+
+  .hp-bcard--cost {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .hp-bcard--cost > .hp-bcard-p {
+    margin-top: 10px;
+  }
+
+  .hp-costchart {
+    grid-column: 1;
+    grid-row: auto;
+    margin-top: 20px;
+  }
+
+  .hp-bcard--leo {
+    flex-direction: column;
+  }
+}

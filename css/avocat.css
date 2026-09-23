@@ -1,0 +1,252 @@
+.hp-avocat {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 64px;
+}
+
+/* Carte crédit */
+.hp-credit {
+  margin-top: 32px;
+  border-radius: var(--radius-lg);
+  padding: 26px 28px;
+  color: var(--color-white);
+  background:
+    radial-gradient(90% 120% at 100% 0%, rgb(98 231 235 / 0.16), transparent 60%),
+    var(--color-black);
+}
+
+.hp-credit-eq {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.hp-credit-big {
+  color: var(--color-cyan);
+  font-family: var(--font-serif);
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.hp-credit-sign {
+  color: rgb(255 254 251 / 0.5);
+  font-size: 24px;
+}
+
+.hp-credit-p {
+  margin-top: 10px;
+  color: rgb(255 254 251 / 0.75);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.hp-credit-meter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid rgb(255 254 251 / 0.12);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.hp-credit-meter-l {
+  color: rgb(255 254 251 / 0.6);
+}
+
+.hp-credit-cells {
+  display: flex;
+  flex: 1;
+  gap: 4px;
+}
+
+.hp-credit-cells i {
+  flex: 1;
+  height: 8px;
+  border-radius: 3px;
+  background-color: rgb(255 254 251 / 0.12);
+}
+
+.hp-credit-cells i.is-on {
+  background-color: var(--color-cyan);
+}
+
+.hp-credit-meter-v {
+  color: var(--color-cyan);
+}
+
+/* Options avocat : radio visuelle, une seule sélectionnée */
+.hp-avocat-opts {
+  display: grid;
+  gap: 14px;
+}
+
+.hp-avocat-opts > :nth-child(2) {
+  --reveal-delay: 100ms;
+}
+
+.hp-opt {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+  background-color: var(--color-white);
+  text-align: left;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.35s var(--ease-out);
+}
+
+.hp-opt:hover {
+  transform: translateY(-2px);
+}
+
+.hp-opt.is-selected {
+  border-color: var(--color-teal);
+  box-shadow: 0 0 0 4px rgb(8 127 131 / 0.1), var(--shadow-card);
+}
+
+.hp-opt-radio {
+  position: relative;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-top: 4px;
+  border: 2px solid var(--color-border);
+  border-radius: 50%;
+  transition: border-color 0.3s ease;
+}
+
+.hp-opt-radio::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background-color: var(--color-teal);
+  transform: scale(0);
+  transition: transform 0.3s var(--ease-out);
+}
+
+.hp-opt.is-selected .hp-opt-radio {
+  border-color: var(--color-teal);
+}
+
+.hp-opt.is-selected .hp-opt-radio::after {
+  transform: scale(1);
+}
+
+.hp-opt-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hp-opt-h {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.hp-opt-p {
+  margin-top: 8px;
+  color: var(--color-muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.hp-opt-tag {
+  margin-top: 14px;
+  border-radius: var(--radius-pill);
+  padding: 4px 11px;
+  color: var(--color-teal-text);
+  background-color: var(--color-teal-bg);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ---------- Écosystèmes ---------- */
+.hp-trust {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  align-items: center;
+  gap: 64px;
+}
+
+.hp-trust-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  border-radius: var(--radius-xl);
+  padding: 22px;
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-card);
+  --reveal-delay: 120ms;
+}
+
+.hp-trust-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 120px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+}
+
+.hp-trust-logo {
+  height: 30px;
+  width: auto;
+}
+
+/* Le SVG EuraTechnologies est blanc (fait pour fond sombre) : on l'inverse. */
+.hp-trust-logo--dark {
+  filter: invert(1) brightness(0.2);
+}
+
+.hp-trust-name {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.hp-trust-s {
+  color: var(--color-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 991px) {
+  .hp-avocat,
+  .hp-trust {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 44px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hp-credit {
+    padding: 22px;
+  }
+
+  .hp-credit-big {
+    font-size: 30px;
+  }
+
+  .hp-opt {
+    padding: 20px;
+  }
+
+  .hp-trust-cards {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 14px;
+  }
+}

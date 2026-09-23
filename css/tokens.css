@@ -1,0 +1,52 @@
+:root {
+  /* Couleurs — reprises du CSS partagé Webflow de legaleo.webflow.io
+     (variables --color--*), mêmes valeurs que front-legaleo-leo. */
+  --color-beige: #f7f4ef;
+  --color-black: #1f120e;
+  --color-white: #fffefb;
+  --color-border: #e6e0d3;
+  --color-muted: #6f6757;
+  --color-faint: #9a948a;
+
+  --color-teal: #087f83;
+  --color-teal-text: #065e61;
+  --color-teal-bg: #e9fbfb;
+  --color-teal-deep: #0f4a48;
+  --color-cyan: #62e7eb;
+  --color-cyan-light: #d9fdfb;
+
+  /* Badge Leo — reprend .iconTile de legaleo-ai/components/design-system/LeoBadge */
+  --color-leo-badge: #00383c;
+
+  --color-brick: #a3310f;
+  --color-lime: #e2e62f;
+
+  --color-orange-bg: #ffe9bd;
+  --color-orange-text: #a4620c;
+
+  --color-green-text: #3c7a2d;
+  --color-green-bg: #e5f5e0;
+
+  --color-purple-text: #3d5ccc;
+  --color-purple-bg: #f1f2ff;
+
+  /* Typo */
+  --font-serif: "Fraunces", Georgia, serif;
+  --font-sans: "Manrope", Arial, sans-serif;
+
+  /* Rayons */
+  --radius-pill: 100px;
+  --radius-xl: 28px;
+  --radius-lg: 21px;
+  --radius-md: 16px;
+  --radius-sm: 8px;
+
+  /* Ombres */
+  --shadow-card: 0 1px 2px rgb(31 18 14 / 0.04), 0 12px 32px -12px rgb(31 18 14 / 0.14);
+  --shadow-float: 0 2px 4px rgb(31 18 14 / 0.05), 0 24px 48px -16px rgb(31 18 14 / 0.22);
+
+  /* Largeur de contenu */
+  --wrap-max: 1200px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}

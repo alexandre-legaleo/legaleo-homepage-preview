@@ -1,0 +1,431 @@
+.hp-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 72px 32px 88px;
+  background:
+    radial-gradient(60% 55% at 85% 35%, rgb(98 231 235 / 0.16), transparent 70%),
+    var(--color-white);
+}
+
+/* Page dans un iframe (classe posée par js/embed.js) : la nav fixe de
+   www.legaleo.ai (.nav-wrapper : 80px desktop, 78px mobile, mesuré sur la
+   page Leo) recouvre le haut de l'iframe. On la dégage. */
+.is-embedded .hp-hero {
+  padding-top: 132px;
+}
+
+.hp-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 56px;
+}
+
+.hp-h1 {
+  margin-top: 22px;
+  font-family: var(--font-serif);
+  font-size: 50px;
+  font-weight: 500;
+  line-height: 1.07;
+  letter-spacing: -1.2px;
+  text-wrap: balance;
+}
+
+.hp-h1 .hp-em {
+  color: var(--color-teal);
+}
+
+.hp-lede {
+  max-width: 540px;
+  margin-top: 22px;
+  color: var(--color-muted);
+  font-size: 17px;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+/* Décalage d'apparition du hero */
+.hp-hero-copy > :nth-child(2) { --reveal-delay: 80ms; }
+.hp-hero-copy > :nth-child(3) { --reveal-delay: 160ms; }
+.hp-hero-copy > :nth-child(4) { --reveal-delay: 240ms; }
+.hp-hero-visual { --reveal-delay: 200ms; }
+
+/* ---------- Mockup dashboard ---------- */
+.hp-hero-visual {
+  position: relative;
+  padding: 22px;
+  border-radius: 32px;
+  background: linear-gradient(160deg, #e3fcfb, #c9f6f4);
+}
+
+.hp-app {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  min-height: 330px;
+  overflow: hidden;
+  border: 1px solid rgb(31 18 14 / 0.06);
+  border-radius: 16px;
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-float);
+  font-size: 11px;
+}
+
+.hp-app-side {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 10px;
+  color: rgb(255 254 251 / 0.78);
+  background-color: var(--color-teal-deep);
+}
+
+.hp-app-logo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 6px 12px;
+  color: var(--color-white);
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.hp-app-logo-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--color-lime);
+}
+
+.hp-app-new {
+  margin-bottom: 10px;
+  border-radius: 8px;
+  padding: 8px;
+  color: var(--color-black);
+  background-color: var(--color-cyan);
+  font-weight: 700;
+  text-align: center;
+}
+
+.hp-app-ni {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 7px;
+  padding: 7px 8px;
+  font-weight: 600;
+}
+
+.hp-app-ni.is-active {
+  color: var(--color-white);
+  background-color: rgb(255 254 251 / 0.12);
+}
+
+.hp-app-ni--leo {
+  margin-top: auto;
+  color: var(--color-cyan);
+}
+
+.hp-app-ni--leo .hp-leo-glyph {
+  width: 12px;
+  height: 12px;
+}
+
+.hp-app-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hp-app-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.hp-app-search {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  padding: 7px 10px;
+  color: var(--color-faint);
+  background-color: var(--color-beige);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.hp-app-credits {
+  flex-shrink: 0;
+  border: 1px solid var(--color-cyan);
+  border-radius: var(--radius-pill);
+  padding: 4px 9px;
+  color: var(--color-teal-text);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.hp-app-user {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.hp-app-user .hp-avatar {
+  width: 22px;
+  height: 22px;
+  font-size: 8.5px;
+}
+
+.hp-app-body {
+  padding: 18px 16px;
+}
+
+.hp-app-hello {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.hp-app-sub {
+  margin-top: 3px;
+  color: var(--color-muted);
+  font-size: 10.5px;
+}
+
+.hp-app-kpis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.hp-app-kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1px solid #cdf3f2;
+  border-radius: 12px;
+  padding: 12px 13px;
+  background-color: #f1fdfc;
+}
+
+.hp-app-kpi--orange {
+  border-color: #f8dca5;
+  background-color: #fff5df;
+}
+
+.hp-app-kpi-n {
+  color: var(--color-teal);
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.hp-app-kpi--orange .hp-app-kpi-n {
+  color: var(--color-orange-text);
+}
+
+.hp-app-kpi-l {
+  color: var(--color-muted);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.hp-app-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.hp-app-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 5px 10px 5px 8px;
+  color: var(--color-muted);
+  font-weight: 600;
+  transition: all 0.4s var(--ease-out);
+}
+
+.hp-app-step::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  transition: all 0.4s var(--ease-out);
+}
+
+.hp-app-step.is-done {
+  border-style: solid;
+  border-color: transparent;
+  color: var(--color-green-text);
+  background-color: var(--color-green-bg);
+}
+
+.hp-app-step.is-done::before {
+  border-color: transparent;
+  background: var(--color-green-text) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 8px no-repeat;
+}
+
+/* ---------- Cartes flottantes ---------- */
+.hp-float {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  gap: 10px;
+  border: 1px solid rgb(31 18 14 / 0.06);
+  border-radius: 14px;
+  padding: 12px 14px;
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-float);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.hp-float-meta {
+  color: var(--color-muted);
+  font-size: 10.5px;
+}
+
+.hp-float--gen {
+  bottom: -18px;
+  left: -34px;
+  flex-direction: column;
+  width: 230px;
+  gap: 8px;
+}
+
+.hp-float-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hp-float-title {
+  font-weight: 700;
+}
+
+.hp-float-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-green-text) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 10px no-repeat;
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0.3s ease, transform 0.4s var(--ease-out);
+}
+
+.hp-float--gen.is-done .hp-float-check {
+  opacity: 1;
+  transform: none;
+}
+
+.hp-progress {
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-beige);
+}
+
+.hp-progress > span {
+  display: block;
+  width: var(--p, 0%);
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--color-teal), var(--color-cyan));
+  transition: width 0.5s linear;
+}
+
+.hp-float--toast {
+  top: 70px;
+  right: -26px;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(8px) scale(0.96);
+  transition: opacity 0.45s ease, transform 0.5s var(--ease-out);
+}
+
+.hp-float--toast.is-shown {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 1100px) {
+  .hp-hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 64px;
+  }
+
+  .hp-hero-copy {
+    max-width: 720px;
+  }
+
+  .hp-hero-visual {
+    max-width: 640px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .hp-hero {
+    padding: 48px 20px 72px;
+  }
+
+  .is-embedded .hp-hero {
+    padding-top: 110px;
+  }
+
+  .hp-h1 {
+    font-size: 34px;
+    letter-spacing: -0.6px;
+  }
+
+  .hp-lede {
+    font-size: 16px;
+  }
+
+  .hp-ctarow .hp-btn {
+    flex: 1 1 auto;
+  }
+
+  /* Les cartes flottantes se posent dans la marge basse du cadre au lieu de
+     recouvrir le dashboard ; le toast (redondant sur petit écran) disparaît. */
+  .hp-hero-visual {
+    padding: 12px 12px 84px;
+    border-radius: 22px;
+  }
+
+  .hp-app {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .hp-app-side,
+  .hp-app-credits,
+  .hp-app-user {
+    display: none;
+  }
+
+  .hp-float--gen {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    width: auto;
+  }
+
+  .hp-float--toast {
+    display: none;
+  }
+}
