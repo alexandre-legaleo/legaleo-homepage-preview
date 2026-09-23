@@ -53,7 +53,6 @@ body {
 .hp-btn:focus-visible,
 .hp-chip:focus-visible,
 .hp-opt:focus-visible,
-.hp-pnav-i:focus-visible,
 .hp-aud:focus-visible,
 .hp-faq-i summary:focus-visible {
   outline: 2px solid var(--color-teal);

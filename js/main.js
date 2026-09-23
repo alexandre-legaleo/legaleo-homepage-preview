@@ -152,42 +152,40 @@
     });
   }
 
-  // ---------- Plateforme : étape active ----------
-  function initPlatformNav() {
-    const links = $$(".hp-pnav-i");
-    const nav = $(".hp-pnav");
-    if (!links.length) return;
+  // ---------- Plateforme : titres-verbes des étapes ----------
+  // Chaque bloc (.hp-feature) porte un titre-verbe [data-step]. On observe le
+  // bloc entier plutôt que le titre : sans rootMargin (ignoré dans l'iframe),
+  // c'est la part visible du bloc qui dit qu'on « arrive » vraiment dessus,
+  // et pas seulement que le titre effleure le bas de l'écran.
+  //   - 40 % du bloc visible → .is-reached (définitif, lance l'animation) ;
+  //   - le bloc le plus visible → .is-current (un seul à la fois).
+  function initStepTitles() {
+    const steps = $$("[data-step]");
+    if (!steps.length) return;
+    const blocks = steps.map((step) => step.parentElement);
     const ratios = new Map();
-    const sections = links.map((a) => document.getElementById(a.dataset.step)).filter(Boolean);
-
-    const update = () => {
-      let best = -1;
-      let bestRatio = 0;
-      sections.forEach((s, i) => {
-        const r = ratios.get(s) || 0;
-        if (r > bestRatio) {
-          bestRatio = r;
-          best = i;
-        }
-      });
-      if (best < 0) return;
-      links.forEach((a, i) => {
-        a.classList.toggle("is-active", i === best);
-        a.classList.toggle("is-passed", i < best);
-        if (i === best) a.setAttribute("aria-current", "step");
-        else a.removeAttribute("aria-current");
-      });
-      nav.style.setProperty("--pnav-progress", (best / (links.length - 1)) * 100 + "%");
-    };
+    if (reduced) steps.forEach((step) => step.classList.add("is-reached"));
 
     const io = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => ratios.set(e.target, e.intersectionRatio));
-        update();
+        entries.forEach((e) => {
+          ratios.set(e.target, e.intersectionRatio);
+          if (e.intersectionRatio >= 0.4) $("[data-step]", e.target).classList.add("is-reached");
+        });
+        let current = null;
+        let best = 0;
+        blocks.forEach((block) => {
+          const r = ratios.get(block) || 0;
+          if (r > best && $("[data-step]", block).classList.contains("is-reached")) {
+            best = r;
+            current = block;
+          }
+        });
+        steps.forEach((step) => step.classList.toggle("is-current", step.parentElement === current));
       },
-      { threshold: [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1] }
+      { threshold: [0, 0.1, 0.2, 0.3, 0.45, 0.6, 0.75, 0.9, 1] }
     );
-    sections.forEach((s) => io.observe(s));
+    blocks.forEach((block) => io.observe(block));
   }
 
   // ---------- Mockup 1 : éditeur ----------
@@ -516,7 +514,7 @@
   initReveal();
   initMarquee();
   initHeroDashboard();
-  initPlatformNav();
+  initStepTitles();
   initEditor();
   initLawyer();
   initSign();

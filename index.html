@@ -183,20 +183,18 @@
           <p class="hp-lede-c">Chaque étape de vos contrats de franchise, de la première ligne au renouvellement, sur une seule interface.</p>
         </div>
 
-        <!-- Parcours : 5 étapes, l'étape visible s'allume (js/main.js : initPlatformNav) -->
-        <nav class="hp-pnav" aria-label="Étapes de la plateforme" data-reveal>
-          <a href="#pf-generer" class="hp-pnav-i" data-step="pf-generer"><span class="hp-pnav-n">1</span>Générer</a>
-          <a href="#pf-valider" class="hp-pnav-i" data-step="pf-valider"><span class="hp-pnav-n">2</span>Valider</a>
-          <a href="#pf-signer" class="hp-pnav-i" data-step="pf-signer"><span class="hp-pnav-n">3</span>Signer</a>
-          <a href="#pf-suivre" class="hp-pnav-i" data-step="pf-suivre"><span class="hp-pnav-n">4</span>Suivre</a>
-          <a href="#pf-centraliser" class="hp-pnav-i" data-step="pf-centraliser"><span class="hp-pnav-n">5</span>Centraliser</a>
-        </nav>
-
-        <!-- 1. Génération & éditeur -->
+        <!-- 1. Générer : génération & éditeur.
+             Chaque bloc s'ouvre sur un titre-verbe (.hp-step) qui s'anime quand
+             on arrive dessus (js/main.js : initStepTitles). -->
         <div class="hp-feature" id="pf-generer">
+          <header class="hp-step" data-step>
+            <span class="hp-step-n">01<span class="hp-step-of"> / 05</span></span>
+            <h3 class="hp-step-verb">Générer</h3>
+            <span class="hp-step-line" aria-hidden="true"></span>
+          </header>
           <div class="hp-feature-copy" data-reveal>
             <span class="hp-kicker">Génération &amp; éditeur</span>
-            <h3 class="hp-h3b">Un modèle de contrat de franchise rédigé en quelques minutes.</h3>
+            <h4 class="hp-h3b">Un modèle de contrat de franchise rédigé en quelques minutes.</h4>
             <p class="hp-p">Renseignez les informations de votre réseau une fois : Legaleo assemble votre DIP et votre contrat dans une trame éprouvée, avec champs dynamiques et modèles réutilisables.</p>
             <ul class="hp-bars">
               <li>Champs dynamiques reportés sur votre document</li>
@@ -237,9 +235,14 @@
 
         <!-- 2. Validation par avocat -->
         <div class="hp-feature hp-feature--rev" id="pf-valider">
+          <header class="hp-step" data-step>
+            <span class="hp-step-n">02<span class="hp-step-of"> / 05</span></span>
+            <h3 class="hp-step-verb">Valider</h3>
+            <span class="hp-step-line" aria-hidden="true"></span>
+          </header>
           <div class="hp-feature-copy" data-reveal>
             <span class="hp-kicker">Validation par avocat</span>
-            <h3 class="hp-h3b">Chaque contrat relu par un avocat, dans un canal réservé.</h3>
+            <h4 class="hp-h3b">Chaque contrat relu par un avocat, dans un canal réservé.</h4>
             <p class="hp-p">D'un clic, soumettez votre document à un avocat dédié au droit de la franchise, qui annote et valide directement dans la plateforme.</p>
             <ul class="hp-bars">
               <li>« Soumettre à l'avocat » en un clic</li>
@@ -274,9 +277,14 @@
 
         <!-- 3. Signature électronique -->
         <div class="hp-feature" id="pf-signer">
+          <header class="hp-step" data-step>
+            <span class="hp-step-n">03<span class="hp-step-of"> / 05</span></span>
+            <h3 class="hp-step-verb">Signer</h3>
+            <span class="hp-step-line" aria-hidden="true"></span>
+          </header>
           <div class="hp-feature-copy" data-reveal>
             <span class="hp-kicker">Signature électronique</span>
-            <h3 class="hp-h3b">Envoyez à signer, suivez chaque signataire.</h3>
+            <h4 class="hp-h3b">Envoyez à signer, suivez chaque signataire.</h4>
             <p class="hp-p">Signature électronique conforme eIDAS intégrée : le contrat signé part automatiquement dans votre Contrathèque.</p>
             <ul class="hp-bars">
               <li>Signature conforme eIDAS, valeur juridique</li>
@@ -319,9 +327,14 @@
 
         <!-- 4. Contrats en cours -->
         <div class="hp-feature hp-feature--rev" id="pf-suivre">
+          <header class="hp-step" data-step>
+            <span class="hp-step-n">04<span class="hp-step-of"> / 05</span></span>
+            <h3 class="hp-step-verb">Suivre</h3>
+            <span class="hp-step-line" aria-hidden="true"></span>
+          </header>
           <div class="hp-feature-copy" data-reveal>
             <span class="hp-kicker">Contrats en cours</span>
-            <h3 class="hp-h3b">Suivez l'avancée de chaque contrat en un coup d'œil.</h3>
+            <h4 class="hp-h3b">Suivez l'avancée de chaque contrat en un coup d'œil.</h4>
             <p class="hp-p">Relecture interne, relecture avocat, signature, signé : en un clic voyez ce qui bloque le parcours juridique de vos contrats.</p>
             <ul class="hp-bars">
               <li>Statut de chaque contrat en temps réel</li>
@@ -357,9 +370,14 @@
 
         <!-- 5. Contrathèque & alertes -->
         <div class="hp-feature" id="pf-centraliser">
+          <header class="hp-step" data-step>
+            <span class="hp-step-n">05<span class="hp-step-of"> / 05</span></span>
+            <h3 class="hp-step-verb">Centraliser</h3>
+            <span class="hp-step-line" aria-hidden="true"></span>
+          </header>
           <div class="hp-feature-copy" data-reveal>
             <span class="hp-kicker">Contrathèque &amp; alertes</span>
-            <h3 class="hp-h3b">Que vous ayez 10 ou 100 franchisés, importez tous vos contrats au même endroit.</h3>
+            <h4 class="hp-h3b">Que vous ayez 10 ou 100 franchisés, importez tous vos contrats au même endroit.</h4>
             <p class="hp-p">Importez vos contrats existants et ne perdez plus de temps à chercher vos prochains renouvellements : les dates clés sont extraites automatiquement, et Legaleo vous alerte avant chaque renouvellement.</p>
             <ul class="hp-bars">
               <li>Import de vos contrats existants</li>
