@@ -1,3 +1,11 @@
+/* Même teinte que la section « audiences » */
+.hp-avocat-sec {
+  color: var(--color-white);
+  background:
+    radial-gradient(60% 80% at 100% 0%, rgb(98 231 235 / 0.16), transparent 70%),
+    var(--color-teal-deep);
+}
+
 .hp-avocat {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
@@ -80,7 +88,7 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  color: var(--color-muted);
+  color: rgb(255 254 251 / 0.6);
   font-family: var(--font-serif);
   font-size: 17px;
   font-style: normal;
@@ -91,7 +99,7 @@
   content: "";
   flex: 1;
   height: 1px;
-  background-color: var(--color-border);
+  background-color: rgb(255 254 251 / 0.2);
 }
 
 .hp-opt-body {
