@@ -260,7 +260,7 @@
     function pulseCore() {
       count += 1;
       countEl.textContent = count;
-      gsap.fromTo(core, { scale: 1.1 }, { scale: 1, duration: 0.7, ease: "elastic.out(1, 0.45)" });
+      gsap.fromTo(core, { scale: 1.05 }, { scale: 1, duration: 0.6, ease: "elastic.out(1, 0.6)" });
     }
 
     // Un document parcourt la liaison d'un satellite : vers le cœur
