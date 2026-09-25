@@ -1,3 +1,23 @@
+/* ---------- Cartes flottantes (partagées par les mockups) ---------- */
+.hp-float {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  gap: 10px;
+  border: 1px solid rgb(31 18 14 / 0.06);
+  border-radius: 14px;
+  padding: 12px 14px;
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-float);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.hp-float-meta {
+  color: var(--color-muted);
+  font-size: 10.5px;
+}
+
 /* Mockups « fenêtre d'appli » des blocs de la plateforme. Les états animés
    (classes is-*) sont posés par js/main.js quand le mockup entre à l'écran. */
 
@@ -274,6 +294,185 @@
 }
 
 /* ---------- 2. Espace avocat ---------- */
+/* En-tête : salutation + période */
+.hp-app-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.hp-app-hello {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.hp-app-sub {
+  margin-top: 3px;
+  color: var(--color-muted);
+  font-size: 10.5px;
+}
+
+.hp-app-period {
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  padding: 4px 8px 4px 22px;
+  color: var(--color-muted);
+  background: #faf8f3 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236f6757' stroke-width='2.2' stroke-linecap='round'%3E%3Crect x='3.5' y='5' width='17' height='15.5' rx='2.5'/%3E%3Cpath d='M3.5 10h17M8 3v4M16 3v4'/%3E%3C/svg%3E") 7px center / 11px no-repeat;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* Tuiles KPI façon aperçu de dashboard : icône + libellé, gros chiffre et
+   indicateur, puis une visualisation (barres ou jauge). */
+.hp-app-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.hp-app-kpi {
+  --kpi: var(--color-teal);
+  --kpi-bg: var(--color-teal-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 10px 11px 11px;
+  background-color: var(--color-white);
+  box-shadow: 0 1px 2px rgb(31 18 14 / 0.04), 0 6px 14px -8px rgb(31 18 14 / 0.12);
+}
+
+.hp-app-kpi--orange {
+  --kpi: #d98a1c;
+  --kpi-bg: var(--color-orange-bg);
+}
+
+.hp-app-kpi--purple {
+  --kpi: var(--color-purple-text);
+  --kpi-bg: var(--color-purple-bg);
+}
+
+.hp-app-kpi-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  color: var(--color-muted);
+  font-size: 9.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.hp-app-kpi-ico {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  background: var(--kpi-bg) center / 11px no-repeat;
+}
+
+.hp-app-kpi-ico--clients { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23087f83' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='8' r='3.5'/%3E%3Cpath d='M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.5a6.5 6.5 0 0 1 3 5.5'/%3E%3C/svg%3E"); }
+.hp-app-kpi-ico--pending { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a4620c' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E"); }
+.hp-app-kpi-ico--hours { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233d5ccc' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 2.5h12M6 21.5h12M7 2.5c0 5 10 5 10 9.5S7 17 7 21.5M17 2.5c0 5-10 5-10 9.5s10 5 10 9.5'/%3E%3C/svg%3E"); }
+
+.hp-app-kpi-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+
+.hp-app-kpi-n {
+  color: var(--color-black);
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.hp-app-kpi-n small {
+  margin-left: 1px;
+  font-size: 14px;
+}
+
+.hp-app-kpi-meta {
+  overflow: hidden;
+  color: var(--color-faint);
+  font-size: 9.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.hp-app-kpi-delta {
+  border-radius: var(--radius-pill);
+  padding: 1px 6px 1px 14px;
+  font-size: 9.5px;
+  font-weight: 800;
+}
+
+.hp-app-kpi-delta--up {
+  color: var(--color-green-text);
+  background: var(--color-green-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233c7a2d' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 15l6-6 6 6'/%3E%3C/svg%3E") 4px center / 9px no-repeat;
+}
+
+/* Mini histogramme */
+.hp-app-kpi-spark {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 24px;
+  margin-top: auto;
+}
+
+.hp-app-kpi-spark i {
+  flex: 1;
+  height: var(--h);
+  border-radius: 2px;
+  background-color: var(--kpi-bg);
+}
+
+.hp-app-kpi-spark i:last-child {
+  background-color: var(--kpi);
+}
+
+/* Jauge + légende */
+.hp-app-kpi-bar {
+  height: 5px;
+  margin-top: auto;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background-color: var(--kpi-bg);
+}
+
+.hp-app-kpi-bar > span {
+  display: block;
+  width: var(--p, 60%);
+  height: 100%;
+  border-radius: inherit;
+  background-color: var(--kpi);
+  transition: width 0.8s var(--ease-out);
+}
+
+.hp-app-kpi--orange .hp-app-kpi-bar { --p: 60%; }
+.is-validated .hp-app-kpi--orange .hp-app-kpi-bar { --p: 80%; }
+.hp-app-kpi--purple .hp-app-kpi-bar { --p: 65%; }
+
+.hp-app-kpi-foot {
+  margin-top: -3px;
+  color: var(--color-muted);
+  font-size: 9.5px;
+  font-weight: 600;
+}
+
 .hp-row-note {
   max-width: 0;
   overflow: hidden;
@@ -295,7 +494,11 @@
   opacity: 1;
 }
 
-/* ---------- 3. Signature ---------- */
+/* ---------- 3. Signature ----------
+   Circuit du document : expéditeur → destinataire (signature, Lottie
+   sign-handwritten dans un badge Leo) → retour signé à l'expéditeur. Le trajet du
+   document est animé en JS (initSign) sur l'axe de .hp-sign-track :
+   horizontal sur desktop, vertical sur mobile. */
 .hp-sign-head {
   display: flex;
   align-items: flex-start;
@@ -310,8 +513,166 @@
   font-variant-numeric: tabular-nums;
 }
 
-.hp-progress--sign {
-  margin: 12px 0 14px;
+.hp-sign-lane {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(90px, 0.85fr) minmax(0, 1fr);
+  align-items: stretch;
+  margin-top: 16px;
+}
+
+.hp-sign-party {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 14px 10px 12px;
+  background-color: var(--color-white);
+  text-align: center;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.hp-sign-party.is-hit {
+  border-color: var(--color-cyan);
+  box-shadow: 0 0 0 4px rgb(98 231 235 / 0.25);
+}
+
+.hp-sign-party .hp-avatar {
+  width: 34px;
+  height: 34px;
+  font-size: 11px;
+}
+
+.hp-sign-who {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 100%;
+}
+
+.hp-sign-who .hp-row-s {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: color 0.3s ease;
+}
+
+.hp-sign-who .hp-row-s.is-done {
+  color: var(--color-green-text);
+  font-weight: 700;
+}
+
+/* Badge de signature posé sur l'avatar du destinataire pendant qu'il signe */
+.hp-sign-avatar {
+  position: relative;
+  display: flex;
+}
+
+.hp-sign-pen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 3px var(--color-white), var(--shadow-float);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
+  transition: opacity 0.2s ease, transform 0.3s ease;
+}
+
+.is-signing .hp-sign-pen {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.25s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Piste : ligne pointillée, le document glisse dessus */
+/* --sign-axis : sens du trajet du document, lu par initSign. */
+.hp-sign-track {
+  --sign-axis: x;
+  position: relative;
+  height: 64px;
+  margin: 0 -1px;
+}
+
+.hp-sign-track::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  left: 4px;
+  border-top: 1.5px dashed var(--color-border);
+  transition: border-color 0.3s ease;
+}
+
+.is-sending .hp-sign-track::before {
+  border-color: var(--color-cyan);
+}
+
+.hp-sign-mail {
+  position: absolute;
+  top: calc(50% - 30px);
+  left: 50%;
+  padding-left: 13px;
+  color: var(--color-faint);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239a948a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='14' rx='2.5'/%3E%3Cpath d='m3.5 6.5 8.5 6.5 8.5-6.5'/%3E%3C/svg%3E") 0 center / 10px no-repeat;
+  font-size: 9px;
+  font-weight: 700;
+  white-space: nowrap;
+  translate: -50% 0;
+}
+
+.hp-sign-doc {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: 2;
+  display: block;
+  width: 30px;
+  height: 38px;
+  margin-top: -19px;
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  padding: 8px 6px;
+  background-color: var(--color-white);
+  box-shadow: 0 6px 14px -6px rgb(31 18 14 / 0.3);
+}
+
+.hp-sign-doc-lines {
+  display: grid;
+  gap: 4px;
+}
+
+.hp-sign-doc-lines i {
+  display: block;
+  height: 2.5px;
+  border-radius: 2px;
+  background-color: var(--color-border);
+}
+
+.hp-sign-doc-lines i:nth-child(2) { width: 80%; }
+.hp-sign-doc-lines i:nth-child(4) { width: 55%; }
+
+.hp-sign-seal {
+  position: absolute;
+  right: -7px;
+  bottom: -7px;
+  width: 17px;
+  height: 17px;
+  border: 2px solid var(--color-white);
+  border-radius: 50%;
+  background: var(--color-green-text) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 9px no-repeat;
+  transform: scale(0);
+  transition: transform 0.2s ease;
+}
+
+.is-signed .hp-sign-seal {
+  transform: none;
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .hp-sign-foot {
@@ -326,7 +687,7 @@
   transform: translateY(4px);
 }
 
-.is-signed [data-sg-archived] {
+.is-archived [data-sg-archived] {
   opacity: 1;
   transform: none;
 }
@@ -559,6 +920,67 @@
 
   .hp-kb {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Signature : circuit vertical, pastilles en ligne */
+  .hp-sign-lane {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hp-sign-party {
+    flex-direction: row;
+    padding: 10px 12px;
+    text-align: left;
+  }
+
+  .hp-sign-party .hp-pill {
+    margin-left: auto;
+  }
+
+  .hp-sign-who {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .hp-sign-track {
+    --sign-axis: y;
+    height: 72px;
+    margin: -1px 0;
+  }
+
+  .hp-sign-track::before {
+    top: 4px;
+    right: auto;
+    bottom: 4px;
+    left: 50%;
+    border-top: 0;
+    border-left: 1.5px dashed var(--color-border);
+  }
+
+  .is-sending .hp-sign-track::before {
+    border-color: var(--color-cyan);
+  }
+
+  .hp-sign-mail {
+    top: 50%;
+    left: calc(50% + 26px);
+    translate: 0 -50%;
+  }
+
+  .hp-sign-doc {
+    top: 0;
+    left: 50%;
+    margin-top: 0;
+    margin-left: -15px;
+  }
+
+  /* Deux tuiles KPI sur mobile : les heures (secondaires) disparaissent. */
+  .hp-app-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hp-app-kpi--purple {
+    display: none;
   }
 
   .hp-float--alert {

@@ -35,12 +35,16 @@
 
 .hp-step-verb {
   flex-shrink: 0;
-  /* Un peu d'air autour des glyphes pour que le remplissage
-     (background-clip: text) ne rogne pas la dernière lettre. */
-  padding: 0 0.04em 0.06em 0;
+  /* Le remplissage (background-clip: text) ne peint que dans la boîte de
+     l'élément : avec line-height: 1, les accents (Générer) et jambages
+     (Signer) en dépassent et seraient rognés. On agrandit la boîte de tous
+     côtés, et les marges négatives annulent cet agrandissement dans la mise
+     en page. */
+  margin: -0.2em -0.08em -0.28em -0.06em;
+  padding: 0.2em 0.08em 0.28em 0.06em;
   color: var(--color-black);
   font-family: var(--font-serif);
-  font-size: 60px;
+  font-size: 44px;
   font-weight: 500;
   line-height: 1;
   letter-spacing: -2px;
@@ -124,18 +128,14 @@
   --reveal-delay: 120ms;
 }
 
-/* Fond décoratif derrière chaque mockup */
+/* Fond décoratif derrière chaque mockup : l'englobe entièrement, avec la
+   même marge de chaque côté. */
 .hp-feature-visual::before {
   content: "";
   position: absolute;
-  inset: -22px -22px -22px 12%;
+  inset: -22px;
   z-index: -1;
   border-radius: 32px;
-  background: linear-gradient(160deg, #f0fdfc, #e0f8f7);
-}
-
-.hp-feature--rev .hp-feature-visual::before {
-  inset: -22px 12% -22px -22px;
   background: linear-gradient(200deg, #fbf7ef, #f5eee1);
 }
 
@@ -150,10 +150,6 @@
     padding: 56px 0;
   }
 
-  .hp-step-verb {
-    font-size: 56px;
-  }
-
   .hp-feature--rev .hp-feature-copy {
     order: 0;
   }
@@ -162,8 +158,7 @@
     max-width: 640px;
   }
 
-  .hp-feature-visual::before,
-  .hp-feature--rev .hp-feature-visual::before {
+  .hp-feature-visual::before {
     inset: -16px;
   }
 }
@@ -183,7 +178,6 @@
   }
 
   .hp-step-verb {
-    font-size: 44px;
     letter-spacing: -1px;
   }
 
@@ -192,8 +186,7 @@
     padding: 44px 0;
   }
 
-  .hp-feature-visual::before,
-  .hp-feature--rev .hp-feature-visual::before {
+  .hp-feature-visual::before {
     inset: -10px;
     border-radius: 22px;
   }

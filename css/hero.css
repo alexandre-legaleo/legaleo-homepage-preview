@@ -47,323 +47,323 @@
 /* Décalage d'apparition du hero */
 .hp-hero-copy > :nth-child(2) { --reveal-delay: 100ms; }
 .hp-hero-copy > :nth-child(3) { --reveal-delay: 200ms; }
-.hp-hero-visual { --reveal-delay: 200ms; }
 
-/* ---------- Mockup dashboard ---------- */
+/* ---------- Écosystème (orbites) ----------
+   Scène carrée : le SVG (viewBox 600 × 600) et les pastilles HTML partagent
+   le même repère, les pastilles étant placées en % de la scène. Les tailles
+   sont en cqw pour que tout l'ensemble se réduise d'un bloc. */
 .hp-hero-visual {
+  justify-self: end;
+  width: 100%;
+  max-width: 580px;
+}
+
+.hp-eco {
   position: relative;
-  padding: 22px;
-  border-radius: 32px;
-  background: linear-gradient(160deg, #e3fcfb, #c9f6f4);
+  container-type: inline-size;
 }
 
-.hp-app {
-  display: grid;
-  grid-template-columns: 150px minmax(0, 1fr);
-  min-height: 330px;
-  overflow: hidden;
-  border: 1px solid rgb(31 18 14 / 0.06);
-  border-radius: 16px;
-  background-color: var(--color-white);
-  box-shadow: var(--shadow-float);
-  font-size: 11px;
+/* JS actif : caché jusqu'à l'intro (ou jusqu'à l'affichage statique si GSAP
+   n'a pas chargé, voir initHeroEcosystem). */
+.js-reveal .hp-eco:not(.is-ready) {
+  opacity: 0;
 }
 
-.hp-app-side {
+/* Trame de points + lueur derrière la scène */
+.hp-eco::before,
+.hp-eco::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.hp-eco::before {
+  inset: -4%;
+  background-image: radial-gradient(rgb(8 127 131 / 0.2) 1px, transparent 1.6px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(closest-side, #000 35%, transparent);
+}
+
+.hp-eco::after {
+  inset: 18%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(98 231 235 / 0.35), transparent);
+  filter: blur(20px);
+}
+
+.hp-eco-stage {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 1;
+}
+
+.hp-eco-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.hp-eco-ring {
+  stroke: rgb(8 127 131 / 0.16);
+  stroke-width: 1;
+}
+
+.hp-eco-ring--outer {
+  stroke-dasharray: 2 9;
+  stroke-linecap: round;
+}
+
+.hp-eco-ring--orbit {
+  stroke: rgb(8 127 131 / 0.24);
+  stroke-width: 1.2;
+}
+
+.hp-eco-ring--inner {
+  stroke-dasharray: 5 10;
+}
+
+.hp-eco-moons--orbit circle { fill: var(--color-teal); }
+.hp-eco-moons--inner circle { fill: var(--color-cyan); }
+
+.hp-eco-spokes path {
+  stroke: rgb(8 127 131 / 0.25);
+  stroke-width: 1.5;
+  stroke-dasharray: 2 6;
+  stroke-linecap: round;
+}
+
+/* Traînée lumineuse d'un document en transit */
+/* Tranches à bouts carrés : des bouts ronds se recouvriraient et feraient
+   des bandes plus opaques le long du dégradé. */
+.hp-eco-trail {
+  stroke: var(--color-teal);
+  stroke-width: 3;
+  stroke-linecap: butt;
+}
+
+.hp-eco-trail--glow {
+  stroke: var(--color-cyan);
+  stroke-width: 11;
+  opacity: 0.8;
+  filter: url(#hp-eco-blur);
+}
+
+.hp-eco-token-glow { fill: url(#hp-eco-glow); }
+
+.hp-eco-token-dot {
+  fill: var(--color-white);
+  stroke: var(--color-teal);
+  stroke-width: 2.5;
+}
+
+/* Cœur */
+.hp-eco-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 27cqw;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+}
+
+.hp-eco-core-card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 16px 10px;
-  color: rgb(255 254 251 / 0.78);
-  background-color: var(--color-teal-deep);
-}
-
-.hp-app-logo {
-  display: flex;
   align-items: center;
-  gap: 7px;
-  margin: 0 6px 12px;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 32%;
   color: var(--color-white);
-  font-family: var(--font-serif);
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.hp-app-logo-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: var(--color-lime);
-}
-
-.hp-app-new {
-  margin-bottom: 10px;
-  border-radius: 8px;
-  padding: 8px;
-  color: var(--color-black);
-  background-color: var(--color-cyan);
-  font-weight: 700;
+  background:
+    radial-gradient(90% 70% at 30% 15%, rgb(98 231 235 / 0.28), transparent 60%),
+    linear-gradient(160deg, #13605d, var(--color-teal-deep) 55%, #0a3634);
+  box-shadow:
+    inset 0 1px 0 rgb(255 254 251 / 0.18),
+    0 0 0 1px rgb(98 231 235 / 0.25),
+    0 24px 60px -18px rgb(8 127 131 / 0.7);
   text-align: center;
 }
 
-.hp-app-ni {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  border-radius: 7px;
-  padding: 7px 8px;
-  font-weight: 600;
-}
-
-.hp-app-ni.is-active {
+.hp-eco-logo {
+  width: 58%;
+  height: auto;
   color: var(--color-white);
-  background-color: rgb(255 254 251 / 0.12);
 }
 
-.hp-app-ni--leo {
-  margin-top: auto;
+.hp-eco-core-n {
+  margin-top: 1.2cqw;
   color: var(--color-cyan);
-}
-
-.hp-app-ni--leo .hp-leo-glyph {
-  width: 12px;
-  height: 12px;
-}
-
-.hp-app-main {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.hp-app-top {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.hp-app-search {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  border-radius: 8px;
-  padding: 7px 10px;
-  color: var(--color-faint);
-  background-color: var(--color-beige);
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.hp-app-credits {
-  flex-shrink: 0;
-  border: 1px solid var(--color-cyan);
-  border-radius: var(--radius-pill);
-  padding: 4px 9px;
-  color: var(--color-teal-text);
-  font-size: 10px;
-  font-weight: 700;
-}
-
-.hp-app-user {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  gap: 6px;
-  font-weight: 700;
-}
-
-.hp-app-user .hp-avatar {
-  width: 22px;
-  height: 22px;
-  font-size: 8.5px;
-}
-
-.hp-app-body {
-  padding: 18px 16px;
-}
-
-.hp-app-hello {
   font-family: var(--font-serif);
-  font-size: 17px;
-  font-weight: 600;
-}
-
-.hp-app-sub {
-  margin-top: 3px;
-  color: var(--color-muted);
-  font-size: 10.5px;
-}
-
-.hp-app-kpis {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.hp-app-kpi {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  border: 1px solid #cdf3f2;
-  border-radius: 12px;
-  padding: 12px 13px;
-  background-color: #f1fdfc;
-}
-
-.hp-app-kpi--orange {
-  border-color: #f8dca5;
-  background-color: #fff5df;
-}
-
-.hp-app-kpi-n {
-  color: var(--color-teal);
-  font-family: var(--font-serif);
-  font-size: 26px;
+  font-size: 7.2cqw;
   font-weight: 600;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 
-.hp-app-kpi--orange .hp-app-kpi-n {
-  color: var(--color-orange-text);
-}
-
-.hp-app-kpi-l {
-  color: var(--color-muted);
-  font-size: 10.5px;
+.hp-eco-core-l {
+  margin-top: 0.8cqw;
+  color: rgb(255 254 251 / 0.72);
+  font-size: max(8px, 1.75cqw);
   font-weight: 600;
 }
 
-.hp-app-steps {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 16px;
+.hp-eco-halo {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid rgb(98 231 235 / 0.6);
+  border-radius: 34%;
+  animation: hp-eco-breathe 3.2s var(--ease-out) infinite;
 }
 
-.hp-app-step {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  border: 1px dashed var(--color-border);
-  border-radius: var(--radius-pill);
-  padding: 5px 10px 5px 8px;
-  color: var(--color-muted);
-  font-weight: 600;
-  transition: all 0.4s var(--ease-out);
+.hp-eco-halo--2 {
+  animation-delay: 1.6s;
 }
 
-.hp-app-step::before {
-  content: "";
-  width: 12px;
-  height: 12px;
-  border: 1.5px solid currentColor;
-  border-radius: 50%;
-  transition: all 0.4s var(--ease-out);
+@keyframes hp-eco-breathe {
+  from { opacity: 0.7; transform: scale(1); }
+  to { opacity: 0; transform: scale(1.45); }
 }
 
-.hp-app-step.is-done {
-  border-style: solid;
-  border-color: transparent;
-  color: var(--color-green-text);
-  background-color: var(--color-green-bg);
-}
-
-.hp-app-step.is-done::before {
-  border-color: transparent;
-  background: var(--color-green-text) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 8px no-repeat;
-}
-
-/* ---------- Cartes flottantes ---------- */
-.hp-float {
+/* Satellites */
+.hp-eco-sat {
   position: absolute;
   z-index: 2;
   display: flex;
-  gap: 10px;
-  border: 1px solid rgb(31 18 14 / 0.06);
-  border-radius: 14px;
-  padding: 12px 14px;
+  align-items: center;
+  gap: 1.5cqw;
+  /* Assez large pour le plus long statut au repos (« Avec l'assistant IA
+     Leo ») sur une ligne. Les pastilles latérales (centre à 17 %) touchent
+     presque le bord de la scène à cette largeur. */
+  width: 33cqw;
+  border: 1px solid rgb(31 18 14 / 0.07);
+  border-radius: 2.8cqw;
+  padding: 1.3cqw 1.8cqw 1.3cqw 1.3cqw;
   background-color: var(--color-white);
   box-shadow: var(--shadow-float);
-  font-size: 11px;
-  line-height: 1.4;
+  translate: -50% -50%;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
-.hp-float-meta {
-  color: var(--color-muted);
-  font-size: 10.5px;
+/* Cliquable une fois l'intro jouée (initClicks) : rejoue l'étape. */
+.hp-eco.is-interactive .hp-eco-sat {
+  cursor: pointer;
+  user-select: none;
 }
 
-.hp-float--gen {
-  bottom: -18px;
-  left: -34px;
-  flex-direction: column;
-  width: 230px;
-  gap: 8px;
+.hp-eco.is-interactive .hp-eco-sat:hover {
+  border-color: rgb(98 231 235 / 0.7);
 }
 
-.hp-float-head {
+.hp-eco-sat.is-active {
+  border-color: var(--color-cyan);
+  box-shadow: 0 0 0 4px rgb(98 231 235 / 0.3), var(--shadow-float);
+}
+
+.hp-eco-ico {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  width: 5.8cqw;
+  height: 5.8cqw;
+  border-radius: 1.6cqw;
 }
 
-.hp-float-title {
+.hp-eco-ico svg {
+  width: 56%;
+  height: 56%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hp-eco-ico .hp-leo-glyph {
+  width: 56%;
+  height: 56%;
+}
+
+/* Support de l'animation Lottie de Leo (.hp-leo-lottie, voir base.css) */
+.hp-eco-ico--leo {
+  position: relative;
+}
+
+.hp-eco-ico--teal { color: var(--color-teal); background-color: var(--color-teal-bg); }
+.hp-eco-ico--orange { color: var(--color-orange-text); background-color: var(--color-orange-bg); }
+.hp-eco-ico--green { color: var(--color-green-text); background-color: var(--color-green-bg); }
+.hp-eco-ico--brick { color: var(--color-brick); background-color: #fbe7df; }
+.hp-eco-ico--purple { color: var(--color-purple-text); background-color: var(--color-purple-bg); }
+.hp-eco-ico--leo { background-color: var(--color-leo-badge); }
+
+.hp-eco-txt {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+.hp-eco-txt strong {
+  font-size: max(10px, 2.2cqw);
   font-weight: 700;
 }
 
-.hp-float-check {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--color-green-text) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 10px no-repeat;
-  opacity: 0;
-  transform: scale(0.4);
-  transition: opacity 0.3s ease, transform 0.4s var(--ease-out);
-}
-
-.hp-float--gen.is-done .hp-float-check {
-  opacity: 1;
-  transform: none;
-}
-
-.hp-progress {
-  height: 6px;
+.hp-eco-status {
   overflow: hidden;
-  border-radius: var(--radius-pill);
-  background-color: var(--color-beige);
+  color: var(--color-muted);
+  font-size: max(9px, 1.8cqw);
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: color 0.3s ease;
 }
 
-.hp-progress > span {
-  display: block;
-  width: var(--p, 0%);
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, var(--color-teal), var(--color-cyan));
-  transition: width 0.5s linear;
+.hp-eco-status.is-done {
+  color: var(--color-green-text);
 }
 
-.hp-float--toast {
-  top: 70px;
-  right: -26px;
-  align-items: center;
-  opacity: 0;
-  transform: translateY(8px) scale(0.96);
-  transition: opacity 0.45s ease, transform 0.5s var(--ease-out);
+/* Petite scène (mobile) : les pastilles gardent icône + verbe. */
+@container (max-width: 440px) {
+  .hp-eco-sat {
+    width: auto;
+    gap: 6px;
+    border-radius: 12px;
+    padding: 5px 9px 5px 5px;
+  }
+
+  .hp-eco-ico {
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+  }
+
+  .hp-eco-txt strong {
+    font-size: 11px;
+  }
+
+  .hp-eco-status {
+    display: none;
+  }
+
+  .hp-eco-core-l {
+    display: none;
+  }
 }
 
-.hp-float--toast.is-shown {
-  opacity: 1;
-  transform: none;
+@media (prefers-reduced-motion: reduce) {
+  .hp-eco-halo {
+    display: none;
+  }
 }
 
 @media (max-width: 1100px) {
   .hp-hero-grid {
     grid-template-columns: minmax(0, 1fr);
-    gap: 64px;
+    gap: 48px;
   }
 
   .hp-hero-copy {
@@ -371,9 +371,8 @@
   }
 
   .hp-hero-visual {
-    max-width: 640px;
-    width: 100%;
-    margin: 0 auto;
+    justify-self: center;
+    max-width: 560px;
   }
 }
 
@@ -397,34 +396,5 @@
 
   .hp-ctarow .hp-btn {
     flex: 1 1 auto;
-  }
-
-  /* Les cartes flottantes se posent dans la marge basse du cadre au lieu de
-     recouvrir le dashboard ; le toast (redondant sur petit écran) disparaît. */
-  .hp-hero-visual {
-    padding: 12px 12px 84px;
-    border-radius: 22px;
-  }
-
-  .hp-app {
-    grid-template-columns: minmax(0, 1fr);
-    min-height: 0;
-  }
-
-  .hp-app-side,
-  .hp-app-credits,
-  .hp-app-user {
-    display: none;
-  }
-
-  .hp-float--gen {
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
-    width: auto;
-  }
-
-  .hp-float--toast {
-    display: none;
   }
 }

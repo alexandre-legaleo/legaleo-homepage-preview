@@ -24,6 +24,8 @@ pnpm dev   # http://localhost:5174
   la page Leo.
 - `js/embed.js` : mode iframe (hauteur, ancres), messages `legaleo-home:*`.
 - `js/main.js` : apparitions au scroll, boucles des mockups, chat Leo.
+- `leo-anims/` : animations Lottie de Leo, copiées de `front-legaleo-leo`
+  (même fichier source, à resynchroniser si l'export change).
 - `webflow-embed.html` : snippet à coller dans l'élément Embed Webflow.
 
 ## Hors de l'iframe (reste natif Webflow)

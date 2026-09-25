@@ -51,61 +51,97 @@
           </div>
         </div>
 
-        <!-- Mockup dashboard animé (js/main.js : initHeroDashboard) -->
-        <div class="hp-hero-visual" aria-hidden="true" data-reveal>
-          <div class="hp-app">
-            <aside class="hp-app-side">
-              <span class="hp-app-logo"><span class="hp-app-logo-dot"></span>legaleo</span>
-              <span class="hp-app-new">+ Créer un contrat</span>
-              <span class="hp-app-ni is-active">Dashboard</span>
-              <span class="hp-app-ni">Contrats en cours</span>
-              <span class="hp-app-ni">Contrathèque</span>
-              <span class="hp-app-ni">Cocontractants</span>
-              <span class="hp-app-ni">Modèles</span>
-              <span class="hp-app-ni hp-app-ni--leo"><span class="hp-leo-glyph"></span>Assistant IA Leo</span>
-            </aside>
-            <div class="hp-app-main">
-              <div class="hp-app-top">
-                <span class="hp-app-search">Rechercher un contrat, un cocontractant…</span>
-                <span class="hp-app-credits">Crédits avocat : 2h</span>
-                <span class="hp-app-user"><span class="hp-avatar hp-avatar--teal">JD</span>Jean Dupont</span>
+        <!-- Écosystème animé (js/main.js : initHeroEcosystem). Repère commun
+             600 × 600 : le SVG (orbites, liaisons) et les pastilles HTML
+             (positionnées en % de la scène carrée) partagent les mêmes
+             coordonnées. -->
+        <div class="hp-hero-visual" aria-hidden="true">
+          <div class="hp-eco" id="hp-eco">
+            <div class="hp-eco-stage">
+              <svg class="hp-eco-svg" viewBox="0 0 600 600" fill="none">
+                <defs>
+                  <radialGradient id="hp-eco-glow">
+                    <stop offset="0" stop-color="#62e7eb" stop-opacity="0.9" />
+                    <stop offset="1" stop-color="#62e7eb" stop-opacity="0" />
+                  </radialGradient>
+                  <filter id="hp-eco-blur" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="3" />
+                  </filter>
+                </defs>
+
+                <g class="hp-eco-rings">
+                  <circle class="hp-eco-ring hp-eco-ring--outer" cx="300" cy="300" r="286" />
+                  <circle class="hp-eco-ring hp-eco-ring--orbit" cx="300" cy="300" r="228" />
+                  <circle class="hp-eco-ring hp-eco-ring--inner" cx="300" cy="300" r="150" />
+                </g>
+
+                <!-- Petites lunes qui tournent sur les orbites -->
+                <g class="hp-eco-moons hp-eco-moons--orbit">
+                  <circle cx="300" cy="72" r="3" />
+                  <circle cx="528" cy="300" r="2" />
+                  <circle cx="72" cy="300" r="2.5" />
+                </g>
+                <g class="hp-eco-moons hp-eco-moons--inner">
+                  <circle cx="450" cy="300" r="2.5" />
+                  <circle cx="150" cy="300" r="2" />
+                </g>
+
+                <!-- Liaisons satellite → cœur (le sens du tracé compte :
+                     il part toujours du satellite) -->
+                <g class="hp-eco-spokes">
+                  <path data-spoke="create" d="M300 72 Q338 153 300 234" />
+                  <path data-spoke="lawyer" d="M497.5 186 Q446.3 259.4 357.2 267" />
+                  <path data-spoke="sign" d="M497.5 414 Q408.3 406.4 357.2 333" />
+                  <path data-spoke="track" d="M300 528 Q262 447 300 366" />
+                  <path data-spoke="leo" d="M102.5 414 Q153.7 340.6 242.8 333" />
+                  <path data-spoke="import" d="M102.5 186 Q191.7 193.6 242.8 267" />
+                </g>
+
+                <!-- Traînées et documents en transit (créés par le JS) -->
+                <g class="hp-eco-flows"></g>
+              </svg>
+
+              <div class="hp-eco-core">
+                <span class="hp-eco-halo"></span>
+                <span class="hp-eco-halo hp-eco-halo--2"></span>
+                <div class="hp-eco-core-card">
+                  <!-- Logo : LogoLegaleo de legaleo-ai (components/Logo/Logo.tsx), variante onDark -->
+                  <svg class="hp-eco-logo" viewBox="0 0 255 79" fill="currentColor" role="img" aria-label="Legaleo"><path d="M75.958 63.9758V23.5039H79.9836V63.9758H75.958Z" /><path d="M100.721 64.8025C97.8363 64.8025 95.3385 64.1584 93.2269 62.8746C91.1153 61.5909 89.4779 59.7821 88.3102 57.4528C87.1425 55.1235 86.5586 52.3883 86.5586 49.2472C86.5586 46.1062 87.1337 43.1901 88.2838 40.8211C89.434 38.4521 91.0539 36.6257 93.1479 35.3419C95.2375 34.0582 97.709 33.4141 100.558 33.4141C103.407 33.4141 105.975 34.089 108.039 35.439C110.102 36.7889 111.665 38.7212 112.723 41.2358C113.781 43.7504 114.263 46.7503 114.176 50.2399H110.067V48.8061C109.992 44.9504 109.167 42.0431 107.586 40.08C106.006 38.1168 103.701 37.133 100.668 37.133C97.6344 37.133 95.0575 38.1698 93.3674 40.2432C91.6773 42.3166 90.8344 45.2724 90.8344 49.1105C90.8344 52.9486 91.6773 55.7587 93.3674 57.8234C95.0575 59.888 97.4544 60.9203 100.558 60.9203C102.678 60.9203 104.527 60.4306 106.107 59.4468C107.687 58.4631 108.934 57.0469 109.847 55.1941L113.601 56.6543C112.433 59.2439 110.712 61.2468 108.438 62.6717C106.164 64.0922 103.592 64.8069 100.725 64.8069L100.721 64.8025ZM89.4077 50.2399V46.8518H112.011V50.2399H89.4077Z" /><path d="M131.705 64.802C128.949 64.802 126.591 64.1094 124.638 62.7241C122.684 61.3389 121.187 59.4596 120.147 57.0949C119.106 54.7259 118.584 52.0569 118.584 49.0835C118.584 46.1101 119.098 43.4676 120.134 41.0985C121.165 38.7295 122.649 36.859 124.585 35.4826C126.521 34.1062 128.839 33.418 131.543 33.418C134.247 33.418 136.657 34.0974 138.558 35.4561C140.459 36.8149 141.895 38.6722 142.873 41.0324C143.848 43.3926 144.34 46.0748 144.34 49.0835C144.34 52.0922 143.857 54.7039 142.887 57.0817C141.916 59.4596 140.494 61.3389 138.611 62.7241C136.728 64.1094 134.427 64.802 131.705 64.802ZM131.982 78.0191C130.468 78.0191 128.975 77.7941 127.504 77.3441C126.034 76.8941 124.677 76.1883 123.435 75.2222C122.193 74.2604 121.152 73.0075 120.314 71.4635L123.957 69.4253C124.778 71.0753 125.933 72.2664 127.421 72.9899C128.909 73.7134 130.428 74.0751 131.982 74.0751C134.12 74.0751 135.85 73.6737 137.175 72.8796C138.501 72.0811 139.463 70.9032 140.064 69.3415C140.665 67.7798 140.959 65.8343 140.942 63.505V55.5774H141.407V34.2385H144.998V63.5579C144.998 64.4005 144.976 65.2123 144.928 65.9931C144.884 66.774 144.796 67.5372 144.669 68.2915C144.322 70.5106 143.607 72.337 142.518 73.7707C141.429 75.2045 140.007 76.2677 138.242 76.9647C136.477 77.6618 134.392 78.0103 131.982 78.0103V78.0191ZM132.118 61.0301C134.217 61.0301 135.955 60.5183 137.325 59.4904C138.694 58.4625 139.717 57.0464 140.393 55.2377C141.069 53.4289 141.407 51.3775 141.407 49.0835C141.407 46.7895 141.069 44.694 140.393 42.9029C139.717 41.1118 138.699 39.7133 137.338 38.703C135.977 37.6928 134.265 37.1899 132.202 37.1899C130.138 37.1899 128.33 37.7149 126.942 38.7604C125.555 39.8059 124.528 41.2309 123.861 43.0264C123.193 44.8263 122.86 46.8424 122.86 49.0835C122.86 51.3246 123.202 53.376 123.887 55.1803C124.572 56.9891 125.599 58.414 126.969 59.4596C128.338 60.5051 130.055 61.0301 132.118 61.0301Z" /><path d="M161.132 64.802C158.901 64.802 157.036 64.3961 155.53 63.5888C154.024 62.7815 152.896 61.7095 152.145 60.3683C151.395 59.0272 151.021 57.5714 151.021 55.9921C151.021 54.4127 151.346 52.9966 151.996 51.8496C152.646 50.7026 153.528 49.7629 154.652 49.0262C155.776 48.2938 157.075 47.7336 158.555 47.3453C160.052 46.9792 161.711 46.6527 163.528 46.366C165.346 46.0836 167.128 45.8322 168.871 45.6248C170.614 45.4131 172.146 45.2057 173.458 45.0072L172.032 45.8895C172.084 42.9514 171.518 40.7765 170.333 39.3648C169.143 37.9531 167.08 37.2428 164.143 37.2428C162.115 37.2428 160.403 37.7016 159.007 38.6192C157.611 39.5368 156.627 40.9882 156.061 42.969L152.145 41.8132C152.821 39.153 154.182 37.0884 156.228 35.6193C158.274 34.1503 160.93 33.418 164.2 33.418C166.904 33.418 169.2 33.9253 171.092 34.9444C172.984 35.9634 174.319 37.4369 175.105 39.3648C175.469 40.2295 175.706 41.1912 175.816 42.2544C175.926 43.3176 175.978 44.4028 175.978 45.5013V63.9726H172.387V56.5126L173.428 56.9538C172.422 59.5037 170.86 61.4492 168.744 62.7903C166.623 64.1314 164.086 64.802 161.127 64.802H161.132ZM161.597 61.308C163.48 61.308 165.122 60.9683 166.527 60.2889C167.932 59.6095 169.064 58.6787 169.925 57.4964C170.785 56.3141 171.338 54.9774 171.597 53.4907C171.817 52.5378 171.935 51.4878 171.953 50.3364C171.97 49.1894 171.979 48.3335 171.979 47.7644L173.511 48.5629C172.141 48.7482 170.658 48.9291 169.06 49.1144C167.462 49.2997 165.89 49.507 164.349 49.7497C162.804 49.9879 161.412 50.2746 160.17 50.6011C159.332 50.8393 158.515 51.1746 157.734 51.6069C156.948 52.0393 156.303 52.6128 155.802 53.3274C155.297 54.0421 155.047 54.9333 155.047 55.9965C155.047 56.8611 155.262 57.6949 155.692 58.5022C156.123 59.3096 156.816 59.9801 157.773 60.5139C158.73 61.0477 160.008 61.3124 161.597 61.3124V61.308Z" /><path d="M183.651 63.9758V23.5039H187.677V63.9758H183.651Z" /><path d="M208.414 64.8025C205.53 64.8025 203.032 64.1584 200.92 62.8746C198.809 61.5909 197.171 59.7821 196.004 57.4528C194.836 55.1235 194.252 52.3883 194.252 49.2472C194.252 46.1062 194.827 43.1901 195.977 40.8211C197.127 38.4521 198.747 36.6257 200.841 35.3419C202.931 34.0582 205.402 33.4141 208.251 33.4141C211.101 33.4141 213.669 34.089 215.732 35.439C217.795 36.7889 219.358 38.7212 220.416 41.2358C221.474 43.7504 221.957 46.7503 221.869 50.2399H217.76V48.8061C217.685 44.9504 216.86 42.0431 215.28 40.08C213.699 38.1168 211.395 37.133 208.361 37.133C205.328 37.133 202.751 38.1698 201.061 40.2432C199.371 42.3166 198.528 45.2724 198.528 49.1105C198.528 52.9486 199.371 55.7587 201.061 57.8234C202.751 59.888 205.148 60.9203 208.251 60.9203C210.372 60.9203 212.22 60.4306 213.8 59.4468C215.381 58.4631 216.627 57.0469 217.541 55.1941L221.294 56.6543C220.126 59.2439 218.405 61.2468 216.131 62.6717C213.857 64.0922 211.285 64.8069 208.418 64.8069L208.414 64.8025ZM197.101 50.2399V46.8518H219.705V50.2399H197.101Z" /><path d="M240.277 64.8025C237.336 64.8025 234.825 64.1319 232.744 62.7908C230.663 61.4497 229.065 59.5968 227.95 57.2278C226.835 54.8588 226.277 52.1457 226.277 49.0796C226.277 46.0136 226.844 43.2254 227.976 40.8741C229.109 38.5227 230.72 36.6963 232.81 35.3816C234.899 34.0714 237.388 33.4141 240.277 33.4141C243.165 33.4141 245.76 34.0802 247.854 35.4081C249.943 36.7404 251.541 38.5844 252.648 40.9402C253.754 43.3004 254.307 46.0091 254.307 49.0752C254.307 52.1412 253.75 54.9338 252.635 57.294C251.519 59.6542 249.913 61.4938 247.814 62.8129C245.716 64.1363 243.201 64.7937 240.281 64.7937L240.277 64.8025ZM240.277 60.9203C243.565 60.9203 246.01 59.8218 247.621 57.6293C249.228 55.4367 250.031 52.5868 250.031 49.0796C250.031 45.5724 249.224 42.621 247.608 40.4902C245.993 38.3595 243.547 37.2963 240.281 37.2963C238.073 37.2963 236.251 37.7948 234.816 38.7962C233.38 39.7976 232.314 41.1829 231.611 42.9519C230.909 44.7254 230.558 46.7635 230.558 49.0796C230.558 52.6574 231.378 55.5249 233.025 57.6822C234.667 59.8395 237.09 60.9159 240.286 60.9159L240.277 60.9203Z" /><path d="M5.62632 4.74518L4.49111 4.75426V5.88947L4.70453 40.3726L0.163685 40.3999L0.000214699 13.2456C-0.0406529 6.07565 5.758 0.204338 12.928 0.158929L39.2058 0L39.2331 4.54084L5.62632 4.74518Z" /><path d="M51.6544 51.0624C51.6589 54.5361 50.3148 57.8055 47.8628 60.2712C45.4153 62.7323 42.1504 64.0901 38.6766 64.0991L11.5179 64.1627L11.5088 59.6219L45.9965 59.5401H47.1317V58.4049L47.05 24.7981L51.5908 24.7891L51.6544 51.0624Z" /><path fill="#e2e62f" d="M24.3464 36.7076C22.8116 36.7076 21.6264 36.2808 20.7955 35.4226C19.9645 34.5644 19.6239 33.5109 19.7783 32.2576C19.8782 31.2859 20.246 30.3822 20.8727 29.5513C21.4993 28.7203 22.3303 28.0573 23.3656 27.5578C24.4009 27.0583 25.5724 26.8086 26.8757 26.8086C28.4877 26.8086 29.6637 27.2445 30.4039 28.1118C31.1441 28.9837 31.4392 30.0689 31.2848 31.3721C31.2076 32.3166 30.8625 33.2021 30.2495 34.0194C29.6365 34.8368 28.8237 35.4907 27.8111 35.9766C26.7985 36.4624 25.6451 36.7076 24.3373 36.7076H24.3464Z" /></svg>
+                  <span class="hp-eco-core-n" id="hp-eco-count">74</span>
+                  <span class="hp-eco-core-l">contrats centralisés</span>
+                </div>
               </div>
-              <div class="hp-app-body">
-                <p class="hp-app-hello">Bonjour Jean</p>
-                <p class="hp-app-sub">Vos premiers pas sur Legaleo</p>
-                <div class="hp-app-kpis">
-                  <div class="hp-app-kpi">
-                    <span class="hp-app-kpi-n" data-count="4">4</span>
-                    <span class="hp-app-kpi-l">Contrats en cours</span>
-                  </div>
-                  <div class="hp-app-kpi">
-                    <span class="hp-app-kpi-n" data-count="28">28</span>
-                    <span class="hp-app-kpi-l">Franchisés au réseau</span>
-                  </div>
-                </div>
-                <div class="hp-app-steps">
-                  <span class="hp-app-step is-done">Réseau renseigné</span>
-                  <span class="hp-app-step is-done">Modèle choisi</span>
-                  <span class="hp-app-step" id="hp-hero-step">DIP généré</span>
-                </div>
+
+              <div class="hp-eco-sat" data-sat="create" style="left: 50%; top: 12%">
+                <span class="hp-eco-ico hp-eco-ico--teal"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5M12 11v6M9 14h6" /></svg></span>
+                <span class="hp-eco-txt"><strong>Générer</strong><span class="hp-eco-status" data-idle="DIP · franchise">DIP · franchise</span></span>
+              </div>
+
+              <div class="hp-eco-sat" data-sat="lawyer" style="left: 82.91%; top: 31%">
+                <span class="hp-eco-ico hp-eco-ico--orange"><svg viewBox="0 0 24 24"><path d="M12 3v18M8 21h8M4 7h16M6.5 7 3.5 14a3 3 0 0 0 6 0zM17.5 7l-3 7a3 3 0 0 0 6 0z" /></svg></span>
+                <span class="hp-eco-txt"><strong>Valider</strong><span class="hp-eco-status" data-idle="Avocat dédié">Avocat dédié</span></span>
+              </div>
+
+              <div class="hp-eco-sat" data-sat="sign" style="left: 82.91%; top: 69%">
+                <span class="hp-eco-ico hp-eco-ico--green"><svg viewBox="0 0 24 24"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></svg></span>
+                <span class="hp-eco-txt"><strong>Signer</strong><span class="hp-eco-status" data-idle="Signature eIDAS">Signature eIDAS</span></span>
+              </div>
+
+              <div class="hp-eco-sat" data-sat="track" style="left: 50%; top: 88%">
+                <span class="hp-eco-ico hp-eco-ico--brick"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg></span>
+                <span class="hp-eco-txt"><strong>Suivre</strong><span class="hp-eco-status" data-idle="Échéances">Échéances</span></span>
+              </div>
+
+              <div class="hp-eco-sat" data-sat="leo" style="left: 17.09%; top: 69%">
+                <span class="hp-eco-ico hp-eco-ico--leo"><span class="hp-leo-glyph"></span><span class="hp-leo-lottie" id="hp-eco-leo-anim"></span></span>
+                <span class="hp-eco-txt"><strong>Rechercher</strong><span class="hp-eco-status" data-idle="Avec l'assistant IA Leo">Avec l'assistant IA Leo</span></span>
+              </div>
+
+              <div class="hp-eco-sat" data-sat="import" style="left: 17.09%; top: 31%">
+                <span class="hp-eco-ico hp-eco-ico--purple"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5" /><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4" /></svg></span>
+                <span class="hp-eco-txt"><strong>Importer</strong><span class="hp-eco-status" data-idle="Contrats signés">Contrats signés</span></span>
               </div>
             </div>
-          </div>
-
-          <!-- Carte flottante « Génération en cours… » -->
-          <div class="hp-float hp-float--gen" id="hp-hero-gen">
-            <div class="hp-float-head">
-              <span class="hp-float-title" id="hp-hero-gen-title">Génération en cours…</span>
-              <span class="hp-float-check"></span>
-            </div>
-            <div class="hp-progress"><span id="hp-hero-gen-bar"></span></div>
-            <span class="hp-float-meta">DIP · Réseau Jean Dupont</span>
-          </div>
-
-          <!-- Toast signature -->
-          <div class="hp-float hp-float--toast" id="hp-hero-toast">
-            <span class="hp-avatar hp-avatar--orange">SM</span>
-            <span><strong>Studio Mila</strong> a signé<br /><span class="hp-float-meta">Contrat de franchise · eIDAS</span></span>
           </div>
         </div>
       </div>
@@ -134,7 +170,7 @@
       <div class="hp-wrap">
         <div class="hp-sechead-center" data-reveal>
           <span class="hp-kicker">Un seul outil, tous les stades</span>
-          <h2 class="hp-h2">Que vous soyez un jeune réseau ou un réseau établi : <em class="hp-em">Legaleo s'adapte à la maturité de votre réseau.</em></h2>
+          <h2 class="hp-h2">Que vous soyez un jeune réseau <em class="hp-em">ou un réseau établi</em></h2>
         </div>
 
         <div class="hp-stades">
@@ -143,6 +179,32 @@
               <span class="hp-stade-icon hp-stade-icon--seed" aria-hidden="true"></span>
               <span class="hp-kicker">Vous lancez votre réseau</span>
             </div>
+
+            <!-- Mini-visuel : un DIP se rédige, le compteur file vers 48 h
+                 (js/main.js : initStades) -->
+            <div class="hp-sv hp-sv--launch" aria-hidden="true" data-sv-launch>
+              <div class="hp-sv-doc">
+                <div class="hp-sv-doc-head">
+                  <span class="hp-sv-doc-ico"></span>
+                  <span class="hp-sv-doc-t"><strong>DIP · Réseau Jean Dupont</strong><span class="hp-sv-meta" data-sv-state>Rédaction en cours…</span></span>
+                </div>
+                <!-- Écrites une à une (--i = ordre) : deux paragraphes -->
+                <span class="hp-sv-line" style="--w: 96%; --i: 0"></span>
+                <span class="hp-sv-line" style="--w: 88%; --i: 1"></span>
+                <span class="hp-sv-line" style="--w: 58%; --i: 2"></span>
+                <span class="hp-sv-line hp-sv-line--para" style="--w: 92%; --i: 3"></span>
+                <span class="hp-sv-line" style="--w: 70%; --i: 4"></span>
+                <span class="hp-sv-stamp">Prêt à remettre</span>
+              </div>
+              <div class="hp-sv-timer">
+                <svg viewBox="0 0 64 64">
+                  <circle class="hp-sv-timer-track" cx="32" cy="32" r="28" />
+                  <circle class="hp-sv-timer-arc" cx="32" cy="32" r="28" pathLength="100" />
+                </svg>
+                <span class="hp-sv-timer-n"><span data-sv-hours>48</span> h</span>
+              </div>
+            </div>
+
             <h3 class="hp-h3">Posez vos contrats avant votre premier franchisé.</h3>
             <p class="hp-p">Profitez de l'accompagnement d'un avocat dédié au droit de la franchise et générez votre premier DIP et modèle de contrat de franchise dès maintenant, en quelques clics. Reprenez le contrôle sur vos coûts juridiques et réduisez le temps de gestion, avec une documentation prête en 48 heures.</p>
             <ul class="hp-checks">
@@ -153,11 +215,28 @@
             <span class="hp-stade-stat"><strong>48 h</strong> pour une documentation prête</span>
           </article>
 
-          <article class="hp-stade hp-stade--tint" data-reveal>
+          <article class="hp-stade hp-stade--dark" data-reveal>
             <div class="hp-stade-top">
               <span class="hp-stade-icon hp-stade-icon--network" aria-hidden="true"></span>
               <span class="hp-kicker">Vous pilotez un réseau établi</span>
             </div>
+
+            <!-- Mini-visuel : les contrats signés arrivent, puis les alertes
+                 d'échéance tombent (js/main.js : initStades) -->
+            <div class="hp-sv hp-sv--network" aria-hidden="true" data-sv-network>
+              <div class="hp-sv-col">
+                <span class="hp-sv-col-l">Import</span>
+                <div class="hp-sv-file" style="--i: 0"><span class="hp-sv-file-ico"></span><span class="hp-sv-file-t">Lyon 6<span class="hp-sv-file-y"> · 2019</span></span><span class="hp-sv-ok"></span></div>
+                <div class="hp-sv-file" style="--i: 1"><span class="hp-sv-file-ico"></span><span class="hp-sv-file-t">Nantes<span class="hp-sv-file-y"> · 2021</span></span><span class="hp-sv-ok"></span></div>
+                <div class="hp-sv-file" style="--i: 2"><span class="hp-sv-file-ico"></span><span class="hp-sv-file-t">Bordeaux<span class="hp-sv-file-y"> · 2022</span></span><span class="hp-sv-ok"></span></div>
+              </div>
+              <div class="hp-sv-col">
+                <span class="hp-sv-col-l">Échéances</span>
+                <div class="hp-sv-alert" style="--i: 0"><span class="hp-sv-bell"></span><span class="hp-sv-alert-t"><strong>Lyon 6</strong><span class="hp-sv-meta">Renouvellement J-90</span></span></div>
+                <div class="hp-sv-alert" style="--i: 1"><span class="hp-sv-bell"></span><span class="hp-sv-alert-t"><strong>Nantes</strong><span class="hp-sv-meta">Préavis J-30</span></span></div>
+              </div>
+            </div>
+
             <h3 class="hp-h3">Reprenez la main sur tous vos contrats existants.</h3>
             <p class="hp-p">Importez vos contrats déjà signés, faites-les évoluer avec un avocat, et suivez les échéances de tout votre parc, même avec des dizaines de franchisés.</p>
             <ul class="hp-checks">
@@ -195,9 +274,9 @@
             <h4 class="hp-h3b">Un modèle de contrat de franchise rédigé en quelques minutes.</h4>
             <p class="hp-p">Renseignez les informations de votre réseau une fois : Legaleo assemble votre DIP et votre contrat dans une trame éprouvée, avec champs dynamiques et modèles réutilisables.</p>
             <ul class="hp-bars">
-              <li>Champs dynamiques reportés sur votre document</li>
-              <li>Modèles et clauses réutilisables d'un contrat à l'autre</li>
-              <li><strong>Résultat :</strong> en moyenne 5 à 10 heures par mois gagnées sur la rédaction</li>
+              <li><strong>Champs dynamiques</strong> reportés sur votre document</li>
+              <li>Modèles et clauses <strong>réutilisables</strong> d'un contrat à l'autre</li>
+              <li>Résultat : en moyenne <strong>5 à 10 heures par mois gagnées</strong> sur la rédaction</li>
             </ul>
           </div>
           <div class="hp-feature-visual" data-reveal>
@@ -243,20 +322,41 @@
             <h4 class="hp-h3b">Chaque contrat relu par un avocat, dans un canal réservé.</h4>
             <p class="hp-p">D'un clic, soumettez votre document à un avocat dédié au droit de la franchise, qui annote et valide directement dans la plateforme.</p>
             <ul class="hp-bars">
-              <li>« Soumettre à l'avocat » en un clic</li>
-              <li>Recommandations tracées dans le document</li>
-              <li>La fiabilité d'un avocat, la peur de l'erreur en moins</li>
+              <li>« Soumettre à l'avocat » <strong>en un clic</strong></li>
+              <li>Recommandations <strong>tracées dans le document</strong></li>
+              <li>La fiabilité d'un avocat, <strong>la peur de l'erreur en moins</strong></li>
             </ul>
           </div>
           <div class="hp-feature-visual" data-reveal>
             <div class="hp-win" data-mock="lawyer" aria-hidden="true">
               <div class="hp-winbar"><span class="hp-wdots"><i></i><i></i><i></i></span><span class="hp-wcrumb">Espace avocat · Révisions</span></div>
               <div class="hp-winbody">
-                <p class="hp-app-hello">Bonjour Maître Martin</p>
-                <p class="hp-app-sub">Mardi 1er septembre</p>
+                <div class="hp-app-head">
+                  <div>
+                    <p class="hp-app-hello">Bonjour Maître Martin</p>
+                    <p class="hp-app-sub">Mardi 1er septembre</p>
+                  </div>
+                  <span class="hp-app-period">Cette semaine</span>
+                </div>
+                <!-- Aperçu type dashboard : 3 tuiles KPI -->
                 <div class="hp-app-kpis">
-                  <div class="hp-app-kpi"><span class="hp-app-kpi-n">2</span><span class="hp-app-kpi-l">Clients assignés</span></div>
-                  <div class="hp-app-kpi hp-app-kpi--orange"><span class="hp-app-kpi-n" data-lw-pending>2</span><span class="hp-app-kpi-l">En attente de révision</span></div>
+                  <div class="hp-app-kpi">
+                    <span class="hp-app-kpi-top"><span class="hp-app-kpi-ico hp-app-kpi-ico--clients"></span>Clients assignés</span>
+                    <span class="hp-app-kpi-row"><span class="hp-app-kpi-n">2</span><span class="hp-app-kpi-delta hp-app-kpi-delta--up">+1</span></span>
+                    <span class="hp-app-kpi-spark"><i style="--h: 35%"></i><i style="--h: 50%"></i><i style="--h: 40%"></i><i style="--h: 65%"></i><i style="--h: 55%"></i><i style="--h: 80%"></i><i style="--h: 100%"></i></span>
+                  </div>
+                  <div class="hp-app-kpi hp-app-kpi--orange">
+                    <span class="hp-app-kpi-top"><span class="hp-app-kpi-ico hp-app-kpi-ico--pending"></span>En attente</span>
+                    <span class="hp-app-kpi-row"><span class="hp-app-kpi-n" data-lw-pending>2</span><span class="hp-app-kpi-meta">délai moy. 24 h</span></span>
+                    <span class="hp-app-kpi-bar"><span></span></span>
+                    <span class="hp-app-kpi-foot" data-lw-done>3 / 5 traités</span>
+                  </div>
+                  <div class="hp-app-kpi hp-app-kpi--purple">
+                    <span class="hp-app-kpi-top"><span class="hp-app-kpi-ico hp-app-kpi-ico--hours"></span>Heures du mois</span>
+                    <span class="hp-app-kpi-row"><span class="hp-app-kpi-n">6,5<small>h</small></span><span class="hp-app-kpi-meta">sur 10 h</span></span>
+                    <span class="hp-app-kpi-bar"><span></span></span>
+                    <span class="hp-app-kpi-foot">3,5 h restantes</span>
+                  </div>
                 </div>
                 <span class="hp-list-h">Contrats en relecture</span>
                 <div class="hp-rows">
@@ -285,9 +385,9 @@
             <h4 class="hp-h3b">Envoyez à signer, suivez chaque signataire.</h4>
             <p class="hp-p">Signature électronique conforme eIDAS intégrée : le contrat signé part automatiquement dans votre Contrathèque.</p>
             <ul class="hp-bars">
-              <li>Signature conforme eIDAS, valeur juridique</li>
-              <li>Statut de chaque signataire en temps réel</li>
-              <li>Archivage automatique une fois signé</li>
+              <li>Signature <strong>conforme eIDAS</strong>, valeur juridique</li>
+              <li>Statut de chaque signataire <strong>en temps réel</strong></li>
+              <li><strong>Archivage automatique</strong> une fois signé</li>
             </ul>
           </div>
           <div class="hp-feature-visual" data-reveal>
@@ -296,24 +396,38 @@
               <div class="hp-winbody">
                 <div class="hp-sign-head">
                   <div>
-                    <p class="hp-app-hello" data-sg-title>En cours de signature</p>
-                    <p class="hp-app-sub">2 signataires · envoyé le 29/08</p>
+                    <p class="hp-app-hello" data-sg-title>Prêt à envoyer</p>
                   </div>
                   <span class="hp-sign-count"><span data-sg-count>1</span>/2</span>
                 </div>
-                <div class="hp-progress hp-progress--sign"><span data-sg-bar></span></div>
-                <div class="hp-rows">
-                  <div class="hp-row hp-row--person">
+
+                <!-- Circuit du document (js/main.js : initSign) : il part de
+                     l'expéditeur, est signé chez le destinataire (Lottie
+                     sign-handwritten), puis revient signé à l'expéditeur. -->
+                <div class="hp-sign-lane" data-sg-lane>
+                  <div class="hp-sign-party" data-sg-from>
                     <span class="hp-avatar hp-avatar--teal">JD</span>
-                    <div class="hp-row-who"><span class="hp-row-t">Jean Dupont</span><span class="hp-row-s">Franchiseur</span></div>
-                    <span class="hp-pill hp-pill--green">Signé</span>
+                    <span class="hp-sign-who"><span class="hp-row-t">Jean Dupont</span><span class="hp-row-s" data-sg-from-note>Franchiseur · a signé</span></span>
                   </div>
-                  <div class="hp-row hp-row--person">
-                    <span class="hp-avatar hp-avatar--orange">SM</span>
-                    <div class="hp-row-who"><span class="hp-row-t">Studio Mila</span><span class="hp-row-s">Franchisé</span></div>
+
+                  <div class="hp-sign-track">
+                    <span class="hp-sign-mail">Envoi par e-mail</span>
+                    <span class="hp-sign-doc" data-sg-doc>
+                      <span class="hp-sign-doc-lines"><i></i><i></i><i></i><i></i></span>
+                      <span class="hp-sign-seal"></span>
+                    </span>
+                  </div>
+
+                  <div class="hp-sign-party" data-sg-to>
+                    <span class="hp-sign-avatar">
+                      <span class="hp-avatar hp-avatar--orange">CP</span>
+                      <span class="hp-leo-tile hp-leo-tile--sm hp-sign-pen"><span class="hp-leo-glyph"></span><span class="hp-leo-lottie" data-sg-lottie></span></span>
+                    </span>
+                    <span class="hp-sign-who"><span class="hp-row-t">Crêperie Pivolane</span><span class="hp-row-s">contact@pivolane.fr</span></span>
                     <span class="hp-pill hp-pill--orange" data-sg-status>En attente</span>
                   </div>
                 </div>
+
                 <div class="hp-sign-foot">
                   <span class="hp-pill hp-pill--teal">Signature conforme eIDAS</span>
                   <span class="hp-pill hp-pill--dark" data-sg-archived>Archivé dans la Contrathèque</span>
@@ -335,9 +449,9 @@
             <h4 class="hp-h3b">Suivez l'avancée de chaque contrat en un coup d'œil.</h4>
             <p class="hp-p">Relecture interne, relecture avocat, signature, signé : en un clic voyez ce qui bloque le parcours juridique de vos contrats.</p>
             <ul class="hp-bars">
-              <li>Statut de chaque contrat en temps réel</li>
-              <li>Vue tableau ou liste, recherche instantanée</li>
-              <li>Plus aucun contrat oublié en route et des temps de signature réduits</li>
+              <li>Statut de chaque contrat <strong>en temps réel</strong></li>
+              <li>Vue tableau ou liste, <strong>recherche instantanée</strong></li>
+              <li><strong>Plus aucun contrat oublié</strong> en route et des temps de signature réduits</li>
             </ul>
           </div>
           <div class="hp-feature-visual" data-reveal>
@@ -355,7 +469,7 @@
                 </div>
                 <div class="hp-kb-col" data-kb-col="2">
                   <div class="hp-kb-h"><span class="hp-pill hp-pill--teal">Signature</span><span class="hp-kb-n">1</span></div>
-                  <div class="hp-kb-card"><span class="hp-tag">Contrat</span><span class="hp-kb-t">Studio Mila</span><span class="hp-kb-d">En attente</span></div>
+                  <div class="hp-kb-card"><span class="hp-tag">Contrat</span><span class="hp-kb-t">Crêperie Pivolane</span><span class="hp-kb-d">En attente</span></div>
                 </div>
                 <div class="hp-kb-col" data-kb-col="3">
                   <div class="hp-kb-h"><span class="hp-pill hp-pill--green">Signé</span><span class="hp-kb-n">1</span></div>
@@ -378,9 +492,9 @@
             <h4 class="hp-h3b">Que vous ayez 10 ou 100 franchisés, importez tous vos contrats au même endroit.</h4>
             <p class="hp-p">Importez vos contrats existants et ne perdez plus de temps à chercher vos prochains renouvellements : les dates clés sont extraites automatiquement, et Legaleo vous alerte avant chaque renouvellement.</p>
             <ul class="hp-bars">
-              <li>Import de vos contrats existants</li>
-              <li>Filtrez par vues « expiré », « à renouveler », etc.</li>
-              <li>Grâce à une recherche intelligente, retrouvez tous vos contrats en deux clics</li>
+              <li><strong>Import</strong> de vos contrats existants</li>
+              <li>Filtrez par vues <strong>« expiré », « à renouveler »</strong>, etc.</li>
+              <li>Grâce à une recherche intelligente, retrouvez tous vos contrats <strong>en deux clics</strong></li>
             </ul>
           </div>
           <div class="hp-feature-visual" data-reveal>
@@ -389,8 +503,7 @@
               <div class="hp-winbody">
                 <div class="hp-lib-tools">
                   <span class="hp-lib-search"><span data-lib-query></span><span class="hp-caret"></span></span>
-                  <span class="hp-lib-btn hp-lib-btn--primary">Import en masse</span>
-                  <span class="hp-lib-btn">+ Uploader un contrat</span>
+                  <span class="hp-lib-btn hp-lib-btn--primary">Importer des contrats</span>
                 </div>
                 <div class="hp-lib-views">
                   <span class="hp-lib-view is-active" data-lib-view="all">Tous</span>
@@ -422,38 +535,38 @@
           <h2 class="hp-h2 hp-h2-left">Gardez votre avocat, <em class="hp-em">ou prenez-en un dédié chez Legaleo.</em></h2>
           <p class="hp-lede2">Le franchiseur garde toute la flexibilité de choisir : intégrer son propre avocat sur la plateforme, ou travailler avec un avocat dédié au droit de la franchise chez Legaleo. Vous payez au crédit, sans facture surprise.</p>
 
-          <div class="hp-credit">
+          <!-- Masqué pour l'instant (pertinence à confirmer) : retirer
+               l'attribut hidden pour le réafficher. -->
+          <div class="hp-credit" hidden>
             <div class="hp-credit-eq">
               <span class="hp-credit-big">1 crédit</span>
               <span class="hp-credit-sign">=</span>
               <span class="hp-credit-big">1 heure</span>
             </div>
             <p class="hp-credit-p">de conseil avec un avocat dédié. Vous voyez vos crédits restants en haut de la plateforme.</p>
-            <div class="hp-credit-meter" aria-hidden="true">
-              <span class="hp-credit-meter-l">Crédits avocat</span>
-              <span class="hp-credit-cells"><i class="is-on"></i><i class="is-on"></i><i></i><i></i><i></i></span>
-              <span class="hp-credit-meter-v">2h</span>
-            </div>
           </div>
         </div>
 
-        <div class="hp-avocat-opts" role="radiogroup" aria-label="Choisissez votre avocat">
-          <button type="button" class="hp-opt is-selected" role="radio" aria-checked="true" data-reveal>
-            <span class="hp-opt-radio" aria-hidden="true"></span>
-            <span class="hp-opt-body">
-              <span class="hp-opt-h">Votre avocat habituel</span>
-              <span class="hp-opt-p">Invitez l'avocat qui connaît déjà votre réseau. Il relit et valide vos contrats dans son propre espace, en lien direct avec vous.</span>
+        <!-- Deux solutions possibles, présentées côte à côte (pas un choix
+             à cocher) -->
+        <div class="hp-avocat-opts">
+          <article class="hp-opt" data-reveal>
+            <span class="hp-opt-ico hp-opt-ico--own" aria-hidden="true"></span>
+            <div class="hp-opt-body">
+              <h3 class="hp-opt-h">Votre avocat habituel</h3>
+              <p class="hp-opt-p">Invitez l'avocat qui connaît déjà votre réseau. Il relit et valide vos contrats dans son propre espace, en lien direct avec vous.</p>
               <span class="hp-opt-tag">Invitation en un e-mail</span>
-            </span>
-          </button>
-          <button type="button" class="hp-opt" role="radio" aria-checked="false" data-reveal>
-            <span class="hp-opt-radio" aria-hidden="true"></span>
-            <span class="hp-opt-body">
-              <span class="hp-opt-h">Un avocat Legaleo dédié</span>
-              <span class="hp-opt-p">Pas d'avocat sous la main ? Nous vous mettons en relation avec un avocat dédié au droit de la franchise. Payez à l'heure, en crédits.</span>
+            </div>
+          </article>
+          <span class="hp-opt-or" aria-hidden="true">ou</span>
+          <article class="hp-opt" data-reveal>
+            <span class="hp-opt-ico hp-opt-ico--legaleo" aria-hidden="true"></span>
+            <div class="hp-opt-body">
+              <h3 class="hp-opt-h">Un avocat Legaleo dédié</h3>
+              <p class="hp-opt-p">Pas d'avocat sous la main ? Nous vous mettons en relation avec un avocat dédié au droit de la franchise. Payez à l'heure, en crédits.</p>
               <span class="hp-opt-tag">Spécialiste du droit de la franchise</span>
-            </span>
-          </button>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -463,7 +576,7 @@
       <div class="hp-wrap">
         <div class="hp-sechead-center" data-reveal>
           <span class="hp-kicker">Pourquoi Legaleo</span>
-          <h2 class="hp-h2">3 raisons de <em class="hp-em">passer dans une autre dimension juridique pour votre réseau.</em></h2>
+          <h2 class="hp-h2">4 raisons de <em class="hp-em">passer dans une autre dimension juridique pour votre réseau.</em></h2>
         </div>
 
         <div class="hp-bento">
@@ -477,13 +590,15 @@
             <h3 class="hp-bcard-h">Coûts juridiques maîtrisés</h3>
             <p class="hp-bcard-p">Un abonnement mensuel plutôt qu'une facture d'avocat à chaque contrat : vos coûts juridiques deviennent prévisibles.</p>
             <div class="hp-costchart" aria-hidden="true">
-              <div class="hp-costchart-row">
+              <div class="hp-costchart-row hp-costchart-row--spiky">
                 <span class="hp-costchart-l">Facture à l'acte</span>
                 <span class="hp-costchart-bars hp-costchart-bars--spiky"><i style="--h:30%"></i><i style="--h:85%"></i><i style="--h:20%"></i><i style="--h:100%"></i><i style="--h:45%"></i><i style="--h:70%"></i></span>
+                <span class="hp-costchart-x"><b>J</b><b>F</b><b>M</b><b>A</b><b>M</b><b>J</b></span>
               </div>
-              <div class="hp-costchart-row">
+              <div class="hp-costchart-row hp-costchart-row--flat">
                 <span class="hp-costchart-l">Abonnement Legaleo</span>
                 <span class="hp-costchart-bars hp-costchart-bars--flat"><i style="--h:40%"></i><i style="--h:40%"></i><i style="--h:40%"></i><i style="--h:40%"></i><i style="--h:40%"></i><i style="--h:40%"></i></span>
+                <span class="hp-costchart-x"><b>J</b><b>F</b><b>M</b><b>A</b><b>M</b><b>J</b></span>
               </div>
             </div>
           </article>
@@ -497,7 +612,7 @@
           </article>
 
           <article class="hp-bcard hp-bcard--leo" data-reveal>
-            <span class="hp-leo-tile" aria-hidden="true"><span class="hp-leo-glyph"></span></span>
+            <span class="hp-leo-tile" aria-hidden="true"><span class="hp-leo-glyph"></span><span class="hp-leo-lottie" data-leo-anim="idle.json"></span></span>
             <div>
               <h3 class="hp-bcard-h">Plus de guesswork grâce à Leo <span class="hp-beta">Bêta</span></h3>
               <p class="hp-bcard-p">Leo répond à vos questions juridiques du quotidien. Chaque point qui engage votre réseau reste validé par un avocat dédié.</p>
@@ -573,7 +688,7 @@
         <!-- Chat démo (js/main.js : initLeoChat) -->
         <div class="hp-chat" data-reveal>
           <div class="hp-chat-head">
-            <span class="hp-leo-tile hp-leo-tile--sm" aria-hidden="true"><span class="hp-leo-glyph"></span></span>
+            <span class="hp-leo-tile hp-leo-tile--sm" aria-hidden="true"><span class="hp-leo-glyph"></span><span class="hp-leo-lottie" id="hp-chat-leo" data-leo-anim="idle.json"></span></span>
             <span class="hp-chat-name">Leo <span class="hp-chat-role">Assistant IA</span></span>
             <span class="hp-beta hp-beta--dark">Bêta</span>
           </div>
@@ -638,6 +753,13 @@
 
   </main>
 
+  <!-- GSAP (animation de l'écosystème du hero). Si le CDN ne répond pas,
+       main.js affiche l'écosystème à l'arrêt. -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <!-- Lottie (pictos Leo animés : écosystème, bento, chat ; leo-anims/). Build
+       canvas, comme la page Leo : le renderer SVG laisse un filet clair entre
+       les paths qui se touchent. Sans lui, le picto statique reste affiché. -->
+  <script src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie_canvas.min.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

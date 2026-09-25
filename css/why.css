@@ -85,15 +85,23 @@
   grid-column: 2;
   grid-row: 1 / span 2;
   display: grid;
-  gap: 16px;
-  border-radius: var(--radius-md);
-  padding: 18px;
-  background-color: var(--color-beige);
+  gap: 10px;
 }
 
+/* Un panneau teinté par série, pour bien les distinguer */
 .hp-costchart-row {
   display: grid;
   gap: 8px;
+  border-radius: var(--radius-md);
+  padding: 14px 16px 10px;
+}
+
+.hp-costchart-row--spiky {
+  background-color: #fdf1ec;
+}
+
+.hp-costchart-row--flat {
+  background-color: var(--color-teal-bg);
 }
 
 .hp-costchart-l {
@@ -102,11 +110,31 @@
   font-weight: 700;
 }
 
+/* Repères légers : ligne de base marquée, grille discrète en haut et à
+   mi-hauteur (deux dégradés d'1px répétés tous les 50 %). */
 .hp-costchart-bars {
   display: flex;
   align-items: flex-end;
   gap: 6px;
   height: 56px;
+  border-bottom: 1px solid rgb(31 18 14 / 0.18);
+  background: linear-gradient(to bottom, rgb(31 18 14 / 0.07) 1px, transparent 1px) 0 0 / 100% 50%;
+}
+
+/* Axe des mois, dans chaque panneau : mêmes colonnes que les barres
+   (flex: 1, même gap) */
+.hp-costchart-x {
+  display: flex;
+  gap: 6px;
+  margin-top: -3px;
+}
+
+.hp-costchart-x b {
+  flex: 1;
+  color: var(--color-faint);
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
 }
 
 .hp-costchart-bars i {
@@ -169,7 +197,7 @@
 /* Carte Leo */
 .hp-bcard--leo {
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   gap: 20px;
   border-color: transparent;
   color: var(--color-white);
@@ -225,5 +253,6 @@
 
   .hp-bcard--leo {
     flex-direction: column;
+    align-items: flex-start;
   }
 }

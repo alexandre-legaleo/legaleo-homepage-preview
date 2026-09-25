@@ -234,18 +234,44 @@ body {
   background: var(--color-teal-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23087f83' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 12px no-repeat;
 }
 
+/* Points clés d'une feature : encadrés, pour se détacher du paragraphe
+   (.hp-p) qui les précède, en liste à puces. */
 .hp-bars {
   display: grid;
-  gap: 12px;
-  margin-top: 24px;
+  gap: 4px;
+  margin-top: 26px;
+  border: 1px solid #cdf3f2;
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  background-color: var(--color-teal-bg);
 }
 
 .hp-bars li {
+  position: relative;
   padding-left: 18px;
-  border-left: 2px solid var(--color-cyan);
   font-size: 15px;
   font-weight: 500;
   line-height: 1.5;
+}
+
+/* Expressions clés mises en avant dans chaque point */
+.hp-bars strong {
+  color: var(--color-black);
+  font-weight: 800;
+}
+
+/* Puce ronde, centrée sur la première ligne (0.75em = moitié de la
+   hauteur de ligne 1.5) */
+.hp-bars li::before {
+  content: "";
+  position: absolute;
+  top: 0.75em;
+  left: 2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-teal);
+  translate: 0 -50%;
 }
 
 /* Pastilles / tags réutilisés par les mockups */
@@ -293,6 +319,7 @@ body {
 }
 
 .hp-leo-tile {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -301,6 +328,21 @@ body {
   height: 56px;
   border-radius: calc(56px * 7 / 34);
   background-color: var(--color-leo-badge);
+}
+
+/* Animation Lottie de Leo (js/main.js : leoAnims), posée sur le picto
+   statique qu'elle remplace une fois chargée (.has-lottie sur le parent).
+   Jamais en display: none : lottie mesure son conteneur au chargement
+   (canvas 0 × 0 sinon). Encart de 18 % = 64 % du badge, même rapport que
+   .lb-fanim sur la page Leo (56px, 10px de padding). Le parent doit être
+   positionné. */
+.hp-leo-lottie {
+  position: absolute;
+  inset: 18%;
+}
+
+.has-lottie > .hp-leo-glyph {
+  visibility: hidden;
 }
 
 .hp-leo-tile .hp-leo-glyph {
