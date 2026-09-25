@@ -1,8 +1,8 @@
 .hp-audiences {
   color: var(--color-white);
   background:
-    radial-gradient(60% 80% at 100% 0%, rgb(252 157 31 / 0.18), transparent 70%),
-    var(--color-brick);
+    radial-gradient(60% 80% at 100% 0%, rgb(98 231 235 / 0.16), transparent 70%),
+    var(--color-teal-deep);
 }
 
 .hp-audiences .hp-h2 {
