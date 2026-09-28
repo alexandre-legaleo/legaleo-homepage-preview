@@ -36,52 +36,230 @@
   font-size: 10.5px;
 }
 
-/* Mockups « fenêtre d'appli » des blocs de la plateforme. Les états animés
+/* Mockups « écran de la plateforme ». Même gabarit que DashboardV2Shell
+   de legaleo-ai, à échelle réduite : barre du haut + rail latéral (menu
+   replié, icônes seules) en teal plein, formant un « L » autour d'une zone
+   de contenu off-white arrondie à la jonction. L'espace avocat utilise la
+   variante sombre (.hp-win--dark), comme sur la plateforme. Les états animés
    (classes is-*) sont posés par js/main.js quand le mockup entre à l'écran. */
 
 .hp-win {
+  --shell: #087f83;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  grid-template-rows: auto auto 1fr;
   overflow: hidden;
-  border: 1px solid var(--color-border);
   border-radius: var(--app-radius);
-  background-color: var(--color-white);
+  background-color: var(--shell);
   box-shadow: var(--shadow-float);
   font-size: 11.5px;
 }
 
-.hp-winbar {
+.hp-win--dark {
+  --shell: var(--color-black);
+}
+
+/* Icônes lucide (mêmes que SideMenu / HeaderDashboardV2), en masque pour
+   hériter de `color`. */
+.hp-shell-i {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  background-color: currentColor;
+  -webkit-mask: var(--i) center / contain no-repeat;
+  mask: var(--i) center / contain no-repeat;
+}
+
+.hp-shell-i[data-i="plus"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='M12 5v14'/%3E%3C/svg%3E"); }
+.hp-shell-i[data-i="layout-dashboard"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='7' height='9' x='3' y='3' rx='1'/%3E%3Crect width='7' height='5' x='14' y='3' rx='1'/%3E%3Crect width='7' height='9' x='14' y='12' rx='1'/%3E%3Crect width='7' height='5' x='3' y='16' rx='1'/%3E%3C/svg%3E"); }
+.hp-shell-i[data-i="file-text"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z'/%3E%3Cpath d='M14 2v4a2 2 0 0 0 2 2h4'/%3E%3Cpath d='M10 9H8'/%3E%3Cpath d='M16 13H8'/%3E%3Cpath d='M16 17H8'/%3E%3C/svg%3E"); }
+.hp-shell-i[data-i="archive"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='20' height='5' x='2' y='3' rx='1'/%3E%3Cpath d='M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8'/%3E%3Cpath d='M10 12h4'/%3E%3C/svg%3E"); }
+.hp-shell-i[data-i="users"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2'/%3E%3Cpath d='M16 3.128a4 4 0 0 1 0 7.744'/%3E%3Cpath d='M22 21v-2a4 4 0 0 0-3-3.87'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3C/svg%3E"); }
+.hp-shell-i[data-i="files"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 2a2 2 0 0 1 1.414.586l4 4A2 2 0 0 1 21 8v7a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z'/%3E%3Cpath d='M15 2v4a2 2 0 0 0 2 2h4'/%3E%3Cpath d='M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1'/%3E%3C/svg%3E"); }
+.hp-shell-i[data-i="sparkles"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z'/%3E%3Cpath d='M20 2v4'/%3E%3Cpath d='M22 4h-4'/%3E%3Ccircle cx='4' cy='20' r='2'/%3E%3C/svg%3E"); }
+.hp-shell-i[data-i="clipboard-check"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='8' height='4' x='8' y='2' rx='1' ry='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3Cpath d='m9 14 2 2 4-4'/%3E%3C/svg%3E"); }
+.hp-shell-i[data-i="search"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m21 21-4.34-4.34'/%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3C/svg%3E"); }
+.hp-shell-i[data-i="bell"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.268 21a2 2 0 0 0 3.464 0'/%3E%3Cpath d='M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326'/%3E%3C/svg%3E"); }
+.hp-shell-i[data-i="hourglass"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 22h14'/%3E%3Cpath d='M5 2h14'/%3E%3Cpath d='M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22'/%3E%3Cpath d='M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2'/%3E%3C/svg%3E"); }
+.hp-shell-i[data-i="leo"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M12 2.5v6M12 15.5v6M2.5 12h6M15.5 12h6M5.3 5.3l4.2 4.2M14.5 14.5l4.2 4.2M18.7 5.3l-4.2 4.2M9.5 14.5l-4.2 4.2'/%3E%3C/svg%3E"); }
+
+/* Barre du haut (Topbar variant green, sans ombre) */
+.hp-shell-top {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px 8px 8px;
+  color: #fff;
+}
+
+.hp-shell-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-height: 42px;
-  padding: 8px 14px;
-  border-bottom: 1px solid var(--color-border);
+  gap: 7px;
+  min-width: 0;
+  font-size: 10.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Logo du réseau (LogoDashboard affiche celui de l'enseigne) */
+.hp-shell-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  color: var(--shell);
+  background-color: #fff;
+  font-size: 8.5px;
+  font-weight: 800;
+}
+
+/* OmniSearch : champ blanc, coins 5px */
+.hp-shell-search {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  max-width: 230px;
+  margin-inline: auto;
+  overflow: hidden;
+  border-radius: var(--app-radius-btn);
+  padding: 5px 8px;
+  color: #8a9a9a;
+  background-color: #fff;
+  font-size: 9.5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.hp-shell-search .hp-shell-i {
+  width: 11px;
+  height: 11px;
+}
+
+.hp-shell-credits {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: var(--app-radius-btn);
+  padding: 4px 7px;
+  background-color: rgb(98 231 235 / 0.2);
+  font-size: 9.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.hp-shell-credits .hp-shell-i {
+  width: 11px;
+  height: 11px;
+  color: var(--color-cyan);
+}
+
+.hp-shell-credits > span {
+  display: none;
+}
+
+.hp-shell-bell {
+  width: 14px;
+  height: 14px;
+}
+
+.hp-shell-me {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: var(--color-black);
+  background-color: var(--color-cyan-light);
+  font-size: 8.5px;
+  font-weight: 800;
+}
+
+.hp-win--dark .hp-shell-credits {
+  display: none;
+}
+
+/* Rail latéral : SideMenu replié (CTA « + » cyan, items blancs à 75 %,
+   item actif sur fond #d9fdfb33) */
+.hp-shell-rail {
+  display: flex;
+  grid-row: 2 / 4;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 0 12px;
+  color: rgb(255 255 255 / 0.75);
+}
+
+/* L'icône est portée par ::before (masque) : l'élément lui-même garde un
+   fond libre pour l'état actif et le CTA. */
+.hp-shell-rail > .hp-shell-i {
+  position: relative;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+  background: none;
+  -webkit-mask: none;
+  mask: none;
+}
+
+.hp-shell-rail > .hp-shell-i::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  background-color: currentColor;
+  -webkit-mask: var(--i) center / contain no-repeat;
+  mask: var(--i) center / contain no-repeat;
+}
+
+.hp-shell-rail > .hp-shell-i.is-active {
+  color: #fff;
+  background-color: #d9fdfb33;
+}
+
+.hp-shell-rail > .hp-shell-cta {
+  margin-bottom: 6px;
+  color: var(--color-black);
+  background-color: var(--color-cyan);
+}
+
+/* Zone de contenu : off-white, coin arrondi à la jonction barre/rail
+   (DashboardV2Shell .content::before) */
+.hp-shell-head {
+  display: flex;
+  grid-column: 2;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-top-left-radius: 10px;
+  padding: 16px 18px 0;
   background-color: var(--app-soft);
 }
 
-.hp-wdots {
-  display: flex;
-  gap: 5px;
-}
-
-.hp-wdots i {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--color-border);
-}
-
-.hp-wcrumb {
-  flex: 1;
-  min-width: 0;
+.hp-shell-title {
   overflow: hidden;
-  color: var(--color-muted);
-  font-weight: 600;
+  color: var(--color-black);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .hp-winbody {
-  padding: 18px;
+  grid-column: 2;
+  min-width: 0;
+  padding: 14px 18px 18px;
+  background-color: var(--app-soft);
 }
 
 .hp-mini-kicker {
@@ -921,6 +1099,12 @@
 @media (max-width: 640px) {
   .hp-win {
     font-size: 11px;
+  }
+
+  /* Trop étroit pour un champ lisible : la barre garde logo, crédits,
+     cloche et compte. */
+  .hp-shell-search {
+    visibility: hidden;
   }
 
   .hp-winbody {
