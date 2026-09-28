@@ -69,7 +69,6 @@
   border-radius: var(--radius-lg);
   padding: 26px;
   background-color: var(--color-white);
-  box-shadow: var(--shadow-card);
 }
 
 .hp-opt-ico {

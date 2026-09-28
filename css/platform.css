@@ -135,7 +135,7 @@
   position: absolute;
   inset: -22px;
   z-index: -1;
-  border-radius: 32px;
+  border-radius: var(--radius-xl);
   background: linear-gradient(200deg, #fbf7ef, #f5eee1);
 }
 
@@ -188,6 +188,6 @@
 
   .hp-feature-visual::before {
     inset: -10px;
-    border-radius: 22px;
+    border-radius: var(--radius-lg);
   }
 }

@@ -103,18 +103,11 @@
   border-radius: var(--radius-xl);
   padding: 14px 14px 36px;
   background-color: var(--color-white);
-  box-shadow: var(--shadow-float);
-  transition: transform 0.35s var(--ease-out);
 }
 
 /* Tout sauf le mini-visuel reprend le retrait de 36px de la carte. */
 .hp-stade > :not(.hp-sv) {
   margin-inline: 22px;
-}
-
-/* Ombre permanente (voir .hp-stade) ; le survol ne fait que soulever. */
-.hp-stade:hover {
-  transform: translateY(-4px);
 }
 
 /* Lueur qui suit le pointeur (--mx / --my posés par initStades). */
@@ -261,7 +254,8 @@
   gap: 18px;
   height: 212px;
   overflow: hidden;
-  border-radius: 20px;
+  /* Concentrique avec la carte (--radius-xl, 14px de retrait). */
+  border-radius: 10px;
   padding: 22px;
   font-size: 11.5px;
   line-height: 1.35;

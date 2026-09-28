@@ -13,12 +13,12 @@
   border-radius: var(--radius-xl);
   padding: 32px;
   background-color: var(--color-white);
-  transition: transform 0.35s var(--ease-out), box-shadow 0.35s ease;
+  transition: border-color 0.3s ease;
 }
 
+/* Survol à plat (bordure seule), comme les cartes de la plateforme. */
 .hp-bcard:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-card);
+  border-color: rgb(31 18 14 / 0.22);
 }
 
 .hp-bcard--time { grid-column: span 2; }
