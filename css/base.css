@@ -278,17 +278,23 @@ body {
   gap: 5px;
   flex-shrink: 0;
   white-space: nowrap;
+  /* Même dessin que le Pill de la plateforme (legaleo-ai/components/
+     design-system/Pill) : fond teinté + fin contour dérivé du texte. */
+  border: 1px solid color-mix(in srgb, currentColor 15%, transparent);
   border-radius: var(--radius-pill);
-  padding: 3px 9px;
+  padding: 2px 8px;
   font-size: 10.5px;
-  font-weight: 700;
-  transition: background-color 0.35s ease, color 0.35s ease, opacity 0.35s ease, transform 0.35s var(--ease-out);
+  font-weight: 600;
+  transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, opacity 0.35s ease, transform 0.35s var(--ease-out);
 }
 
-.hp-pill--teal { color: var(--color-teal-text); background-color: var(--color-cyan-light); }
-.hp-pill--orange { color: var(--color-orange-text); background-color: var(--color-orange-bg); }
-.hp-pill--green { color: var(--color-green-text); background-color: var(--color-green-bg); }
-.hp-pill--purple { color: var(--color-purple-text); background-color: var(--color-purple-bg); }
+/* Couleurs des statuts de contrat de la plateforme (Pill.module.css,
+   utils/functions/contractStatus.ts : signature en bleu, signé #24856d). */
+.hp-pill--teal { color: #087f83; background-color: #e8f5f5; }
+.hp-pill--orange { color: #f57c00; background-color: #fff4e6; }
+.hp-pill--green { color: #24856d; background-color: color-mix(in srgb, #24856d 10%, white); }
+.hp-pill--blue { color: #00a5eb; background-color: #e5f3fe; }
+.hp-pill--purple { color: #8c3ddb; background-color: #f6e9fd; }
 .hp-pill--dark { color: var(--color-white); background-color: var(--color-black); }
 
 .hp-avatar {

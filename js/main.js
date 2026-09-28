@@ -822,7 +822,7 @@
       // sign-handwritten.json (~2 s) écrit la signature puis la tient : joué
       // une fois, il reste sur sa dernière frame jusqu'à la fin de l'étape.
       title.textContent = "Signature en cours…";
-      setPill(status, "teal", "Signature…");
+      setPill(status, "blue", "Signature…");
       leoAnims.play(pen, "sign-handwritten.json", { loop: false });
       win.classList.add("is-signing");
       await wait(2300);

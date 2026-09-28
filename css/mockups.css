@@ -1,11 +1,29 @@
+/* ---------- Palette « produit » ----------
+   Les mockups représentent la plateforme : on y redéfinit les tokens
+   chauds de la page (beige, gris-brun) par ceux de legaleo-ai
+   (app/globals.css : --color-gray, --color-off-white, --color-text…).
+   Toutes les règles ci-dessous qui lisent --color-border / --color-muted /
+   --color-faint / --color-white basculent sans être modifiées une à une. */
+.hp-win,
+.hp-float {
+  --color-white: #fff;
+  --color-border: #e3e3e3;
+  --color-muted: #757575;
+  --color-faint: #a3a3a3;
+  --app-soft: #f5f8f8;
+  --app-line: #eef0f0;
+  --app-radius: 10px;
+  --app-radius-btn: 5px;
+}
+
 /* ---------- Cartes flottantes (partagées par les mockups) ---------- */
 .hp-float {
   position: absolute;
   z-index: 2;
   display: flex;
   gap: 10px;
-  border: 1px solid rgb(31 18 14 / 0.06);
-  border-radius: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--app-radius);
   padding: 12px 14px;
   background-color: var(--color-white);
   box-shadow: var(--shadow-float);
@@ -23,8 +41,8 @@
 
 .hp-win {
   overflow: hidden;
-  border: 1px solid rgb(31 18 14 / 0.08);
-  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--app-radius);
   background-color: var(--color-white);
   box-shadow: var(--shadow-float);
   font-size: 11.5px;
@@ -37,7 +55,7 @@
   min-height: 42px;
   padding: 8px 14px;
   border-bottom: 1px solid var(--color-border);
-  background-color: #faf8f3;
+  background-color: var(--app-soft);
 }
 
 .hp-wdots {
@@ -49,7 +67,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #e2ddd2;
+  background-color: var(--color-border);
 }
 
 .hp-wcrumb {
@@ -132,7 +150,7 @@
   height: 7px;
   margin-top: 9px;
   border-radius: var(--radius-pill);
-  background-color: #efeae0;
+  background-color: var(--app-line);
 }
 
 .hp-line--short {
@@ -238,7 +256,7 @@
   gap: 8px;
   align-self: start;
   border: 1px solid var(--color-border);
-  border-radius: 12px;
+  border-radius: var(--app-radius);
   padding: 8px;
   opacity: 0;
   transform: translateX(10px);
@@ -252,7 +270,7 @@
 
 .hp-ed-reco-h {
   margin: -8px -8px 0;
-  border-radius: 11px 11px 0 0;
+  border-radius: 9px 9px 0 0;
   padding: 8px 10px;
   color: var(--color-white);
   background-color: var(--color-teal);
@@ -275,7 +293,7 @@
 }
 
 .hp-ed-btn {
-  border-radius: 8px;
+  border-radius: var(--app-radius-btn);
   padding: 8px;
   color: var(--color-white);
   background-color: var(--color-black);
@@ -303,9 +321,9 @@
 }
 
 .hp-app-hello {
-  font-family: var(--font-serif);
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
 }
 
 .hp-app-sub {
@@ -317,10 +335,10 @@
 .hp-app-period {
   flex-shrink: 0;
   border: 1px solid var(--color-border);
-  border-radius: 7px;
+  border-radius: var(--app-radius-btn);
   padding: 4px 8px 4px 22px;
   color: var(--color-muted);
-  background: #faf8f3 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236f6757' stroke-width='2.2' stroke-linecap='round'%3E%3Crect x='3.5' y='5' width='17' height='15.5' rx='2.5'/%3E%3Cpath d='M3.5 10h17M8 3v4M16 3v4'/%3E%3C/svg%3E") 7px center / 11px no-repeat;
+  background: var(--app-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23757575' stroke-width='2.2' stroke-linecap='round'%3E%3Crect x='3.5' y='5' width='17' height='15.5' rx='2.5'/%3E%3Cpath d='M3.5 10h17M8 3v4M16 3v4'/%3E%3C/svg%3E") 7px center / 11px no-repeat;
   font-size: 10px;
   font-weight: 700;
 }
@@ -342,10 +360,9 @@
   gap: 8px;
   min-width: 0;
   border: 1px solid var(--color-border);
-  border-radius: 12px;
+  border-radius: var(--app-radius);
   padding: 10px 11px 11px;
   background-color: var(--color-white);
-  box-shadow: 0 1px 2px rgb(31 18 14 / 0.04), 0 6px 14px -8px rgb(31 18 14 / 0.12);
 }
 
 .hp-app-kpi--orange {
@@ -391,9 +408,9 @@
 
 .hp-app-kpi-n {
   color: var(--color-black);
-  font-family: var(--font-serif);
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
@@ -507,9 +524,9 @@
 
 .hp-sign-count {
   color: var(--color-teal);
-  font-family: var(--font-serif);
-  font-size: 22px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
 }
 
@@ -528,7 +545,7 @@
   gap: 7px;
   min-width: 0;
   border: 1px solid var(--color-border);
-  border-radius: 12px;
+  border-radius: var(--app-radius);
   padding: 14px 10px 12px;
   background-color: var(--color-white);
   text-align: center;
@@ -619,7 +636,7 @@
   left: 50%;
   padding-left: 13px;
   color: var(--color-faint);
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239a948a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='14' rx='2.5'/%3E%3Cpath d='m3.5 6.5 8.5 6.5 8.5-6.5'/%3E%3C/svg%3E") 0 center / 10px no-repeat;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a3a3a3' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='14' rx='2.5'/%3E%3Cpath d='m3.5 6.5 8.5 6.5 8.5-6.5'/%3E%3C/svg%3E") 0 center / 10px no-repeat;
   font-size: 9px;
   font-weight: 700;
   white-space: nowrap;
@@ -779,9 +796,9 @@
   align-items: center;
   min-height: 30px;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: var(--app-radius-btn);
   padding: 6px 10px 6px 28px;
-  background: #faf8f3 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239a948a' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='6.5'/%3E%3Cpath d='m20 20-4.2-4.2'/%3E%3C/svg%3E") 9px center / 13px no-repeat;
+  background: var(--app-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a3a3a3' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='6.5'/%3E%3Cpath d='m20 20-4.2-4.2'/%3E%3C/svg%3E") 9px center / 13px no-repeat;
   font-weight: 600;
 }
 
@@ -809,7 +826,7 @@
 
 .hp-lib-btn {
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: var(--app-radius-btn);
   padding: 7px 10px;
   font-size: 10.5px;
   font-weight: 700;
