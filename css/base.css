@@ -63,38 +63,35 @@ body {
   transform: scale(0.97);
 }
 
-.hp-btn-primary {
-  color: var(--color-white);
-  background-color: var(--color-teal);
+/* CTA principal : fond cyan + texte foncé, comme le .button.blue de
+   www.legaleo.ai et le Button solid/primary de la plateforme (le cyan est
+   trop clair pour porter du texte, il ne sert que de fond). Survol à plat,
+   légèrement assombri — même color-mix que la plateforme. */
+.hp-btn-primary,
+.hp-btn-cyan {
+  color: var(--color-black);
+  background-color: var(--color-cyan);
 }
 
-.hp-btn-primary:hover {
-  background-color: #076e71;
-  transform: translateY(-1px);
-  box-shadow: 0 10px 24px -10px rgb(8 127 131 / 0.6);
+.hp-btn-primary:hover,
+.hp-btn-cyan:hover {
+  background-color: color-mix(in srgb, var(--color-cyan) 85%, #000 10%);
 }
 
+.hp-btn-cyan {
+  margin-top: 32px;
+}
+
+/* Secondaire : contour foncé (Button outline/secondary de la plateforme). */
 .hp-btn-ghost {
   color: var(--color-black);
   background-color: transparent;
-  border-color: var(--color-border);
+  border-color: rgb(31 18 14 / 0.2);
 }
 
 .hp-btn-ghost:hover {
   border-color: var(--color-black);
-  transform: translateY(-1px);
-}
-
-.hp-btn-cyan {
-  color: var(--color-black);
-  background-color: var(--color-cyan);
-  margin-top: 32px;
-}
-
-.hp-btn-cyan:hover {
-  background-color: #7ff0f3;
-  transform: translateY(-1px);
-  box-shadow: 0 10px 28px -10px rgb(98 231 235 / 0.6);
+  background-color: rgb(31 18 14 / 0.04);
 }
 
 /* Titres de section */
