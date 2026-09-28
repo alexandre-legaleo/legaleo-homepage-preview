@@ -5,32 +5,37 @@
    - .is-reached (définitif) : le verbe se remplit de gauche à droite, le
      trait se dessine ;
    - .is-current (un seul à la fois, le bloc le plus visible) : le numéro
-     passe en pastille pleine.
+     passe en teal.
    L'état « pas encore atteint » n'existe qu'avec JS (.js-reveal) : sans JS,
    les titres s'affichent normalement. */
 .hp-step {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 10px;
   margin-bottom: 28px;
 }
 
+/* Numéro de chapitre : simple chiffre en exposant du verbe, sans pastille.
+   Le « / 05 » reste dans le DOM (lecteurs d'écran) mais n'est pas affiché. */
 .hp-step-n {
   flex-shrink: 0;
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-pill);
-  padding: 6px 12px;
-  color: var(--color-muted);
-  font-size: 13px;
-  font-weight: 800;
+  align-self: flex-start;
+  margin-top: 2px;
+  color: var(--color-faint);
+  font-size: 12px;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.04em;
-  transition: color 0.4s ease, border-color 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
+  letter-spacing: 0.02em;
+  transition: color 0.4s ease;
 }
 
 .hp-step-of {
-  opacity: 0.55;
-  font-weight: 600;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .hp-step-verb {
@@ -54,6 +59,7 @@
   position: relative;
   flex: 1;
   height: 1px;
+  margin-left: 8px;
   background-color: var(--color-border);
 }
 
@@ -61,7 +67,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, var(--color-teal), var(--color-cyan));
+  background-color: var(--color-black);
   transform-origin: left;
   transform: scaleX(0);
   transition: transform 1.1s var(--ease-out) 0.25s;
@@ -72,14 +78,11 @@
 }
 
 .hp-step.is-reached .hp-step-n {
-  border-color: var(--color-teal);
-  color: var(--color-teal);
+  color: var(--color-muted);
 }
 
 .hp-step.is-current .hp-step-n {
-  color: var(--color-white);
-  background-color: var(--color-teal);
-  box-shadow: 0 0 0 5px rgb(8 127 131 / 0.14);
+  color: var(--color-teal);
 }
 
 /* Remplissage du verbe : dégradé en deux moitiés (encre / beige) décalé
@@ -164,17 +167,8 @@
 }
 
 @media (max-width: 640px) {
-  .hp-step {
-    gap: 14px;
-  }
-
   .hp-step-n {
-    padding: 5px 10px;
-    font-size: 12px;
-  }
-
-  .hp-step-of {
-    display: none;
+    font-size: 11px;
   }
 
   .hp-step-verb {
