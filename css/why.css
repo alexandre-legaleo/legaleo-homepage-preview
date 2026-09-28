@@ -27,10 +27,10 @@
 .hp-bcard--leo { grid-column: span 3; --reveal-delay: 160ms; }
 
 .hp-bcard-h {
-  font-family: var(--font-serif);
-  font-size: 22px;
-  font-weight: 500;
-  line-height: 1.25;
+  font-family: var(--font-sans);
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.3;
   text-wrap: balance;
 }
 

@@ -109,9 +109,9 @@
 }
 
 .hp-opt-h {
-  font-family: var(--font-serif);
-  font-size: 22px;
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-size: 19px;
+  font-weight: 700;
 }
 
 .hp-opt-p {
