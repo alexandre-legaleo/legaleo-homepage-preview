@@ -68,6 +68,9 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: 26px;
+  /* La section est en texte clair (fond teal) : la carte blanche remet le
+     texte foncé, sinon les titres .hp-opt-h héritent du blanc. */
+  color: var(--color-black);
   background-color: var(--color-white);
 }
 
