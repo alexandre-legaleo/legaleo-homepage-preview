@@ -5,7 +5,7 @@
   background:
     radial-gradient(32% 42% at 14% 58%, rgb(98 231 235 / 0.2), transparent 70%),
     radial-gradient(32% 42% at 86% 40%, rgb(226 230 47 / 0.14), transparent 70%),
-    var(--color-white);
+    var(--color-beige);
 }
 
 .hp-cta .hp-h2 {
@@ -30,9 +30,9 @@
   position: relative;
   display: block;
   padding: 24px 48px 24px 4px;
-  font-family: var(--font-serif);
-  font-size: 19px;
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 600;
   line-height: 1.35;
   cursor: pointer;
   list-style: none;
@@ -84,6 +84,6 @@
 @media (max-width: 640px) {
   .hp-faq-i summary {
     padding: 20px 40px 20px 0;
-    font-size: 17px;
+    font-size: 16px;
   }
 }

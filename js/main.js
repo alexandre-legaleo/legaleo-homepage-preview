@@ -53,7 +53,8 @@
     }
     const start = performance.now();
     const tick = (now) => {
-      const t = Math.min(1, (now - start) / duration);
+      // Borné à 0 : l'horodatage de la frame peut précéder `start`.
+      const t = Math.min(1, Math.max(0, (now - start) / duration));
       el.textContent = Math.round(to * (1 - Math.pow(1 - t, 3)));
       if (t < 1) requestAnimationFrame(tick);
     };
@@ -625,6 +626,137 @@
     blocks.forEach((block) => io.observe(block));
   }
 
+  // ---------- Mockup 0 : onboarding ----------
+  // L'étape « Votre réseau » se remplit (secteur, type, curseur, localisation),
+  // « Suivant » passe à l'étape d'après et l'espace personnalisé s'annonce.
+  function initOnboard() {
+    const win = $('[data-mock="onboard"]');
+    if (!win) return;
+    const sector = $("[data-onb-sector]", win);
+    const sectorV = $("[data-onb-sector-v]", win);
+    const menuItems = $$(".hp-onb-menu-i", win);
+    const pick = $("[data-onb-pick]", win);
+    const type = $("[data-onb-type]", win);
+    const loc = $("[data-onb-loc]", win);
+    const range = $("[data-onb-range]", win);
+    const count = $("[data-onb-count]", win);
+    const next = $("[data-onb-next]", win);
+    const [stepNow, stepNext] = $$("[data-onb-step]", win);
+    const toast = $("[data-onb-toast]");
+    const cursor = $("[data-onb-cursor]", win);
+    const thumb = $(".hp-onb-range-thumb", win);
+    const FRANCHISEES = 24;
+
+    const press = async (el) => {
+      el.classList.add("is-pressed");
+      await wait(150);
+      el.classList.remove("is-pressed");
+    };
+
+    const finalState = () => {
+      sector.classList.add("is-on", "is-filled");
+      sectorV.textContent = "Restauration & Hôtellerie";
+      pick.classList.add("is-selected");
+      type.classList.add("is-on");
+      loc.classList.add("is-on");
+      range.style.setProperty("--v", FRANCHISEES + "%");
+      count.textContent = FRANCHISEES;
+      stepNow.classList.replace("is-current", "is-done");
+      stepNext.classList.add("is-current");
+      toast.classList.add("is-shown");
+    };
+    if (reduced) return finalState();
+
+    // Curseur : pointe posée à (fx, fy) de la boîte de `el`, coordonnées
+    // relatives à la fenêtre du mockup. Rend la main une fois le trajet fini.
+    const moveTo = async (el, fx = 0.5, fy = 0.6, t = 600) => {
+      const w = win.getBoundingClientRect();
+      const r = el.getBoundingClientRect();
+      cursor.style.setProperty("--t", t + "ms");
+      cursor.style.setProperty("--x", r.left - w.left + r.width * fx + "px");
+      cursor.style.setProperty("--y", r.top - w.top + r.height * fy + "px");
+      await wait(t);
+    };
+    const click = async (el) => {
+      cursor.classList.add("is-down");
+      await press(el);
+      cursor.classList.remove("is-down");
+    };
+
+    loopWhileVisible(win, async () => {
+      sector.classList.remove("is-on", "is-filled", "is-open");
+      sectorV.textContent = "Sélectionnez un secteur";
+      menuItems.forEach((item) => item.classList.remove("is-hover", "is-selected"));
+      type.classList.remove("is-on");
+      loc.classList.remove("is-on");
+      range.classList.remove("is-moving");
+      range.style.setProperty("--v", "0%");
+      count.textContent = "0";
+      stepNow.classList.remove("is-done");
+      stepNow.classList.add("is-current");
+      stepNext.classList.remove("is-current");
+      toast.classList.remove("is-shown");
+      cursor.classList.add("is-on");
+      await wait(400);
+
+      // Liste déroulante : ouverture, survol d'une option puis de la bonne, choix.
+      await moveTo(sector, 0.72, 0.6, 700);
+      await click(sector);
+      sector.classList.add("is-open");
+      await wait(250);
+      await moveTo(menuItems[0], 0.3, 0.65, 350);
+      menuItems[0].classList.add("is-hover");
+      await wait(150);
+      menuItems[0].classList.remove("is-hover");
+      await moveTo(pick, 0.34, 0.6, 320);
+      pick.classList.add("is-hover");
+      await wait(350);
+      await click(pick);
+      pick.classList.replace("is-hover", "is-selected");
+      await wait(180);
+      sector.classList.remove("is-open");
+      sector.classList.add("is-on", "is-filled");
+      sectorV.textContent = "Restauration & Hôtellerie";
+      await wait(300);
+
+      await moveTo(type, 0.55, 0.62, 550);
+      await click(type);
+      type.classList.add("is-on");
+      await wait(250);
+
+      // Curseur : saisi au pouce, glissé jusqu'à la valeur.
+      await moveTo(thumb, 0.5, 0.5, 500);
+      cursor.classList.add("is-down");
+      await wait(120);
+      range.classList.add("is-moving");
+      range.style.setProperty("--v", FRANCHISEES + "%");
+      countUp(count, FRANCHISEES, 900);
+      const rr = range.getBoundingClientRect();
+      const wr = win.getBoundingClientRect();
+      cursor.style.setProperty("--t", "900ms");
+      cursor.style.setProperty("--x", rr.left - wr.left + (rr.width * FRANCHISEES) / 100 + "px");
+      await wait(950);
+      cursor.classList.remove("is-down");
+      await wait(200);
+
+      await moveTo(loc, 0.5, 0.62, 550);
+      await click(loc);
+      loc.classList.add("is-on");
+      await wait(300);
+
+      await moveTo(next, 0.5, 0.6, 600);
+      await click(next);
+      stepNow.classList.replace("is-current", "is-done");
+      stepNext.classList.add("is-current");
+      await wait(300);
+      toast.classList.add("is-shown");
+      await wait(500);
+      // Le curseur s'écarte pour laisser lire le résultat.
+      await moveTo(next, -1.6, 0.4, 800);
+      await wait(2600);
+    });
+  }
+
   // ---------- Mockup 1 : éditeur ----------
   function initEditor() {
     const win = $('[data-mock="editor"]');
@@ -822,7 +954,7 @@
       // sign-handwritten.json (~2 s) écrit la signature puis la tient : joué
       // une fois, il reste sur sa dernière frame jusqu'à la fin de l'étape.
       title.textContent = "Signature en cours…";
-      setPill(status, "teal", "Signature…");
+      setPill(status, "blue", "Signature…");
       leoAnims.play(pen, "sign-handwritten.json", { loop: false });
       win.classList.add("is-signing");
       await wait(2300);
@@ -1109,6 +1241,7 @@
   initHeroEcosystem();
   initStades();
   initStepTitles();
+  initOnboard();
   initEditor();
   initLawyer();
   initSign();

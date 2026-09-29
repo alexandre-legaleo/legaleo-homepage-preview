@@ -13,12 +13,12 @@
   border-radius: var(--radius-xl);
   padding: 32px;
   background-color: var(--color-white);
-  transition: transform 0.35s var(--ease-out), box-shadow 0.35s ease;
+  transition: border-color 0.3s ease;
 }
 
+/* Survol à plat (bordure seule), comme les cartes de la plateforme. */
 .hp-bcard:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-card);
+  border-color: rgb(31 18 14 / 0.22);
 }
 
 .hp-bcard--time { grid-column: span 2; }
@@ -27,10 +27,10 @@
 .hp-bcard--leo { grid-column: span 3; --reveal-delay: 160ms; }
 
 .hp-bcard-h {
-  font-family: var(--font-serif);
-  font-size: 22px;
-  font-weight: 500;
-  line-height: 1.25;
+  font-family: var(--font-sans);
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.3;
   text-wrap: balance;
 }
 
@@ -163,35 +163,86 @@
 .hp-costchart-bars i:nth-child(5) { transition-delay: 240ms; }
 .hp-costchart-bars i:nth-child(6) { transition-delay: 300ms; }
 
-/* Flux Générer → Suivre */
-.hp-flow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
+/* Flux Générer → Suivre : chaque étape s'allume à son tour et une impulsion
+   file vers la suivante (cycle de 4 s, 1 s par étape). */
+.hp-integ {
+  --integ-cols: auto minmax(8px, 1fr) auto minmax(8px, 1fr) auto minmax(8px, 1fr) auto;
+  --integ-pad: 12px;
   margin-top: auto;
-  padding-top: 24px;
+  padding-top: 28px;
+}
+
+.hp-flow {
+  display: grid;
+  grid-template-columns: var(--integ-cols);
+  align-items: center;
+  border: 1px solid #b9eeec;
+  border-radius: 14px;
+  padding: var(--integ-pad);
+  background-color: var(--color-teal-bg);
 }
 
 .hp-flow span {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
   padding: 6px 12px;
+  background-color: var(--color-white);
   font-size: 13px;
   font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+  animation: hp-integ-step 4s ease infinite backwards;
 }
 
-.hp-flow span:last-child {
-  border-color: transparent;
-  color: var(--color-white);
-  background-color: var(--color-teal);
-}
+.hp-flow span:nth-of-type(2) { animation-delay: 1s; }
+.hp-flow span:nth-of-type(3) { animation-delay: 2s; }
+.hp-flow span:nth-of-type(4) { animation-delay: 3s; }
 
+/* Connecteur entre deux étapes, avec l'impulsion qui part vers la suivante */
 .hp-flow i {
-  width: 14px;
   height: 2px;
+  margin-inline: 4px;
   border-radius: 1px;
-  background-color: var(--color-cyan);
+  background: linear-gradient(to right, transparent, var(--color-teal), transparent) -50% 0 / 60% 100% no-repeat, rgb(8 127 131 / 0.2);
+  animation: hp-integ-pulse 4s linear 0.55s infinite backwards;
+}
+
+.hp-flow i:nth-of-type(2) { animation-delay: 1.55s; }
+.hp-flow i:nth-of-type(3) { animation-delay: 2.55s; }
+
+@keyframes hp-integ-step {
+  0%, 100% {
+    border-color: var(--color-border);
+    color: var(--color-black);
+    background-color: var(--color-white);
+  }
+  6%, 22% {
+    border-color: transparent;
+    color: var(--color-white);
+    background-color: var(--color-teal);
+  }
+  30% {
+    border-color: var(--color-border);
+    color: var(--color-black);
+    background-color: var(--color-white);
+  }
+}
+
+@keyframes hp-integ-pulse {
+  0% { background-position: -50% 0, 0 0; }
+  12%, 100% { background-position: 250% 0, 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hp-integ * {
+    animation: none !important;
+  }
+
+  .hp-flow span:last-of-type {
+    border-color: transparent;
+    color: var(--color-white);
+    background-color: var(--color-teal);
+  }
 }
 
 /* Carte Leo */
@@ -236,6 +287,19 @@
     font-size: 52px;
   }
 
+  .hp-integ {
+    --integ-pad: 8px;
+  }
+
+  .hp-flow span {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+
+  .hp-flow i {
+    margin-inline: 2px;
+  }
+
   .hp-bcard--cost {
     grid-template-columns: minmax(0, 1fr);
     gap: 0;
@@ -254,5 +318,17 @@
   .hp-bcard--leo {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+/* Très petits écrans : le flux doit tenir sur une ligne. */
+@media (max-width: 400px) {
+  .hp-flow span {
+    padding: 4px 7px;
+    font-size: 11.5px;
+  }
+
+  .hp-flow i {
+    margin-inline: 1px;
   }
 }
