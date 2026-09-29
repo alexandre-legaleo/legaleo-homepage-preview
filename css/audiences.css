@@ -12,8 +12,161 @@
 .hp-aud-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  gap: var(--aud-gap);
+}
+
+.hp-audiences {
+  --aud-gap: 18px;
+  /* Centre de la 1re / 3e colonne de la grille. */
+  --aud-c1: calc((100% - 2 * var(--aud-gap)) / 6);
+  --aud-line: rgb(255 254 251 / 0.26);
+}
+
+/* ---------- Liaison entre les acteurs ----------
+   Une pastille centrale (l'espace partagé) descend sur un bus horizontal
+   qui se branche en haut de chaque carte. Une impulsion parcourt le réseau :
+   tige → bus (vers l'extérieur) → descentes latérales ; la descente centrale
+   prolonge directement la tige. Cycle commun de 3,6 s. */
+.hp-aud-net {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
   margin-top: 52px;
+}
+
+.hp-aud-hub {
+  position: relative;
+  display: inline-flex;
+  align-self: center;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgb(98 231 235 / 0.4);
+  border-radius: var(--radius-pill);
+  padding: 8px 18px 8px 12px;
+  background-color: rgb(98 231 235 / 0.1);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.hp-aud-hub-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-cyan);
+  box-shadow: 0 0 0 0 rgb(98 231 235 / 0.6);
+  animation: hp-aud-ping 3.6s ease-out infinite;
+}
+
+/* Tige pastille → bus */
+.hp-aud-hub::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 1px;
+  height: 24px;
+  background: linear-gradient(to bottom, transparent, var(--color-cyan), transparent) 0 -14px / 100% 14px no-repeat, var(--aud-line);
+  animation: hp-aud-stem 3.6s linear infinite;
+}
+
+.hp-aud-bus {
+  position: relative;
+  height: 40px;
+  margin-top: 24px;
+}
+
+.hp-aud-bus-half {
+  position: absolute;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-cyan), transparent) -50% 0 / 30% 100% no-repeat, var(--aud-line);
+}
+
+.hp-aud-bus-half--l {
+  left: var(--aud-c1);
+  right: 50%;
+  animation: hp-aud-bus-l 3.6s linear 0.72s infinite backwards;
+}
+
+.hp-aud-bus-half--r {
+  left: 50%;
+  right: var(--aud-c1);
+  animation: hp-aud-bus-r 3.6s linear 0.72s infinite backwards;
+}
+
+.hp-aud-drop {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--aud-c1);
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--color-cyan), transparent) 0 -14px / 100% 14px no-repeat, var(--aud-line);
+  animation: hp-aud-drop 3.6s linear 1.62s infinite backwards;
+}
+
+.hp-aud-drop--mid {
+  left: 50%;
+  animation-delay: 0.72s;
+}
+
+.hp-aud-drop--soon {
+  left: auto;
+  right: var(--aud-c1);
+  background-image: linear-gradient(to bottom, transparent, var(--color-lime), transparent);
+  background-color: rgb(226 230 47 / 0.3);
+}
+
+/* Point de branchement, posé sur la bordure haute de la carte */
+.hp-aud-drop::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: var(--color-cyan);
+  box-shadow: 0 0 0 4px rgb(98 231 235 / 0.16);
+  transform: translate(-50%, 50%);
+}
+
+.hp-aud-drop--soon::after {
+  background-color: var(--color-lime);
+  box-shadow: 0 0 0 4px rgb(226 230 47 / 0.16);
+}
+
+@keyframes hp-aud-stem {
+  0% { background-position: 0 -14px, 0 0; }
+  20%, 100% { background-position: 0 24px, 0 0; }
+}
+
+@keyframes hp-aud-drop {
+  0% { background-position: 0 -14px, 0 0; }
+  20%, 100% { background-position: 0 40px, 0 0; }
+}
+
+@keyframes hp-aud-bus-r {
+  0% { background-position: -50% 0, 0 0; }
+  25%, 100% { background-position: 150% 0, 0 0; }
+}
+
+@keyframes hp-aud-bus-l {
+  0% { background-position: 150% 0, 0 0; }
+  25%, 100% { background-position: -50% 0, 0 0; }
+}
+
+@keyframes hp-aud-ping {
+  0% { box-shadow: 0 0 0 0 rgb(98 231 235 / 0.6); }
+  40%, 100% { box-shadow: 0 0 0 8px rgb(98 231 235 / 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hp-aud-net *,
+  .hp-aud-net *::after,
+  .hp-aud-hub::after {
+    animation: none !important;
+  }
 }
 
 .hp-aud-grid > :nth-child(2) { --reveal-delay: 80ms; }
@@ -101,6 +254,23 @@ a.hp-aud:hover .hp-aud-link span {
 @media (max-width: 900px) {
   .hp-aud-grid {
     grid-template-columns: minmax(0, 1fr);
+    margin-top: 24px;
+  }
+
+  /* Cartes empilées : plus de bus, la tige tombe dans la 1re carte
+     et un trait relie chaque carte à la suivante. */
+  .hp-aud-bus {
+    display: none;
+  }
+
+  .hp-aud-grid > * + *::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    width: 1px;
+    height: calc(var(--aud-gap) + 2px);
+    background-color: var(--aud-line);
   }
 }
 

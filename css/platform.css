@@ -15,7 +15,7 @@
 }
 
 /* Numéro de chapitre : simple chiffre en exposant du verbe, sans pastille.
-   Le « / 05 » reste dans le DOM (lecteurs d'écran) mais n'est pas affiché. */
+   Le « / 06 » reste dans le DOM (lecteurs d'écran) mais n'est pas affiché. */
 .hp-step-n {
   flex-shrink: 0;
   align-self: flex-start;

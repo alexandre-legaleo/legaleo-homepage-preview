@@ -260,13 +260,85 @@
           <p class="hp-lede-c">Chaque étape de vos contrats de franchise, de la première ligne au renouvellement, sur une seule interface.</p>
         </div>
 
-        <!-- 1. Générer : génération & éditeur.
+        <!-- 1. Personnaliser : onboarding.
              Chaque bloc s'ouvre sur un titre-verbe (.hp-step) qui s'anime quand
              on arrive dessus (js/main.js : initStepTitles). -->
-        <div class="hp-feature" id="pf-generer">
+        <div class="hp-feature" id="pf-personnaliser">
           <div class="hp-feature-copy" data-reveal>
             <header class="hp-step" data-step>
-              <span class="hp-step-n">01<span class="hp-step-of"> / 05</span></span>
+              <span class="hp-step-n">01<span class="hp-step-of"> / 06</span></span>
+              <h3 class="hp-step-verb">Personnaliser</h3>
+            </header>
+            <span class="hp-kicker">Onboarding</span>
+            <h4 class="hp-h3b">En moins de 5 minutes, Legaleo apprend à connaître votre réseau.</h4>
+            <p class="hp-p">Enseigne, secteur, type de réseau, nombre de franchisés, objectifs : quelques questions suffisent pour personnaliser votre espace et vos modèles de contrats. Vous avez déjà un contrat ? Importez-le, il pré-remplit l'onboarding pour vous.</p>
+            <ul class="hp-bars">
+              <li>Un parcours guidé de <strong>moins de 5 minutes</strong></li>
+              <li><strong>Pré-rempli</strong> depuis votre SIREN ou un contrat existant</li>
+              <li>Des modèles de contrats <strong>adaptés à votre réseau</strong> dès le départ</li>
+            </ul>
+          </div>
+          <div class="hp-feature-visual" data-reveal>
+            <!-- Onboarding (app/(page)/onboarding de legaleo-ai) : Topbar
+                 blanche compacte, formulaire d'étape à gauche, Stepper sur
+                 panneau sombre à droite.
+                 js/main.js : initOnboard remplit l'étape « Votre réseau ». -->
+            <div class="hp-win hp-win--onb" data-mock="onboard" aria-hidden="true">
+              <div class="hp-shell-top hp-onb-top"><span class="hp-shell-logo hp-shell-logo--ink" role="img" aria-label="Legaleo"></span><span class="hp-shell-me"><span class="hp-shell-av">SL</span><span class="hp-shell-name">Sophie Laurent</span><i class="hp-shell-i" data-i="chevron-down"></i></span></div>
+              <div class="hp-onb">
+                <div class="hp-onb-form">
+                  <span class="hp-mini-kicker">Étape 5</span>
+                  <span class="hp-onb-h">Votre réseau</span>
+                  <div class="hp-onb-field hp-onb-field--dd">
+                    <span class="hp-onb-l">Secteur d'activité</span>
+                    <span class="hp-onb-select" data-onb-sector><span data-onb-sector-v>Sélectionnez un secteur</span><i class="hp-shell-i" data-i="chevron-down"></i></span>
+                    <span class="hp-onb-menu" data-onb-menu>
+                      <span class="hp-onb-menu-i">Alimentaire</span>
+                      <span class="hp-onb-menu-i" data-onb-pick>Restauration &amp; Hôtellerie</span>
+                      <span class="hp-onb-menu-i">Beauté, Coiffure &amp; Esthétique</span>
+                      <span class="hp-onb-menu-i">Commerce &amp; Distribution</span>
+                      <span class="hp-onb-menu-i">Services aux particuliers</span>
+                    </span>
+                  </div>
+                  <div class="hp-onb-field">
+                    <span class="hp-onb-l">Type de réseau</span>
+                    <span class="hp-onb-opts"><span class="hp-onb-opt" data-onb-type>Franchise</span><span class="hp-onb-opt">Licence de marque</span><span class="hp-onb-opt">Concession</span></span>
+                  </div>
+                  <div class="hp-onb-field">
+                    <span class="hp-onb-l">Nombre de franchisés <b class="hp-onb-count" data-onb-count>0</b></span>
+                    <span class="hp-onb-range" data-onb-range><span class="hp-onb-range-fill"></span><span class="hp-onb-range-thumb"></span></span>
+                    <span class="hp-onb-scale"><span>0</span><span>100+</span></span>
+                  </div>
+                  <div class="hp-onb-field">
+                    <span class="hp-onb-l">Localisation principale</span>
+                    <span class="hp-onb-opts"><span class="hp-onb-opt" data-onb-loc>France uniquement</span><span class="hp-onb-opt">Europe</span><span class="hp-onb-opt">International</span></span>
+                  </div>
+                  <div class="hp-onb-actions"><span class="hp-onb-btn hp-onb-btn--ghost">Précédent</span><span class="hp-onb-btn" data-onb-next>Suivant</span></div>
+                </div>
+                <div class="hp-onb-steps">
+                  <span class="hp-onb-step is-done">Contrat existant</span>
+                  <span class="hp-onb-step is-done">Vos informations</span>
+                  <span class="hp-onb-step is-done">Vos objectifs</span>
+                  <span class="hp-onb-step is-done">Votre enseigne</span>
+                  <span class="hp-onb-step is-current" data-onb-step="0">Votre réseau</span>
+                  <span class="hp-onb-step" data-onb-step="1">Marque</span>
+                  <span class="hp-onb-step">Révision</span>
+                </div>
+              </div>
+              <span class="hp-cursor" data-onb-cursor></span>
+            </div>
+            <div class="hp-float hp-float--onb" data-onb-toast aria-hidden="true">
+              <span class="hp-onb-toast-ico"></span>
+              <span><strong>Espace personnalisé</strong><br /><span class="hp-float-meta">Modèles adaptés à votre réseau de restauration</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Générer : génération & éditeur. -->
+        <div class="hp-feature hp-feature--rev" id="pf-generer">
+          <div class="hp-feature-copy" data-reveal>
+            <header class="hp-step" data-step>
+              <span class="hp-step-n">02<span class="hp-step-of"> / 06</span></span>
               <h3 class="hp-step-verb">Générer</h3>
             </header>
             <span class="hp-kicker">Génération &amp; éditeur</span>
@@ -323,10 +395,10 @@
         </div>
 
         <!-- 2. Validation par avocat -->
-        <div class="hp-feature hp-feature--rev" id="pf-valider">
+        <div class="hp-feature" id="pf-valider">
           <div class="hp-feature-copy" data-reveal>
             <header class="hp-step" data-step>
-              <span class="hp-step-n">02<span class="hp-step-of"> / 05</span></span>
+              <span class="hp-step-n">03<span class="hp-step-of"> / 06</span></span>
               <h3 class="hp-step-verb">Valider</h3>
             </header>
             <span class="hp-kicker">Validation par avocat</span>
@@ -366,10 +438,10 @@
         </div>
 
         <!-- 3. Signature électronique -->
-        <div class="hp-feature" id="pf-signer">
+        <div class="hp-feature hp-feature--rev" id="pf-signer">
           <div class="hp-feature-copy" data-reveal>
             <header class="hp-step" data-step>
-              <span class="hp-step-n">03<span class="hp-step-of"> / 05</span></span>
+              <span class="hp-step-n">04<span class="hp-step-of"> / 06</span></span>
               <h3 class="hp-step-verb">Signer</h3>
             </header>
             <span class="hp-kicker">Signature électronique</span>
@@ -431,10 +503,10 @@
         </div>
 
         <!-- 4. Contrats en cours -->
-        <div class="hp-feature hp-feature--rev" id="pf-suivre">
+        <div class="hp-feature" id="pf-suivre">
           <div class="hp-feature-copy" data-reveal>
             <header class="hp-step" data-step>
-              <span class="hp-step-n">04<span class="hp-step-of"> / 05</span></span>
+              <span class="hp-step-n">05<span class="hp-step-of"> / 06</span></span>
               <h3 class="hp-step-verb">Suivre</h3>
             </header>
             <span class="hp-kicker">Contrats en cours</span>
@@ -475,10 +547,10 @@
         </div>
 
         <!-- 5. Contrathèque & alertes -->
-        <div class="hp-feature" id="pf-centraliser">
+        <div class="hp-feature hp-feature--rev" id="pf-centraliser">
           <div class="hp-feature-copy" data-reveal>
             <header class="hp-step" data-step>
-              <span class="hp-step-n">05<span class="hp-step-of"> / 05</span></span>
+              <span class="hp-step-n">06<span class="hp-step-of"> / 06</span></span>
               <h3 class="hp-step-verb">Centraliser</h3>
             </header>
             <span class="hp-kicker">Contrathèque &amp; alertes</span>
@@ -599,9 +671,12 @@
 
           <article class="hp-bcard hp-bcard--simple" data-reveal>
             <h3 class="hp-bcard-h">Une gestion juridique simplifiée de votre réseau</h3>
-            <p class="hp-bcard-p">Génération, validation, signature et suivi des renouvellements réunis sur une seule plateforme, connectée à vos outils (CRM, Google Workspace).</p>
-            <div class="hp-flow" aria-hidden="true">
-              <span>Générer</span><i></i><span>Valider</span><i></i><span>Signer</span><i></i><span>Suivre</span>
+            <p class="hp-bcard-p">Génération, validation, signature et suivi des renouvellements réunis sur une seule plateforme.</p>
+            <!-- Flux de la plateforme : les étapes s'allument tour à tour. -->
+            <div class="hp-integ" aria-hidden="true">
+              <div class="hp-flow">
+                <span>Générer</span><i></i><span>Valider</span><i></i><span>Signer</span><i></i><span>Suivre</span>
+              </div>
             </div>
           </article>
 
@@ -644,6 +719,17 @@
           <span class="hp-kicker hp-kicker--light">Une solution flexible</span>
           <h2 class="hp-h2 hp-h2-left hp-h2-light">Une solution pensée pour chaque acteur du secteur et pour <em class="hp-em">chaque côté du dossier.</em></h2>
         </div>
+        <!-- Liaison visuelle : les trois acteurs branchés sur un même espace -->
+        <div class="hp-aud-net" aria-hidden="true" data-reveal>
+          <span class="hp-aud-hub"><span class="hp-aud-hub-dot"></span>Un espace partagé, trois acteurs connectés</span>
+          <div class="hp-aud-bus">
+            <span class="hp-aud-bus-half hp-aud-bus-half--l"></span>
+            <span class="hp-aud-bus-half hp-aud-bus-half--r"></span>
+            <span class="hp-aud-drop"></span>
+            <span class="hp-aud-drop hp-aud-drop--mid"></span>
+            <span class="hp-aud-drop hp-aud-drop--soon"></span>
+          </div>
+        </div>
         <div class="hp-aud-grid">
           <a href="https://www.legaleo.ai/franchiseur" target="_top" class="hp-aud" data-reveal>
             <span class="hp-aud-k">Franchiseurs</span>
@@ -673,7 +759,7 @@
       <div class="hp-wrap hp-leo-grid">
         <div class="hp-leo-copy" data-reveal>
           <span class="hp-kicker hp-kicker--cyan">Pour aller plus loin</span>
-          <h2 class="hp-h2 hp-h2-left hp-h2-light">Découvrez Leo : <em class="hp-em">votre assistant IA juridique conçu pour votre réseau de franchise.</em></h2>
+          <h2 class="hp-h2 hp-h2-left hp-h2-light">Découvrez Leo : <em class="hp-em">le premier assistant IA juridique conçu pour votre réseau de franchise.</em></h2>
           <p class="hp-lede2 hp-lede2-light">Leo vous accompagne tout au long de votre parcours sur la plateforme, de votre onboarding jusqu'à la réalisation de vos contrats. Il répond à vos questions juridiques du quotidien, et chaque point qui engage votre réseau reste validé par un avocat dédié.</p>
           <p class="hp-lede2 hp-lede2-light">Posez une question, demandez comment structurer une clause, vérifiez une mention obligatoire du DIP : Leo vous répond, replacé dans le contexte de la franchise.</p>
           <a href="https://www.legaleo.ai/agent-ia-franchise-leo" target="_top" class="hp-btn hp-btn-cyan">Découvrir Leo</a>

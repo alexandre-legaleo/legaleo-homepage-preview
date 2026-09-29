@@ -98,15 +98,15 @@
   isolation: isolate;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  /* Pas d'overflow: hidden : l'en-tête déborde à cheval sur le bord haut. */
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
-  padding: 14px 14px 36px;
+  padding: 50px 14px 36px;
   background-color: var(--color-white);
 }
 
-/* Tout sauf le mini-visuel reprend le retrait de 36px de la carte. */
-.hp-stade > :not(.hp-sv) {
+/* Tout sauf le mini-visuel et l'en-tête reprend le retrait de 36px de la carte. */
+.hp-stade > :not(.hp-sv, .hp-stade-top) {
   margin-inline: 22px;
 }
 
@@ -116,6 +116,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
+  border-radius: inherit;
   background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 0%), var(--stade-glow), transparent 70%);
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -159,14 +160,19 @@
 }
 
 /* En-tête de carte : pastille pleine (icône en couleur franche + libellé),
-   pour qu'on repère d'un coup d'œil à quel stade s'adresse la carte. */
+   pour qu'on repère d'un coup d'œil à quel stade s'adresse la carte.
+   Centrée, à cheval sur le bord haut de la carte. */
 .hp-stade-top {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 1;
   display: inline-flex;
-  align-self: flex-start;
   align-items: center;
   gap: 12px;
-  margin-top: 22px;
-  margin-bottom: 22px;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
   border: 1px solid #b9eeec;
   border-radius: var(--radius-pill);
   padding: 6px 20px 6px 6px;
@@ -182,7 +188,8 @@
 
 .hp-stade--dark .hp-stade-top {
   border-color: rgb(98 231 235 / 0.4);
-  background-color: rgb(98 231 235 / 0.14);
+  /* Opaque : la moitié haute de la pastille est hors de la carte. */
+  background-color: #1b6865;
 }
 
 .hp-stade--dark .hp-stade-top .hp-kicker {
@@ -567,6 +574,8 @@
 @media (max-width: 860px) {
   .hp-stades {
     grid-template-columns: minmax(0, 1fr);
+    /* Place pour la pastille à cheval de la carte suivante. */
+    row-gap: 48px;
   }
 }
 
@@ -587,16 +596,14 @@
   }
 
   .hp-stade {
-    padding: 10px 10px 26px;
+    padding: 42px 10px 26px;
   }
 
-  .hp-stade > :not(.hp-sv) {
+  .hp-stade > :not(.hp-sv, .hp-stade-top) {
     margin-inline: 12px;
   }
 
   .hp-stade-top {
-    margin-top: 16px;
-    margin-bottom: 16px;
     gap: 10px;
     padding-right: 14px;
   }
