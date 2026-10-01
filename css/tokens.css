@@ -27,8 +27,11 @@
   --color-green-text: #3c7a2d;
   --color-green-bg: #e5f5e0;
 
-  --color-purple-text: #3d5ccc;
-  --color-purple-bg: #f1f2ff;
+  /* Violet unique : relecture avocat (pastilles, commentaire, surlignage)
+     et champs dynamiques (chips de variables). */
+  --color-purple-text: #8c3ddb;
+  --color-purple-bg: #f6e9fd;
+  --color-purple-line: color-mix(in srgb, #8c3ddb 25%, transparent);
 
   /* Typo */
   --font-serif: "Fraunces", Georgia, serif;

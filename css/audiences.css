@@ -218,25 +218,38 @@ a.hp-aud:hover {
   line-height: 1.55;
 }
 
-.hp-aud-link {
+.hp-aud-btn {
   display: inline-flex;
+  align-items: center;
   gap: 6px;
   margin-top: auto;
-  color: var(--color-cyan);
-  font-size: 15px;
+  border-radius: var(--radius-pill);
+  padding: 10px 18px;
+  color: var(--color-black);
+  background-color: var(--color-cyan);
+  font-size: 14px;
   font-weight: 800;
+  transition: background-color 0.25s ease;
 }
 
-.hp-aud-link span {
+.hp-aud-btn span {
   transition: transform 0.3s var(--ease-out);
 }
 
-a.hp-aud:hover .hp-aud-link span {
+a.hp-aud:hover .hp-aud-btn {
+  background-color: color-mix(in srgb, var(--color-cyan) 85%, #000 10%);
+}
+
+a.hp-aud:hover .hp-aud-btn span {
   transform: translateX(4px);
 }
 
-.hp-aud-link--lime {
+/* Pas encore disponible : bouton à contour lime, inerte */
+.hp-aud-btn--soon {
+  border: 1px solid rgb(226 230 47 / 0.5);
   color: var(--color-lime);
+  background-color: transparent;
+  cursor: default;
 }
 
 .hp-aud-badge {

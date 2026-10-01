@@ -27,6 +27,23 @@ pnpm dev   # http://localhost:5174
 - `leo-anims/` : animations Lottie de Leo, copiées de `front-legaleo-leo`
   (même fichier source, à resynchroniser si l'export change).
 - `webflow-embed.html` : snippet à coller dans l'élément Embed Webflow.
+- `leo-widget/` : agent Leo (bulle de pré-vente et de support), build copié
+  de `leo-agent-pour-alex/dist/` (à recopier après chaque `build.py`).
+  Réglages dans `leo-widget/config.js` (`hubspot.formGuid` à renseigner).
+  Chargé par `index.html` quand la page est ouverte directement, et par
+  `webflow-embed.html` côté page parente quand elle est dans l'iframe.
+- `contact.html` (+ `css/contact.css`, `js/contact.js`) : nouvelle page
+  contact (www.legaleo.ai/contact), en 2 étapes : qualification, puis au
+  choix une démo (créneau libre de l'agenda Google de Mehdi, lien Meet) ou
+  un simple message. Snippet Webflow : `webflow-embed-contact.html`.
+- `apps-script/contact.gs` : le script Google Apps Script qui reçoit la page
+  contact (agenda, HubSpot, Encharge, Slack). Installation pas à pas en tête
+  du fichier ; son URL de déploiement va dans `API_URL` (js/contact.js).
+  Tant qu'elle est vide, la page est en mode maquette (créneaux fictifs,
+  rien n'est envoyé). Les propriétés HubSpot « points de vente » et
+  « situation » se renseignent dans `CONFIG.HUBSPOT_PROPS` du script.
+  Pré-sélection depuis un lien : `/contact?reseau=lancement`,
+  `developpement` ou `structure`.
 
 ## Hors de l'iframe (reste natif Webflow)
 

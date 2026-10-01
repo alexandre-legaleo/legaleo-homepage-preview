@@ -105,6 +105,7 @@
 .hp-shell-i[data-i="arrow-up-down"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m21 16-4 4-4-4'/%3E%3Cpath d='M17 20V4'/%3E%3Cpath d='m3 8 4-4 4 4'/%3E%3Cpath d='M7 4v16'/%3E%3C/svg%3E"); }
 .hp-shell-i[data-i="chevrons-right"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 17 5-5-5-5'/%3E%3Cpath d='m13 17 5-5-5-5'/%3E%3C/svg%3E"); }
 .hp-shell-i[data-i="undo-2"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 14 4 9l5-5'/%3E%3Cpath d='M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11'/%3E%3C/svg%3E"); }
+.hp-shell-i[data-i="variables"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 4H6a2 2 0 0 0-2 2v3'/%3E%3Cpath d='M9 20H6a2 2 0 0 1-2-2v-3'/%3E%3Cpath d='M15 4h3a2 2 0 0 1 2 2v3'/%3E%3Cpath d='M15 20h3a2 2 0 0 0 2-2v-3'/%3E%3Cpath d='M10 4h4M10 20h4M12 6v12'/%3E%3C/svg%3E"); }
 .hp-shell-i[data-i="leo"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M12 2.5v6M12 15.5v6M2.5 12h6M15.5 12h6M5.3 5.3l4.2 4.2M14.5 14.5l4.2 4.2M18.7 5.3l-4.2 4.2M9.5 14.5l-4.2 4.2'/%3E%3C/svg%3E"); }
 
 /* Barre du haut (Topbar variant green / dark, sans ombre) */
@@ -742,6 +743,96 @@
   margin-top: 4px;
 }
 
+/* Modèle (data-mock="generate") : onglet « Champs Dynamiques » du panneau
+   droit, comme VariablesPanel de legaleo-ai (libellé, puis « ↳ valeur par
+   défaut » en italique ; survol = fond blanc ombré, libellé vert foncé), et
+   chips de variables dans le texte (.rte-variable : violet, coins 4px).
+   Un chip pas encore inséré (.is-pending) est retiré du flux ; à son
+   insertion il apparaît en ressort, la ligne du panneau survolée juste
+   avant (.is-hover). */
+.hp-ed-panel--vars {
+  gap: 4px;
+  padding-inline: 4px;
+}
+
+.hp-ed-panel--vars .hp-ed-panel-h {
+  margin-inline: 4px;
+}
+
+.hp-ed-vars {
+  display: flex;
+  flex-direction: column;
+}
+
+.hp-ed-var {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  border-radius: 6px;
+  padding: 5px 6px;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.hp-ed-var b {
+  overflow: hidden;
+  font-size: 8.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: color 0.15s ease;
+}
+
+.hp-ed-var span {
+  overflow: hidden;
+  color: var(--color-faint);
+  font-size: 7.5px;
+  font-style: italic;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.hp-ed-var.is-hover {
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
+}
+
+.hp-ed-var.is-hover b {
+  color: var(--color-teal-deep);
+}
+
+.hp-ed-panel-foot {
+  margin-top: auto;
+  border-top: 1px solid var(--color-border);
+  padding: 6px 4px 0;
+  color: var(--color-faint);
+  font-size: 7px;
+  line-height: 1.4;
+}
+
+.hp-var {
+  display: inline-flex;
+  border: 1px solid var(--color-purple-line);
+  border-radius: 4px;
+  padding: 0 4px;
+  color: var(--color-purple-text);
+  background-color: var(--color-purple-bg);
+  font-size: 0.875em;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.hp-var.is-pending {
+  display: none;
+}
+
+.hp-var.is-in {
+  animation: hp-var-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes hp-var-in {
+  from { transform: scale(0.4); opacity: 0; }
+}
+
 /* CTA de l'en-tête : bouton noir (Button solid/secondary), flèche avant
    l'envoi. Le texte est remplacé par le JS, d'où la flèche en ::before. */
 .hp-ed-btn {
@@ -1013,27 +1104,19 @@
   letter-spacing: -0.01em;
 }
 
-/* Circuit du document : expéditeur → destinataire (signature, Lottie
-   sign-handwritten dans un badge Leo) → retour signé à l'expéditeur. Le trajet du
-   document est animé en JS (initSign) sur l'axe de .hp-sign-track :
-   horizontal sur desktop, vertical sur mobile. */
+/* Circuit du document : expéditeur → destinataire (signature écrite sur le
+   document, Lottie sign-handwritten) → retour signé à l'expéditeur. Le
+   document reste visible et droit, il glisse sur l'axe de .hp-sign-track
+   (js/main.js : mockSign) : horizontal sur desktop, vertical sur mobile. */
 .hp-sign-head {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
 }
 
-.hp-sign-count {
-  color: var(--color-teal);
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-}
-
 .hp-sign-lane {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(90px, 0.85fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(120px, 1fr) minmax(0, 1fr);
   align-items: stretch;
   margin-top: 16px;
 }
@@ -1050,12 +1133,26 @@
   padding: 14px 10px 12px;
   background-color: var(--color-white);
   text-align: center;
-  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+  transition: background-color 0.4s ease, border-color 0.4s ease;
 }
 
-.hp-sign-party.is-hit {
-  border-color: var(--color-cyan);
-  box-shadow: 0 0 0 4px rgb(98 231 235 / 0.25);
+/* L'expéditeur passe au-dessus du contrat (.hp-sign-doc, z-index 2) : le
+   contrat émerge de derrière sa carte. Au retour (.is-returning), c'est le
+   contrat qui passe dessus, avant de s'y fondre. Le destinataire reste
+   dessous : le contrat se pose sur sa carte. */
+.hp-sign-party[data-sg-from] {
+  position: relative;
+  z-index: 3;
+}
+
+.is-returning .hp-sign-doc {
+  z-index: 4;
+}
+
+/* Partie en action (envoi, signature) : fond légèrement teinté */
+.hp-sign-party.is-acting {
+  border: 1px solid #087f831a;
+  background-color: #deecec;
 }
 
 .hp-sign-party .hp-avatar {
@@ -1083,37 +1180,15 @@
   font-weight: 700;
 }
 
-/* Badge de signature posé sur l'avatar du destinataire pendant qu'il signe */
-.hp-sign-avatar {
-  position: relative;
-  display: flex;
-}
-
-.hp-sign-pen {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  box-shadow: 0 0 0 3px var(--color-white), var(--shadow-float);
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.5);
-  transition: opacity 0.2s ease, transform 0.3s ease;
-}
-
-.is-signing .hp-sign-pen {
-  opacity: 1;
-  transform: translate(-50%, -50%);
-  transition: opacity 0.25s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
 /* Piste : ligne pointillée, le document glisse dessus */
 /* --sign-axis : sens du trajet du document, lu par initSign. */
+/* --sign-overlap : de combien le contrat, au repos, mord sur la carte de
+   l'expéditeur ou du destinataire (le trajet va d'une carte à l'autre). */
 .hp-sign-track {
   --sign-axis: x;
+  --sign-overlap: 26px;
   position: relative;
-  height: 64px;
+  height: 104px;
   margin: 0 -1px;
 }
 
@@ -1133,7 +1208,7 @@
 
 .hp-sign-mail {
   position: absolute;
-  top: calc(50% - 30px);
+  top: calc(50% + 42px);
   left: 50%;
   padding-left: 13px;
   color: var(--color-faint);
@@ -1144,32 +1219,90 @@
   translate: -50% 0;
 }
 
+/* Le contrat : assez grand pour porter sa signature, toujours visible,
+   déplacé en translate seul (pas de rotation ni d'échelle). */
 .hp-sign-doc {
   position: absolute;
   top: 50%;
-  left: 0;
+  left: calc(-1 * var(--sign-overlap));
   z-index: 2;
   display: block;
-  width: 30px;
-  height: 38px;
-  margin-top: -19px;
+  width: 58px;
+  height: 74px;
+  margin-top: -37px;
   border: 1px solid var(--color-border);
-  border-radius: 5px;
-  padding: 8px 6px;
+  border-radius: 6px;
+  padding: 10px 8px;
   background-color: var(--color-white);
-  box-shadow: 0 6px 14px -6px rgb(31 18 14 / 0.3);
+  box-shadow: 0 10px 22px -10px rgb(31 18 14 / 0.35);
+  will-change: transform;
 }
 
 .hp-sign-doc-lines {
   display: grid;
-  gap: 4px;
+  gap: 5px;
 }
 
 .hp-sign-doc-lines i {
   display: block;
-  height: 2.5px;
+  height: 3px;
   border-radius: 2px;
-  background-color: var(--color-border);
+  background-color: #eef0f0;
+}
+
+/* Zone de signature, en bas du contrat : trait pointillé, la signature
+   s'y écrit (Lottie, ou tracé SVG de secours sans lottie / reduced-motion) */
+.hp-sign-doc-sig {
+  position: absolute;
+  right: 7px;
+  bottom: 9px;
+  left: 7px;
+  height: 20px;
+  border-bottom: 1px dashed #cfcfcf;
+}
+
+.hp-sign-doc-sigsvg {
+  position: absolute;
+  inset: 3px 4px 3px;
+  width: calc(100% - 8px);
+  height: calc(100% - 6px);
+}
+
+.hp-sign-doc-sigsvg path {
+  stroke: var(--color-black);
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+}
+
+.is-signing .hp-sign-doc-sigsvg path,
+.is-signed .hp-sign-doc-sigsvg path {
+  stroke-dashoffset: 0;
+  opacity: 1;
+  transition: stroke-dashoffset 1.6s cubic-bezier(0.5, 0.1, 0.4, 1);
+}
+
+.hp-sign-doc-sig.has-lottie .hp-sign-doc-sigsvg {
+  display: none;
+}
+
+/* Lottie (256 × 256, tracé centré vers le bas) calé sur la zone */
+.hp-sign-doc-pen {
+  position: absolute;
+  bottom: -11px;
+  left: 50%;
+  width: 52px;
+  height: 52px;
+  translate: -50% 0;
+  opacity: 0;
+}
+
+.is-signing .hp-sign-doc-pen,
+.is-signed .hp-sign-doc-pen {
+  opacity: 1;
 }
 
 .hp-sign-doc-lines i:nth-child(2) { width: 80%; }
@@ -1183,7 +1316,7 @@
   height: 17px;
   border: 2px solid var(--color-white);
   border-radius: 50%;
-  background: var(--color-green-text) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 9px no-repeat;
+  background: var(--color-teal) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 9px no-repeat;
   transform: scale(0);
   transition: transform 0.2s ease;
 }
@@ -1288,16 +1421,16 @@
   font-size: 10px;
 }
 
-/* ---------- 5. Contrathèque ----------
-   dashboard/contratheque : titre + compteurs de cycle de vie (qui filtrent
-   la table au clic), recherche, « Importer des contrats » + CTA noir, table
-   à en-têtes capitales grises. */
-.hp-lib-badge {
-  transition: box-shadow 0.3s ease;
-}
-
-.hp-lib-badge.is-active {
-  box-shadow: 0 0 0 1.5px currentColor;
+/* ---------- 5. Contrathèque : import de contrats existants ----------
+   dashboard/contratheque : titre + compteurs de cycle de vie, recherche,
+   « Importer des contrats » + CTA noir, table à en-têtes capitales grises.
+   L'import reprend ImportContractModal (FileDropZone du design-system) :
+   fichiers glissés depuis le bureau, zone de dépôt qui s'allume, lignes de
+   fichiers ; puis le widget Leo classe les contrats et chaque ligne passe
+   « en cours » dans la table (barre + étape) avant d'être finalisée.
+   js/main.js : mockLibrary. */
+.hp-win[data-mock="library"] {
+  position: relative;
 }
 
 .hp-lib-tools {
@@ -1322,7 +1455,7 @@
   white-space: nowrap;
 }
 
-.hp-lib-search [data-lib-query]:empty::before {
+.hp-lib-search::before {
   content: "Rechercher un contrat, un cocontractant…";
   color: var(--color-faint);
   font-weight: 500;
@@ -1414,22 +1547,368 @@
   font-size: 8.5px;
 }
 
-.hp-tr.is-hit {
-  background-color: #f2fefe;
+/* Place réservée pour les 4 lignes : la fenêtre ne grandit pas quand les
+   contrats importés arrivent. */
+.hp-tbl-rows {
+  min-height: 150px;
 }
 
-.hp-tr.is-filtered {
+/* Ligne importée : repliée, puis « en cours » (voile blanc avec nom du
+   fichier, barre et étape par-dessus les colonnes), puis finalisée. */
+.hp-tr--new {
+  position: relative;
+}
+
+.hp-tr--new:not(.is-in) {
   max-height: 0;
   padding-block: 0;
   border-color: transparent;
   opacity: 0;
-  overflow: hidden;
 }
 
-/* Hauteur réservée pour les 4 lignes : la fenêtre ne saute pas quand le
-   filtre en masque une partie. */
-[data-lib-rows] {
-  min-height: 146px;
+.hp-tr-pending {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+  background-color: #f5fbfb;
+  transition: opacity 0.35s ease;
+}
+
+.hp-tr--new.is-done .hp-tr-pending {
+  opacity: 0;
+}
+
+.hp-tr-pending b {
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+}
+
+.hp-tr-bar {
+  height: 4px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background-color: var(--app-line);
+}
+
+.hp-tr-bar i {
+  display: block;
+  width: var(--p, 5%);
+  height: 100%;
+  border-radius: inherit;
+  background-color: var(--color-teal);
+  transition: width 0.5s var(--ease-out);
+}
+
+.hp-tr-pending em {
+  overflow: hidden;
+  color: var(--color-muted);
+  font-size: 8.5px;
+  font-style: normal;
+  text-overflow: ellipsis;
+}
+
+/* Modale d'import */
+.hp-lib-modal {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  background-color: rgb(31 18 14 / 0.28);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.hp-win.is-modal .hp-lib-modal {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.hp-lib-modal-card {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 300px;
+  border-radius: 12px;
+  padding: 16px;
+  background-color: var(--color-white);
+  box-shadow: 0 24px 48px -16px rgb(31 18 14 / 0.4);
+  transform: translateY(10px) scale(0.97);
+  transition: transform 0.4s var(--ease-out);
+}
+
+.hp-win.is-modal .hp-lib-modal-card {
+  transform: none;
+}
+
+.hp-lib-modal-h {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.hp-lib-modal-p {
+  color: var(--color-muted);
+  font-size: 8.5px;
+  line-height: 1.5;
+}
+
+.hp-lib-modal-l {
+  margin-top: 2px;
+  font-size: 8.5px;
+  font-weight: 600;
+}
+
+/* FileDropZone : pointillés gris, teal + halo quand un fichier la survole */
+.hp-lib-drop {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1.5px dashed var(--color-border);
+  border-radius: 8px;
+  padding: 8px;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.hp-lib-drop.is-over {
+  border-color: var(--color-teal-deep);
+  background-color: var(--color-cyan-light);
+  box-shadow: 0 0 0 3px rgb(15 74 72 / 0.12);
+}
+
+.hp-lib-drop-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 4px;
+  font-size: 8.5px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.hp-lib-drop-top u {
+  color: var(--color-teal-deep);
+}
+
+.hp-lib-drop-top small {
+  color: var(--color-muted);
+  font-size: 7.5px;
+}
+
+.hp-lib-drop-ico {
+  width: 14px;
+  height: 14px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f4a48' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12'/%3E%3Cpath d='m17 8-5-5-5 5'/%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.hp-lib-files {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hp-lib-file {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-height: 0;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 0 6px;
+  background-color: var(--app-soft);
+  font-size: 8px;
+  opacity: 0;
+  transition: max-height 0.35s var(--ease-out), padding 0.35s var(--ease-out), opacity 0.3s ease, border-color 0.3s ease;
+}
+
+.hp-lib-drop.has-files .hp-lib-file {
+  max-height: 30px;
+  border-color: var(--color-border);
+  padding-block: 4px;
+  opacity: 1;
+  transition-delay: calc(var(--i) * 0.08s);
+}
+
+.hp-lib-file i,
+.hp-lib-drag-doc i {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  color: #fff;
+  background-color: var(--color-teal-deep);
+  font-size: 5.5px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.hp-lib-file b {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.hp-lib-file small {
+  color: var(--color-muted);
+  font-size: 7px;
+  font-variant-numeric: tabular-nums;
+}
+
+.hp-lib-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.hp-lib-btn--primary {
+  border-color: var(--color-teal-deep);
+  color: #fff;
+  background-color: var(--color-teal-deep);
+}
+
+.hp-lib-btn {
+  transition: transform 0.15s ease;
+}
+
+.hp-lib-btn.is-pressed {
+  transform: scale(0.94);
+}
+
+/* Fichiers glissés depuis le bureau : pile en éventail + compteur, avec le
+   pointeur. Posé sur le visuel (hors fenêtre), déplacé par le JS (--x/--y,
+   coordonnées relatives au visuel). */
+.hp-lib-drag {
+  --x: 110%;
+  --y: 40%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  width: 46px;
+  height: 52px;
+  opacity: 0;
+  pointer-events: none;
+  translate: var(--x) var(--y);
+  transition: translate 1s cubic-bezier(0.45, 0.05, 0.25, 1), opacity 0.3s ease, scale 0.3s ease;
+}
+
+.hp-lib-drag.is-on {
+  opacity: 1;
+}
+
+.hp-lib-drag.is-dropped {
+  opacity: 0;
+  scale: 0.6;
+}
+
+.hp-lib-drag-doc {
+  position: absolute;
+  inset: 0 6px 0 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 0 10px 20px -8px rgb(31 18 14 / 0.35);
+}
+
+.hp-lib-drag-doc:nth-child(1) { rotate: -10deg; translate: -6px 2px; }
+.hp-lib-drag-doc:nth-child(2) { rotate: 6deg; translate: 5px 1px; }
+
+.hp-lib-drag-doc i {
+  width: 22px;
+  height: 22px;
+  font-size: 6.5px;
+}
+
+.hp-lib-drag-n {
+  position: absolute;
+  top: -7px;
+  right: -2px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  color: #fff;
+  background-color: #e5484d;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.hp-lib-drag-cursor {
+  position: absolute;
+  bottom: -14px;
+  left: 24px;
+  width: 15px;
+  height: 20px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 20'%3E%3Cpath d='M1 1v15.5l4-3.8 2.6 5.8 2.6-1.1-2.5-5.7H13z' fill='%231f120e' stroke='%23fff' stroke-width='1.3' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0 / contain no-repeat;
+  filter: drop-shadow(0 2px 3px rgb(31 18 14 / 0.25));
+}
+
+/* Widget Leo pendant la classification */
+.hp-lib-leo {
+  position: absolute;
+  bottom: 12px;
+  left: calc(var(--rail-w) + 12px);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 9px;
+  padding: 5px 12px 5px 5px;
+  color: #d0f5f8;
+  background-color: var(--color-leo-badge);
+  box-shadow: 0 10px 24px -8px rgb(0 0 0 / 0.4);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.4s var(--ease-out);
+}
+
+.hp-lib-leo.is-shown {
+  opacity: 1;
+  transform: none;
+}
+
+.hp-lib-leo > span:last-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.hp-lib-leo b {
+  font-size: 9px;
+  font-weight: 600;
+  background: linear-gradient(90deg, #d0f5f8 30%, #fff 50%, #d0f5f8 70%) 0 0 / 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: hp-shimmer 1.6s linear infinite;
+}
+
+.hp-lib-leo small {
+  color: rgb(208 245 248 / 0.65);
+  font-size: 8px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes hp-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
 }
 
 .hp-float--alert {
@@ -1549,7 +2028,7 @@
 
   .hp-sign-track {
     --sign-axis: y;
-    height: 72px;
+    height: 150px;
     margin: -1px 0;
   }
 
@@ -1568,15 +2047,15 @@
 
   .hp-sign-mail {
     top: 50%;
-    left: calc(50% + 26px);
+    left: calc(50% + 42px);
     translate: 0 -50%;
   }
 
   .hp-sign-doc {
-    top: 0;
+    top: calc(-1 * var(--sign-overlap));
     left: 50%;
     margin-top: 0;
-    margin-left: -15px;
+    margin-left: -29px;
   }
 
   /* Deux tuiles KPI sur mobile : les échéances (secondaires) disparaissent. */
@@ -1815,11 +2294,15 @@
   border-radius: 50%;
   background-color: var(--color-white);
   transform: translate(-50%, -50%);
+  transition: scale 0.15s ease, box-shadow 0.15s ease;
 }
 
-.hp-onb-range.is-moving .hp-onb-range-fill,
-.hp-onb-range.is-moving .hp-onb-range-thumb {
-  transition: width 0.9s var(--ease-out), left 0.9s var(--ease-out);
+/* Pouce saisi (initOnboard : appui → glissé → relâché) : il grossit et
+   prend un halo. Le déplacement lui-même suit --v, mis à jour à chaque
+   image par le JS, en phase avec le pointeur. */
+.hp-onb-range.is-grabbed .hp-onb-range-thumb {
+  scale: 1.25;
+  box-shadow: 0 0 0 4px rgb(8 127 131 / 0.18);
 }
 
 .hp-onb-scale {
@@ -1934,12 +2417,17 @@
   transform: none;
 }
 
+/* Badge Leo (base.css, .hp-leo-tile, animation Lottie) à la taille de
+   l'icône du toast */
 .hp-onb-toast-ico {
   width: 30px;
   height: 30px;
-  flex-shrink: 0;
-  border-radius: 9px;
-  background: var(--color-teal-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23087f83' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z'/%3E%3C/svg%3E") center / 16px no-repeat;
+  border-radius: calc(30px * 7 / 34);
+}
+
+.hp-onb-toast-ico .hp-leo-glyph {
+  width: 17px;
+  height: 17px;
 }
 
 /* Curseur de souris : sa pointe (coin haut-gauche) est posée sur --x / --y

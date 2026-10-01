@@ -8,7 +8,12 @@
 //      { type: "legaleo-home:height", height } ;
 //   3. délègue au parent le défilement vers les ancres internes
 //      ({ type: "legaleo-home:scroll", y }) : l'iframe fait la hauteur de la
-//      page, elle ne défile pas, c'est la page parente qui doit défiler.
+//      page, elle ne défile pas, c'est la page parente qui doit défiler ;
+//   4. reçoit la hauteur de la fenêtre parente
+//      ({ type: "legaleo-home:viewport", height }) → --fold-h (hero.css) ;
+//   5. reçoit la partie visible de l'iframe
+//      ({ type: "legaleo-home:view", top, height }) → évènement
+//      « legaleo:view » (page contact : bouton collé en bas de l'écran).
 // Côté parent (élément Embed Webflow) : voir webflow-embed.html.
 (() => {
   let embedded;
@@ -57,6 +62,28 @@
     lastHeight = 0;
     sendHeight();
   });
+
+  // Messages du parent :
+  // - hauteur de sa fenêtre, pour le premier écran (hero + logos) : dans
+  //   l'iframe, 100vh vaudrait la hauteur de l'iframe elle-même ;
+  // - partie de l'iframe visible à l'écran ({ top, height } en px de la
+  //   page), pour ce qui doit suivre l'écran (bouton collé en bas de la page
+  //   contact) : relayée en évènement « legaleo:view ».
+  window.addEventListener("message", (e) => {
+    if (e.source !== window.parent || !PARENT_ORIGINS.includes(e.origin)) return;
+    const data = e.data || {};
+    if (data.type === "legaleo-home:viewport" && Number.isFinite(data.height)) {
+      root.style.setProperty("--fold-h", Math.round(data.height) + "px");
+    } else if (data.type === "legaleo-home:view" && Number.isFinite(data.top) && Number.isFinite(data.height)) {
+      window.dispatchEvent(new CustomEvent("legaleo:view", { detail: { top: data.top, height: data.height } }));
+    }
+  });
+
+  // Défilement demandé par la page (ex. vers la carte de réservation) :
+  // c'est la page parente qui défile.
+  window.legaleoEmbed = {
+    scrollTo: (y) => post({ type: "legaleo-home:scroll", y: Math.max(0, Math.round(y)) }),
+  };
 
   document.addEventListener("click", (e) => {
     const link = e.target.closest && e.target.closest('a[href^="#"]');

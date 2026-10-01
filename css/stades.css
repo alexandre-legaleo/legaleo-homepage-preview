@@ -58,10 +58,8 @@
 }
 
 .hp-marquee img {
-  height: 34px;
+  height: var(--h, 34px);
   width: auto;
-  max-width: 130px;
-  object-fit: contain;
   mix-blend-mode: multiply;
   filter: grayscale(1);
   opacity: 0.7;
@@ -86,11 +84,132 @@
 }
 
 /* ---------- Stades ---------- */
+/* Courbe de croissance au-dessus des cartes : même grille à 3 colonnes,
+   un repère centré sur chaque carte. Le point est posé sur la courbe (--y :
+   hauteur de la courbe au centre de la colonne, dans le repère 120px du
+   SVG), le libellé juste en dessous. */
+.hp-stades-curve {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  height: 196px;
+  margin-top: 44px;
+}
+
+.hp-stades-curve-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  overflow: visible;
+  /* Courbe et aire s'effacent aux deux extrémités au lieu d'être coupées net. */
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+
+/* L'aire se découvre de gauche à droite en même temps que la courbe se
+   trace (même durée, même courbe d'accélération). Elle couvre toute la
+   largeur du viewBox : inset en % = progression horizontale. */
+.hp-stades-curve-area {
+  fill: url(#hp-stades-curve-fade);
+  clip-path: inset(0 100% 0 0);
+}
+
+.hp-stades-curve.is-visible .hp-stades-curve-area {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 1.6s cubic-bezier(0.45, 0, 0.2, 1) 0.2s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hp-stades-curve .hp-stades-curve-area,
+  .hp-stades-curve .hp-stades-curve-line {
+    clip-path: none;
+    stroke-dashoffset: 0;
+    transition: none !important;
+  }
+}
+
+.hp-stades-curve-line {
+  fill: none;
+  stroke: var(--color-teal);
+  stroke-width: 2.5;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.hp-stades-curve.is-visible .hp-stades-curve-line {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1.6s cubic-bezier(0.45, 0, 0.2, 1) 0.2s;
+}
+
+.hp-stades-mark {
+  /* Colonne pleine hauteur : le libellé est calé en bas (même niveau pour
+     les trois), le point reste posé sur la courbe (--y) et un pointillé le
+     relie au libellé. */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  color: var(--color-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.hp-stades-mark::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--y) + 7px);
+  bottom: 56px;
+  left: 50%;
+  border-left: 1.5px dashed rgb(8 127 131 / 0.35);
+}
+
+.hp-stades-mark::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: calc(var(--y) - 8px);
+  left: calc(50% - 7px); /* centré optiquement sur le pointillé (::after, 1.5px) */
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background-color: var(--color-teal);
+}
+
+.hp-stades-mark b {
+  color: var(--color-teal);
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  text-transform: none;
+}
+
+/* Mini-visuels animés des cartes masqués pour l'instant (attribut hidden
+   dans index.html, à retirer pour les réafficher) : le display: flex de
+   .hp-sv l'emporterait sinon */
+.hp-sv[hidden] {
+  display: none;
+}
+
+.hp-stades-cta {
+  margin-top: 48px;
+}
+
 .hp-stades {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
-  margin-top: 56px;
+  margin-top: 36px;
 }
 
 .hp-stade {
@@ -101,122 +220,78 @@
   /* Pas d'overflow: hidden : l'en-tête déborde à cheval sur le bord haut. */
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
-  padding: 50px 14px 36px;
+  padding: 34px 14px 36px;
   background-color: var(--color-white);
 }
 
 /* Tout sauf le mini-visuel et l'en-tête reprend le retrait de 36px de la carte. */
-.hp-stade > :not(.hp-sv, .hp-stade-top) {
+.hp-stade > :not(.hp-sv, .hp-stade-offer) {
   margin-inline: 22px;
-}
-
-/* Lueur qui suit le pointeur (--mx / --my posés par initStades). */
-.hp-stade::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 0%), var(--stade-glow), transparent 70%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-}
-
-.hp-stade:hover::before {
-  opacity: 1;
-}
-
-.hp-stade {
-  --stade-glow: rgb(98 231 235 / 0.16);
-}
-
-/* Réseau établi : carte sombre, même matière que le cœur du hero. */
-.hp-stade--dark {
-  --stade-glow: rgb(98 231 235 / 0.2);
-  border-color: rgb(98 231 235 / 0.22);
-  color: var(--color-white);
-  background:
-    radial-gradient(80% 50% at 85% 0%, rgb(98 231 235 / 0.2), transparent 70%),
-    linear-gradient(165deg, #13605d, var(--color-teal-deep) 45%, #0a3634);
-}
-
-.hp-stade--dark .hp-kicker { color: var(--color-cyan); }
-.hp-stade--dark .hp-p { color: rgb(255 254 251 / 0.72); }
-
-/* Carte claire : coches sur fond teal plein (comme l'icône de l'en-tête) */
-.hp-stade:not(.hp-stade--dark) .hp-checks li::before {
-  background-color: var(--color-teal);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fffefb' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E");
-}
-
-.hp-stade--dark .hp-checks li::before {
-  background-color: rgb(98 231 235 / 0.16);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2362e7eb' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E");
 }
 
 .hp-stades > :nth-child(2) {
   --reveal-delay: 100ms;
 }
 
-/* En-tête de carte : pastille pleine (icône en couleur franche + libellé),
-   pour qu'on repère d'un coup d'œil à quel stade s'adresse la carte.
-   Centrée, à cheval sur le bord haut de la carte. */
-.hp-stade-top {
+.hp-stades > :nth-child(3) {
+  --reveal-delay: 200ms;
+}
+
+/* Parcours pas encore disponible : puce grise en pointillés */
+.hp-stade .hp-checks li.is-soon {
+  color: var(--color-muted);
+}
+
+.hp-stade .hp-checks li.is-soon::before {
+  background: none;
+  box-shadow: inset 0 0 0 1.5px var(--color-border);
+}
+
+/* En-tête de carte : nom de l'offre dans une pill teal, centrée, à cheval
+   sur le bord haut de la carte. Le stade du réseau est porté par les
+   repères de la courbe. */
+.hp-stade > .hp-stade-offer {
   position: absolute;
   top: 0;
   left: 50%;
   z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
   margin: 0;
   transform: translate(-50%, -50%);
   white-space: nowrap;
-  border: 1px solid #b9eeec;
   border-radius: var(--radius-pill);
-  padding: 6px 20px 6px 6px;
-  background-color: var(--color-teal-bg);
-}
-
-.hp-stade-top .hp-kicker {
-  color: var(--color-teal-text);
-  font-size: 12px;
+  padding: 4px 10px;
+  background-color: var(--color-teal);
+  color: var(--color-white);
+  font-size: 10px;
   font-weight: 800;
+  line-height: 1.4;
   letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
-.hp-stade--dark .hp-stade-top {
-  border-color: rgb(98 231 235 / 0.4);
-  /* Opaque : la moitié haute de la pastille est hors de la carte. */
-  background-color: #1b6865;
+/* Montée en gamme des offres : Essentiel (teal) → Growth (teal profond) →
+   Sur mesure (noir). */
+.hp-stade > .hp-stade-offer--growth {
+  background-color: var(--color-teal-deep);
 }
 
-.hp-stade--dark .hp-stade-top .hp-kicker {
-  color: var(--color-cyan);
+.hp-stade > .hp-stade-offer--custom {
+  background-color: var(--color-black);
+}
+
+/* Tranche de franchisés : portée par la courbe sur grand écran, rappelée
+   sous la pill quand la courbe disparaît. */
+.hp-stade-range {
+  display: none;
+  margin-bottom: 14px;
+  color: var(--color-muted);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: center;
 }
 
 .hp-sv + .hp-h3 {
   margin-top: 30px;
-}
-
-.hp-stade-icon {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--color-teal) center / 16px no-repeat;
-}
-
-.hp-stade--dark .hp-stade-icon {
-  background-color: var(--color-cyan);
-}
-
-.hp-stade-icon--seed {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fffefb' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21v-9M12 12c0-4 3-7 8-7 0 4-3 7-8 7zM12 15c0-3-2.5-5.5-7-5.5 0 3 2.5 5.5 7 5.5z'/%3E%3C/svg%3E");
-}
-
-.hp-stade-icon--network {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f4a48' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='5' r='2.5'/%3E%3Ccircle cx='5' cy='18' r='2.5'/%3E%3Ccircle cx='19' cy='18' r='2.5'/%3E%3Ccircle cx='12' cy='13' r='2'/%3E%3Cpath d='M12 7.5V11M10.4 14.3 7 16.4M13.6 14.3 17 16.4'/%3E%3C/svg%3E");
 }
 
 .hp-stade .hp-checks {
@@ -224,15 +299,23 @@
 }
 
 .hp-stade-stat {
+  /* Chiffre toujours au-dessus du texte, et place réservée pour deux lignes
+     de texte : les trois cartes ont la même hauteur de stat, leurs filets
+     s'alignent. */
   display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 4px 10px;
+  flex-direction: column;
+  gap: 6px;
+  min-height: calc(20px + 38px + 6px + 3em);
   margin-top: auto;
   padding-top: 20px;
   border-top: 1px solid var(--color-border);
-  color: var(--color-muted);
-  font-size: 14px;
+  /* Même poids que les puces .hp-checks : le texte porte la stat autant
+     que le chiffre. */
+  color: var(--color-black);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-wrap: balance;
 }
 
 .hp-stade-stat strong {
@@ -244,17 +327,11 @@
   letter-spacing: -0.8px;
 }
 
-.hp-stade--dark .hp-stade-stat {
-  border-top-color: rgb(255 254 251 / 0.12);
-  color: rgb(255 254 251 / 0.7);
-}
-
-.hp-stade--dark .hp-stade-stat strong {
-  color: var(--color-cyan);
-}
-
 /* ---------- Mini-visuels des stades ---------- */
 .hp-sv {
+  /* Ombre des cartes des mini-visuels : centrée (pas de décalage), large et
+     très légère. */
+  --sv-shadow: 0 0 28px rgb(31 18 14 / 0.08);
   position: relative;
   display: flex;
   align-items: center;
@@ -276,10 +353,11 @@
 }
 
 /* Lancement : un DIP se rédige, le compteur file vers 48 h */
+/* Même fond que les deux autres mini-visuels (.hp-sv--network, --fleet) */
 .hp-sv--launch {
   background:
-    radial-gradient(rgb(8 127 131 / 0.14) 1px, transparent 1.5px) 0 0 / 18px 18px,
-    linear-gradient(160deg, #e3fcfb, #c9f6f4);
+    radial-gradient(rgb(8 127 131 / 0.12) 1px, transparent 1.5px) 0 0 / 18px 18px,
+    linear-gradient(160deg, #eefaf9, #dff3f2);
 }
 
 .hp-sv-doc {
@@ -295,7 +373,7 @@
   border-radius: 14px;
   padding: 14px 16px 18px;
   background-color: var(--color-white);
-  box-shadow: var(--shadow-float);
+  box-shadow: var(--sv-shadow);
 }
 
 .hp-sv-doc-head {
@@ -332,7 +410,7 @@
   width: 0;
   height: 6px;
   border-radius: var(--radius-pill);
-  background: linear-gradient(90deg, #7fd9dc, #b5eeef);
+  background-color: #eef0f0;
 }
 
 .hp-sv-line--para {
@@ -370,10 +448,13 @@
   from, to { opacity: 1; }
 }
 
+/* Tampon à cheval sur le bord haut du document (translate, séparé du
+   transform de l'animation), pour ne pas recouvrir l'en-tête et les lignes. */
 .hp-sv-stamp {
   position: absolute;
-  top: 16px;
+  top: 0;
   right: 12px;
+  translate: 0 calc(-50% - 3px);
   border: 1.5px solid currentColor;
   border-radius: var(--radius-pill);
   padding: 4px 10px 4px 24px;
@@ -391,61 +472,16 @@
   transition: opacity 0.25s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.hp-sv-timer {
-  position: relative;
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  width: 104px;
-  height: 104px;
-  border-radius: 50%;
-  background-color: var(--color-white);
-  box-shadow: var(--shadow-float);
-}
-
-.hp-sv-timer svg {
-  position: absolute;
-  inset: 8px;
-  width: calc(100% - 16px);
-  height: calc(100% - 16px);
-  transform: rotate(-90deg);
-  fill: none;
-  stroke-width: 5;
-}
-
-.hp-sv-timer-track { stroke: var(--color-teal-bg); }
-
-.hp-sv-timer-arc {
-  stroke: var(--color-teal);
-  stroke-linecap: round;
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  transition: stroke-dashoffset 0.3s ease;
-}
-
-/* Le compteur ne démarre qu'une fois le texte écrit (.is-timing, posé par
-   initStades après la dernière ligne). */
-.hp-sv.is-timing .hp-sv-timer-arc {
-  stroke-dashoffset: 0;
-  transition: stroke-dashoffset 1.4s cubic-bezier(0.33, 0, 0.2, 1);
-}
-
-.hp-sv-timer-n {
-  color: var(--color-teal);
-  font-family: var(--font-serif);
-  font-size: 24px;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-
-/* Réseau établi : les contrats signés arrivent, les alertes tombent */
-.hp-sv--network {
+/* Réseau qui grandit : les contrats signés arrivent, les échéances et le
+   litige tombent */
+.hp-sv--network,
+.hp-sv--fleet {
   align-items: stretch;
-  border: 1px solid rgb(98 231 235 / 0.14);
+  gap: 12px;
+  padding: 16px;
   background:
-    radial-gradient(rgb(98 231 235 / 0.16) 1px, transparent 1.5px) 0 0 / 18px 18px,
-    rgb(0 0 0 / 0.14);
+    radial-gradient(rgb(8 127 131 / 0.12) 1px, transparent 1.5px) 0 0 / 18px 18px,
+    linear-gradient(160deg, #eefaf9, #dff3f2);
 }
 
 .hp-sv-col {
@@ -458,7 +494,7 @@
 
 .hp-sv-col-l {
   margin-bottom: 2px;
-  color: rgb(255 254 251 / 0.55);
+  color: var(--color-muted);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -471,10 +507,10 @@
   align-items: center;
   gap: 9px;
   border-radius: 11px;
-  padding: 8px 10px;
+  padding: 7px 9px;
   color: var(--color-black);
   background-color: var(--color-white);
-  box-shadow: 0 10px 24px -10px rgb(0 0 0 / 0.5);
+  box-shadow: var(--sv-shadow);
   opacity: 0;
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
@@ -505,7 +541,7 @@
   width: 22px;
   height: 26px;
   border-radius: 4px;
-  background: var(--color-purple-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233d5ccc' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M7 9h10M7 13h10M7 17h6'/%3E%3C/svg%3E") center / 15px no-repeat;
+  background: var(--color-purple-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238c3ddb' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M7 9h10M7 13h10M7 17h6'/%3E%3C/svg%3E") center / 15px no-repeat;
 }
 
 .hp-sv-file-t {
@@ -532,26 +568,6 @@
   transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i) * 0.28s + 0.45s);
 }
 
-.hp-sv-bell {
-  flex-shrink: 0;
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background: var(--color-orange-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a4620c' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9'/%3E%3Cpath d='M10.3 21a1.94 1.94 0 0 0 3.4 0'/%3E%3C/svg%3E") center / 15px no-repeat;
-}
-
-.hp-sv.is-alerting .hp-sv-bell {
-  animation: hp-sv-ring 0.9s ease calc(var(--i) * 0.5s + 0.3s);
-}
-
-@keyframes hp-sv-ring {
-  0%, 100% { transform: rotate(0); }
-  20% { transform: rotate(-16deg); }
-  40% { transform: rotate(13deg); }
-  60% { transform: rotate(-8deg); }
-  80% { transform: rotate(4deg); }
-}
-
 .hp-sv-alert-t {
   min-width: 0;
 }
@@ -560,9 +576,120 @@
   display: block;
 }
 
-.hp-sv-alert-t .hp-sv-meta {
-  color: var(--color-orange-text);
+.hp-sv-alert-t {
+  flex: 1;
 }
+
+.hp-sv-file-t .hp-sv-meta {
+  font-weight: 500;
+}
+
+/* Échéance / statut à droite de la ligne */
+.hp-sv-due {
+  flex-shrink: 0;
+  border-radius: var(--radius-pill);
+  padding: 2px 7px;
+  color: var(--color-orange-text);
+  background-color: var(--color-orange-bg);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.hp-sv-alert--case .hp-sv-due,
+.hp-sv-due--ok {
+  color: var(--color-green-text);
+  background-color: var(--color-green-bg);
+}
+
+/* Grand réseau : tableau du parc contractuel */
+.hp-sv-fleet {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.hp-sv-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.hp-sv-kpi,
+.hp-sv-brand,
+.hp-sv-team {
+  border-radius: 11px;
+  background-color: var(--color-white);
+  box-shadow: var(--sv-shadow);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.hp-sv.is-shown .hp-sv-kpi,
+.hp-sv.is-shown .hp-sv-brand,
+.hp-sv.is-shown .hp-sv-team {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.35s ease calc(var(--i) * 0.18s),
+    transform 0.6s cubic-bezier(0.34, 1.4, 0.64, 1) calc(var(--i) * 0.18s);
+}
+
+.hp-sv-kpi {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 10px;
+  color: var(--color-muted);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.hp-sv-kpi b {
+  color: var(--color-teal);
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.hp-sv-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+}
+
+.hp-sv-team {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  color: var(--color-muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.hp-sv-avs {
+  display: flex;
+}
+
+.hp-sv-avs i {
+  width: 20px;
+  height: 20px;
+  margin-right: -6px;
+  border: 2px solid #eefaf9;
+  border-radius: 50%;
+  background-color: var(--color-cyan);
+}
+
+.hp-sv-avs i:nth-child(2) { background-color: var(--color-teal); }
+.hp-sv-avs i:nth-child(3) { background-color: var(--color-teal-deep); }
+.hp-sv-avs i:nth-child(4) { margin-right: 0; background-color: var(--color-black); }
 
 @media (prefers-reduced-motion: reduce) {
   .hp-sv * {
@@ -571,11 +698,22 @@
   }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1100px) {
+  .hp-stades-curve {
+    display: none;
+  }
+
   .hp-stades {
     grid-template-columns: minmax(0, 1fr);
-    /* Place pour la pastille à cheval de la carte suivante. */
-    row-gap: 48px;
+    max-width: 600px;
+    margin-inline: auto;
+    margin-top: 64px;
+    /* Place pour la pill à cheval de la carte suivante. */
+    row-gap: 40px;
+  }
+
+  .hp-stade-range {
+    display: block;
   }
 }
 
@@ -596,36 +734,18 @@
   }
 
   .hp-stade {
-    padding: 42px 10px 26px;
+    padding: 30px 10px 26px;
   }
 
-  .hp-stade > :not(.hp-sv, .hp-stade-top) {
+  .hp-stade > :not(.hp-sv, .hp-stade-offer) {
     margin-inline: 12px;
   }
 
-  .hp-stade-top {
-    gap: 10px;
-    padding-right: 14px;
-  }
-
-  .hp-stade-top .hp-kicker {
-    font-size: 11.5px;
-    letter-spacing: 0.06em;
-  }
 
   .hp-sv {
     height: 196px;
     gap: 12px;
     padding: 16px;
-  }
-
-  .hp-sv-timer {
-    width: 84px;
-    height: 84px;
-  }
-
-  .hp-sv-timer-n {
-    font-size: 20px;
   }
 
   /* Colonnes étroites : les contrats perdent leur année. */

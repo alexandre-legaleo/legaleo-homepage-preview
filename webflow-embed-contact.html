@@ -1,0 +1,78 @@
+<!--
+  PAGE CONTACT (www.legaleo.ai/contact) — À COLLER DANS WEBFLOW : élément
+  « Embed » (Add > Components > Code Embed), sous la nav de la page contact
+  (le footer reste natif Webflow). Tout ce qui est entre les deux lignes de
+  commentaire "COLLER" ci-dessous.
+
+  Même mécanique que webflow-embed.html (homepage) :
+  - affiche contact.html (GitHub Pages) dans un iframe pleine largeur ;
+  - la page (js/embed.js) envoie sa hauteur, l'iframe s'ajuste (pas de barre
+    de défilement propre), y compris quand l'agenda HubSpot s'affiche ;
+  - le widget HubSpot Meetings est chargé dans la page (js/contact.js), rien
+    à ajouter côté Webflow ;
+  - les paramètres de l'URL (ex. /contact?reseau=lancement) sont transmis à
+    la page, qui pré-sélectionne la situation ;
+  - la partie visible de l'iframe est envoyée à la page au défilement, pour
+    le bouton « Réserver ma démo » collé en bas de l'écran sur mobile.
+
+  À régler
+  - NAV_OFFSET : hauteur en px de la nav fixe de legaleo.ai.
+  - Si la page source change d'adresse, changer PAGE_ORIGIN ET le src de
+    l'iframe.
+
+  Sécurité : le script ignore tout message qui ne vient pas de PAGE_ORIGIN
+  ET de cet iframe précis.
+-->
+
+<!-- COLLER DEPUIS ICI -->
+<iframe
+  id="legaleo-contact-frame"
+  data-src="https://alexandre-legaleo.github.io/legaleo-homepage-preview/contact.html"
+  title="Réserver une démo de Legaleo"
+  style="display:block;width:100%;height:100vh;border:0"
+></iframe>
+<script>
+  (function () {
+    var PAGE_ORIGIN = "https://alexandre-legaleo.github.io";
+    var NAV_OFFSET = 80;
+    var frame = document.getElementById("legaleo-contact-frame");
+
+    // Paramètres de l'URL transmis à la page (ex. ?reseau=lancement :
+    // situation pré-sélectionnée dans le formulaire)
+    frame.src = frame.getAttribute("data-src") + window.location.search;
+
+    // Partie de l'iframe visible à l'écran (bouton « Réserver ma démo »
+    // collé en bas de l'écran sur mobile), une fois par image au plus.
+    var pending = false;
+    function sendView() {
+      pending = false;
+      if (!frame.contentWindow) return;
+      frame.contentWindow.postMessage(
+        { type: "legaleo-home:view", top: -frame.getBoundingClientRect().top, height: window.innerHeight },
+        PAGE_ORIGIN
+      );
+    }
+    function queueView() {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(sendView);
+    }
+    frame.addEventListener("load", sendView);
+    window.addEventListener("scroll", queueView, { passive: true });
+    window.addEventListener("resize", queueView);
+
+    window.addEventListener("message", function (e) {
+      if (e.origin !== PAGE_ORIGIN || e.source !== frame.contentWindow) return;
+      var data = e.data || {};
+
+      if (data.type === "legaleo-home:height") {
+        frame.style.height = data.height + "px";
+        queueView(); // la page a changé de hauteur (ex. agenda affiché)
+      } else if (data.type === "legaleo-home:scroll") {
+        var top = frame.getBoundingClientRect().top + window.pageYOffset + data.y - NAV_OFFSET;
+        window.scrollTo({ top: top, behavior: "smooth" });
+      }
+    });
+  })();
+</script>
+<!-- JUSQU'ICI -->
