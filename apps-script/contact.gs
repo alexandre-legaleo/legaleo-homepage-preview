@@ -63,6 +63,12 @@ const CONFIG = {
   HUBSPOT_PORTAL_ID: '147898530',
   HUBSPOT_OWNER_ID: '88882115',    // Mehdi TALEB (franchiseurs)
   LAWYER_OWNER_ID: '33055086',     // Jean-Philippe CHENARD (avocats)
+  // Étape des deals franchiseur dans le pipeline de vente, retrouvée par son nom
+  // (début du libellé, sans tenir compte de l'emoji). DEAL_STAGE_ID, si renseigné,
+  // passe avant le nom (id interne : Réglages HubSpot > Objets > Deals > Pipelines).
+  DEAL_PIPELINE: 'default',
+  DEAL_STAGE_LABEL: 'Prospecting',
+  DEAL_STAGE_ID: '',
   // Deal avocat dans le pipeline Partenaires : ids internes, à renseigner une fois le
   // pipeline créé (comme dans le script avocat). Vides : pas de deal avocat.
   PARTENAIRES_PIPELINE: '',
@@ -370,8 +376,8 @@ function createHubspotDeal(lead, contactId, ctx) {
       // Nomenclature des deals : seul le nom du client varie, le reste est fixe
       // (crochets compris), ex. « [New Business] - [Pierre Martin] - [Service Type] - … »
       dealname: '[New Business] - [' + lead.firstname + ' ' + lead.lastname + '] - [Service Type] - [Contract Length] - [Website Form]',
-      pipeline: 'default',
-      dealstage: 'appointmentscheduled',   // = étape « Qualification »
+      pipeline: CONFIG.DEAL_PIPELINE,
+      dealstage: dealStage(),             // « Prospecting 🔎 »
       hubspot_owner_id: CONFIG.HUBSPOT_OWNER_ID
     }
   };
@@ -380,6 +386,29 @@ function createHubspotDeal(lead, contactId, ctx) {
   if (res.code === 201) return JSON.parse(res.text).id;
   console.error('HubSpot deal ' + res.code + ' : ' + res.text);
   return null;
+}
+
+// Id interne de l'étape DEAL_STAGE_LABEL, lu dans HubSpot et gardé 6 h en cache.
+// Introuvable : repli sur « Qualification » (appointmentscheduled), pour ne pas
+// perdre le deal, et erreur dans les journaux.
+function dealStage() {
+  if (CONFIG.DEAL_STAGE_ID) return CONFIG.DEAL_STAGE_ID;
+  var cache = CacheService.getScriptCache();
+  var hit = cache.get('dealstage');
+  if (hit) return hit;
+  var res = hubspot('get', '/crm/v3/pipelines/deals/' + CONFIG.DEAL_PIPELINE);
+  if (res.code === 200) {
+    var want = CONFIG.DEAL_STAGE_LABEL.toLowerCase();
+    var stage = (JSON.parse(res.text).stages || []).filter(function (st) {
+      return st.label.toLowerCase().indexOf(want) === 0;
+    })[0];
+    if (stage) {
+      cache.put('dealstage', stage.id, 6 * 3600);
+      return stage.id;
+    }
+  }
+  console.error('Étape « ' + CONFIG.DEAL_STAGE_LABEL + ' » introuvable (' + res.code + ') : deal créé en Qualification.');
+  return 'appointmentscheduled';
 }
 
 function createLawyerDeal(lead, contactId) {
@@ -499,6 +528,7 @@ function testSetup() {
   ['HUBSPOT_TOKEN', 'ENCHARGE_TOKEN', 'SLACK_WEBHOOK_URL'].forEach(function (name) {
     console.log(name + ' : ' + (secret(name) ? 'renseignée' : '⚠️ MANQUANTE'));
   });
+  console.log('Étape des deals : ' + dealStage() + ' (« ' + CONFIG.DEAL_STAGE_LABEL + ' »)');
   var slots = freeSlots(true);
   console.log('OK · ' + slots.length + ' créneaux libres, premier : ' +
     (slots[0] ? frDate(new Date(slots[0])) : 'aucun'));
