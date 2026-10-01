@@ -8,18 +8,21 @@
    L'état « pas encore atteint » n'existe qu'avec JS (.js-reveal) : sans JS,
    les titres s'affichent normalement. */
 .hp-step {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 28px;
 }
 
-/* Numéro de chapitre : simple chiffre en exposant du verbe, sans pastille.
-   Le « / 06 » reste dans le DOM (lecteurs d'écran) mais n'est pas affiché. */
+/* Numéro de chapitre : simple chiffre en exposant du verbe, sans pastille,
+   suspendu dans la marge gauche : le verbe reste calé sur le bord de la
+   colonne, comme le reste du texte. Le « / 06 » reste dans le DOM (lecteurs
+   d'écran) mais n'est pas affiché. */
 .hp-step-n {
-  flex-shrink: 0;
-  align-self: flex-start;
-  margin-top: 2px;
+  position: absolute;
+  top: 2px;
+  right: calc(100% + 10px);
   color: var(--color-faint);
   font-size: 12px;
   font-weight: 700;
@@ -39,12 +42,15 @@
 
 .hp-step-verb {
   flex-shrink: 0;
-  /* Le remplissage (background-clip: text) ne peint que dans la boîte de
-     l'élément : avec line-height: 1, les accents (Générer) et jambages
-     (Signer) en dépassent et seraient rognés. On agrandit la boîte de tous
-     côtés, et les marges négatives annulent cet agrandissement dans la mise
-     en page. */
-  margin: -0.2em -0.08em -0.28em -0.06em;
+  /* Cadre-masque (overflow: hidden) : avec line-height: 1, les accents
+     (Générer) et jambages (Signer) en dépassent et seraient rognés. On
+     agrandit la boîte de tous côtés, et les marges négatives annulent cet
+     agrandissement dans la mise en page. */
+  overflow: hidden;
+  /* À gauche, 0,05em de plus : compense l'approche des capitales de Fraunces
+     (P, F, S, G, C ≈ 2px à 44px) pour caler le verbe optiquement sur le
+     bord de la colonne. */
+  margin: -0.2em -0.08em -0.28em -0.11em;
   padding: 0.2em 0.08em 0.28em 0.06em;
   color: var(--color-black);
   font-family: var(--font-serif);
@@ -62,26 +68,23 @@
   color: var(--color-teal);
 }
 
-/* Remplissage du verbe : dégradé en deux moitiés (encre / beige) décalé
-   derrière le texte. */
-.js-reveal .hp-step-verb {
-  color: transparent;
-  background: linear-gradient(90deg, var(--color-black) 0 50%, #ddd5c6 50% 100%);
-  background-size: 200% 100%;
-  background-position: 100% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  transform: translateX(-10px);
-  transition: background-position 1.1s var(--ease-out), transform 1.1s var(--ease-out);
+.hp-step-verb > span {
+  display: inline-block;
 }
 
-.js-reveal .hp-step.is-reached .hp-step-verb {
-  background-position: 0 0;
+/* Entrée du verbe : il monte depuis sous la ligne, dans son cadre-masque,
+   comme le verbe du chapitre du player (css/player.css). */
+.js-reveal .hp-step-verb > span {
+  transform: translateY(110%);
+}
+
+.js-reveal .hp-step.is-reached .hp-step-verb > span {
   transform: none;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hp-step-verb,
+  .hp-step-verb > span,
   .hp-step-n {
     transition: none !important;
   }
@@ -92,7 +95,7 @@
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   align-items: center;
-  gap: 72px;
+  gap: 78px;
   padding: 64px 0;
   scroll-margin-top: 24px;
 }
@@ -112,7 +115,7 @@
 .hp-feature-visual::before {
   content: "";
   position: absolute;
-  inset: -22px;
+  inset: -34px;
   z-index: -1;
   border-radius: var(--radius-xl);
   background: linear-gradient(200deg, #fbf7ef, #f5eee1);
@@ -143,7 +146,12 @@
 }
 
 @media (max-width: 640px) {
+  /* Gouttière trop étroite pour suspendre le numéro : il revient dans le
+     flux, devant le verbe. */
   .hp-step-n {
+    position: static;
+    align-self: flex-start;
+    margin-top: 2px;
     font-size: 11px;
   }
 

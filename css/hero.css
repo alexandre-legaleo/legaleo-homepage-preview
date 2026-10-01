@@ -1,10 +1,37 @@
+/* Premier écran : hero + logos occupent exactement la fenêtre, le hero
+   prend la place restante et centre son contenu verticalement.
+   Dans l'iframe Webflow, 100svh vaudrait la hauteur de l'iframe, qui suit
+   celle de la page (boucle) : on utilise --fold-h, hauteur de la fenêtre
+   parente envoyée par webflow-embed.html (js/embed.js), sinon rien. */
+.hp-fold {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+
+.is-embedded .hp-fold {
+  min-height: var(--fold-h, 0px);
+}
+
+.hp-fold > .hp-hero {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hp-fold > .hp-hero > .hp-hero-grid {
+  width: 100%;
+}
+
 .hp-hero {
+  /* Hero plus large que le reste de la page (--wrap-max : 1200px) : le texte
+     se rapproche du bord gauche, le player gagne de la place. */
+  --hero-wrap: 1320px;
   position: relative;
   overflow: hidden;
-  padding: 72px 32px 88px;
-  background:
-    radial-gradient(60% 55% at 85% 35%, rgb(98 231 235 / 0.16), transparent 70%),
-    var(--color-white);
+  padding: 72px 32px 40px;
+  background-color: var(--color-white);
 }
 
 /* Page dans un iframe (classe posée par js/embed.js) : la nav fixe de
@@ -14,11 +41,14 @@
   padding-top: 132px;
 }
 
+/* Colonne droite un peu plus large : le player y réduit son canevas de
+   scènes (880 px) à la largeur dispo, chaque pixel compte pour la lisibilité. */
 .hp-hero-grid {
+  max-width: var(--hero-wrap);
   display: grid;
-  grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   align-items: center;
-  gap: 56px;
+  gap: 10px;
 }
 
 .hp-h1 {
@@ -47,16 +77,60 @@
 /* Décalage d'apparition du hero */
 .hp-hero-copy > :nth-child(2) { --reveal-delay: 100ms; }
 .hp-hero-copy > :nth-child(3) { --reveal-delay: 200ms; }
+.hp-hero-copy > :nth-child(4) { --reveal-delay: 300ms; }
 
-/* ---------- Écosystème (orbites) ----------
+.hp-h1 sup {
+  font-size: 0.5em;
+  line-height: 0;
+  vertical-align: 0.8em;
+}
+
+/* Ligne de preuves sous les boutons */
+.hp-proofs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  max-width: 560px;
+  margin-top: 28px;
+  padding: 0;
+  list-style: none;
+  color: var(--color-muted);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.hp-proofs li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.hp-proofs li::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-teal-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23087f83' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 10px no-repeat;
+}
+
+/* Colonne visuelle : le player (css/player.css). Il casse la grille :
+   déborde dans la marge droite de la page (--bleed : jusqu'à 140px, en
+   gardant 48px d'air avec le bord de la fenêtre), pour un canevas de
+   scènes moins réduit. .hp-hero coupe ce qui dépasserait
+   (overflow: hidden). */
+.hp-hero-visual {
+  --bleed: clamp(0px, calc((100vw - var(--hero-wrap)) / 2 - 48px), 140px);
+  justify-self: start;
+  width: calc(100% + var(--bleed));
+}
+
+/* ---------- Écosystème (orbites) — désactivé ----------
+   Markup rangé dans <template id="hp-eco-disabled"> (index.html), styles
+   gardés pour une éventuelle réactivation.
    Scène carrée : le SVG (viewBox 600 × 600) et les pastilles HTML partagent
    le même repère, les pastilles étant placées en % de la scène. Les tailles
    sont en cqw pour que tout l'ensemble se réduise d'un bloc. */
-.hp-hero-visual {
-  justify-self: end;
-  width: 100%;
-  max-width: 580px;
-}
 
 .hp-eco {
   position: relative;
@@ -372,9 +446,12 @@
     max-width: 720px;
   }
 
+  /* Empilé sous le texte : le player reprend sa taille pleine, dans la
+     grille. */
   .hp-hero-visual {
     justify-self: center;
-    max-width: 560px;
+    width: 100%;
+    max-width: 880px;
   }
 }
 
@@ -398,5 +475,11 @@
 
   .hp-ctarow .hp-btn {
     flex: 1 1 auto;
+  }
+
+  /* Sur mobile, le hero se suffit : canevas des scènes trop réduit pour
+     rester lisible, pas de player. */
+  .hp-hero-visual {
+    display: none;
   }
 }

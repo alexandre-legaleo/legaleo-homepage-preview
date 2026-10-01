@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Réserver une démo · Legaleo</title>
+  <meta name="description" content="Voyez Legaleo sur votre réseau en 30 minutes, en visio : vos DIP, contrats de franchise et CRZ préparés par l'IA, validés par un avocat dédié au droit de la franchise." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="preload" href="fonts/Fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/contact.css" />
+
+  <!-- Mode « page dans un iframe » (js/embed.js) : même mécanique que la
+       homepage (hauteur envoyée au parent, nav Webflow dégagée). Snippet
+       Webflow : webflow-embed-contact.html. -->
+  <script src="js/embed.js"></script>
+</head>
+<body>
+  <main class="ct-page">
+
+    <!-- DÉMO : argumentaire à gauche, prise de rendez-vous à droite -->
+    <section class="ct-hero">
+      <div class="hp-wrap ct-hero-grid">
+        <div class="ct-copy">
+          <span class="hp-kicker">Démo de 30 minutes, en visio</span>
+          <h1 class="ct-h1">Voyez Legaleo <em class="hp-em">sur votre réseau</em>, en 30 minutes</h1>
+          <p class="ct-lede">Vous montrez votre réseau, on vous montre comment vos DIP, contrats de franchise et CRZ sont préparés par l'IA, validés par un avocat dédié au droit de la franchise et signés en ligne.</p>
+
+          <span class="ct-label">Ce que l'entretien vous apporte</span>
+          <ul class="hp-checks ct-checks">
+            <li>Une démo sur votre cas : votre stade, votre secteur, vos contrats existants</li>
+            <li>Le temps et le coût pour poser, ou reprendre, votre documentation juridique</li>
+            <li>Vos questions posées à un co-fondateur, pas à un commercial</li>
+            <li>Aucune préparation, aucun engagement</li>
+          </ul>
+
+          <div class="ct-host">
+            <img class="ct-host-av" src="assets/mehdi.webp" width="52" height="52" alt="" />
+            <div>
+              <b>Mehdi Taleb, co-fondateur</b>
+              <p>C'est lui qui fait la démo. Une question avant ? <a href="mailto:hello@legaleo.ai">hello@legaleo.ai</a> · <a href="tel:+33757913310">07&nbsp;57&nbsp;91&nbsp;33&nbsp;10</a></p>
+            </div>
+          </div>
+
+          <!-- Preuves : chiffres clés, chiffre ou logos puis libellé -->
+          <ul class="ct-trust">
+            <li><b class="ct-trust-big">50+</b><span>têtes de réseau interrogées avant le lancement</span></li>
+            <li><b class="ct-trust-big">100&nbsp;%</b><span>des documents validés par un avocat</span></li>
+            <li>
+              <span class="ct-trust-logos">
+                <!-- Logo Barreau masqué pour l'instant (retirer hidden pour le réafficher) -->
+                <img src="assets/logo-barreau-paris-incubateur.svg" alt="Incubateur du Barreau de Paris" class="ct-trust-logo ct-trust-logo--barreau" hidden />
+                <img src="assets/logo-euratech-teal.svg" alt="EuraTechnologies" class="ct-trust-logo ct-trust-logo--eura" />
+              </span>
+              <span>Incubée au Barreau de Paris et à EuraTechnologies</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Prise de contact en 2 étapes (js/contact.js) :
+             1. qualification (prénom, nom, email, enseigne, points de
+                vente ; « situation » masquée, déduite des points de vente) ;
+             2. au choix : réserver une démo (créneaux libres de l'agenda
+                Google de Mehdi) ou envoyer un message. Envoi au script
+                Google Apps Script (apps-script/contact.gs) : agenda,
+                HubSpot, Encharge, Slack. -->
+        <div class="ct-book" id="reserver" data-book>
+          <div class="ct-book-top">
+            <span class="ct-step" data-book-step>Étape 1 sur 2</span>
+            <span class="ct-progress" aria-hidden="true"><span data-book-progress></span></span>
+          </div>
+
+          <!-- Étape 1 -->
+          <form class="ct-form" data-book-form novalidate>
+            <!-- Profil : franchiseur (démo ou message) ou avocat (message
+                 seulement, circuit avocats partenaires). Textes et champs
+                 propres à chaque profil : data-for (js/contact.js). -->
+            <fieldset class="ct-profile" data-profile>
+              <legend class="ct-sr">Vous êtes</legend>
+              <label><input type="radio" name="profile" value="franchiseur" checked /><span>Je suis franchiseur</span></label>
+              <label><input type="radio" name="profile" value="avocat" /><span>Je suis avocat</span></label>
+            </fieldset>
+
+            <h2 class="ct-book-h" data-for="franchiseur">Réservez votre démo</h2>
+            <h2 class="ct-book-h" data-for="avocat" hidden>Écrivez-nous</h2>
+            <p class="ct-book-sub" data-for="franchiseur">Quelques infos, puis vous choisissez : un créneau de démo, ou un simple message.</p>
+            <p class="ct-book-sub" data-for="avocat" hidden>Vous souhaitez rejoindre les avocats partenaires, ou une question : quelques infos, puis votre message.</p>
+
+            <div class="ct-row">
+              <label class="ct-field">
+                <span>Prénom</span>
+                <input type="text" name="firstname" autocomplete="given-name" placeholder="Camille" required />
+              </label>
+              <label class="ct-field">
+                <span>Nom</span>
+                <input type="text" name="lastname" autocomplete="family-name" placeholder="Martin" required />
+              </label>
+            </div>
+
+            <div class="ct-row">
+              <label class="ct-field">
+                <span>Email professionnel</span>
+                <input type="email" name="email" autocomplete="email" placeholder="camille@votre-enseigne.fr" required />
+              </label>
+              <label class="ct-field">
+                <span data-company-l>Votre enseigne</span>
+                <input type="text" name="company" autocomplete="organization" placeholder="Nom du réseau" required />
+              </label>
+            </div>
+
+            <fieldset class="ct-choices" data-for="franchiseur">
+              <legend>Nombre de points de vente</legend>
+              <label class="ct-chip"><input type="radio" name="outlets" value="1 à 5" required /><span>1 à 5</span></label>
+              <label class="ct-chip"><input type="radio" name="outlets" value="6 à 30" /><span>6 à 30</span></label>
+              <label class="ct-chip"><input type="radio" name="outlets" value="31 à 100" /><span>31 à 100</span></label>
+              <label class="ct-chip"><input type="radio" name="outlets" value="100 et plus" /><span>100 et plus</span></label>
+            </fieldset>
+
+            <!-- Masquée pour l'instant (doublon des points de vente) : la
+                 situation est déduite des points de vente (js/contact.js).
+                 Pour la réactiver, retirer l'attribut hidden. -->
+            <fieldset class="ct-choices" data-book-stage hidden>
+              <legend>Votre situation</legend>
+              <label class="ct-chip"><input type="radio" name="stage" value="Je lance mon réseau" required /><span>Je lance mon réseau</span></label>
+              <label class="ct-chip"><input type="radio" name="stage" value="Je développe un réseau établi" /><span>Je développe un réseau établi</span></label>
+              <label class="ct-chip"><input type="radio" name="stage" value="Je structure un grand réseau" /><span>Je structure un grand réseau</span></label>
+            </fieldset>
+
+            <!-- Anti-robot : champ invisible, laissé vide par les humains -->
+            <label class="ct-hp" aria-hidden="true">Site web<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+
+            <p class="ct-error" data-book-error role="alert" hidden>Complétez les champs en surbrillance pour continuer.</p>
+
+            <button type="submit" class="hp-btn hp-btn-primary ct-submit">Continuer <span aria-hidden="true">→</span></button>
+            <!-- Mobile / tablette : l'essentiel de « Ce qui se passe ensuite »,
+                 au moment de décider (la section est tout en bas). -->
+            <p class="ct-assure" data-for="franchiseur">Créneau tout de suite · 30 min en visio · Sans engagement</p>
+            <p class="ct-note" data-for="franchiseur">Vos données servent uniquement à préparer votre démo et restent hébergées en France.</p>
+            <p class="ct-note" data-for="avocat" hidden>Vos données servent uniquement à répondre à votre demande et restent hébergées en France.</p>
+          </form>
+
+          <!-- Étape 2 : démo (agenda) ou message -->
+          <div class="ct-slot" data-book-slot hidden>
+            <h2 class="ct-book-h" data-book-slot-h>Comment souhaitez-vous continuer&nbsp;?</h2>
+            <p class="ct-recap" data-book-recap-row><span data-book-recap></span><button type="button" class="ct-back" data-book-back>Modifier</button></p>
+
+            <fieldset class="ct-modes" data-modes>
+              <legend class="ct-sr">Votre choix</legend>
+              <label class="ct-mode">
+                <input type="radio" name="mode" value="demo" checked />
+                <span><span class="ct-mode-ico ct-mode-ico--demo" aria-hidden="true"></span><b>Réserver une démo</b><small>30 min en visio avec Mehdi</small></span>
+              </label>
+              <label class="ct-mode">
+                <input type="radio" name="mode" value="message" />
+                <span><span class="ct-mode-ico ct-mode-ico--msg" aria-hidden="true"></span><b>Envoyer un message</b><small>Sans rendez-vous, on vous répond</small></span>
+              </label>
+            </fieldset>
+
+            <!-- Démo : jour, puis horaire (créneaux libres de l'agenda),
+                 message facultatif -->
+            <form class="ct-pane" data-pane="demo" novalidate>
+              <span class="ct-pane-l">Choisissez un jour</span>
+              <div class="ct-days" data-days></div>
+              <span class="ct-pane-l">Puis un horaire <small>heure de Paris</small></span>
+              <div class="ct-times" data-times></div>
+              <label class="ct-field">
+                <span>Un mot sur votre besoin <small>facultatif</small></span>
+                <textarea name="message" rows="3" maxlength="2000" placeholder="Votre secteur, vos contrats actuels, ce que vous voulez voir…"></textarea>
+              </label>
+              <p class="ct-error" data-pane-error role="alert" hidden></p>
+              <button type="submit" class="hp-btn hp-btn-primary ct-submit" data-demo-submit disabled>Choisissez un créneau</button>
+            </form>
+
+            <!-- Message, sans rendez-vous -->
+            <form class="ct-pane" data-pane="message" novalidate hidden>
+              <label class="ct-field">
+                <span>Votre message</span>
+                <textarea name="message" rows="6" maxlength="2000" required placeholder="Votre question, votre projet de réseau…"></textarea>
+              </label>
+              <p class="ct-error" data-pane-error role="alert" hidden></p>
+              <button type="submit" class="hp-btn hp-btn-primary ct-submit">Envoyer mon message <span aria-hidden="true">→</span></button>
+            </form>
+
+            <!-- Confirmation (démo réservée ou message envoyé) -->
+            <div class="ct-done" data-done role="status" hidden>
+              <span class="ct-done-ico" aria-hidden="true"></span>
+              <p class="ct-done-t" data-done-t></p>
+              <p class="ct-done-p" data-done-p></p>
+            </div>
+
+            <p class="ct-mock" data-mock hidden>Maquette : rien n'est réservé ni envoyé.</p>
+          </div>
+
+          <p class="ct-lawyer" data-for="avocat" hidden>Le programme en détail : <a href="https://www.legaleo.ai/avocat-droit-franchise" target="_top">les avocats partenaires <span aria-hidden="true">→</span></a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- APRÈS LA RÉSERVATION : frise des 3 étapes (repère de temps sur la
+         ligne, au-dessus de chaque carte ; masquée pour l'instant), puis les
+         questions. Après réservation (js/contact.js) : étape 1 « C'est fait »,
+         étape 2 datée. -->
+    <section class="ct-next">
+      <div class="hp-wrap">
+        <span class="hp-kicker">Ce qui se passe ensuite</span>
+        <h2 class="hp-h2 hp-h2-left ct-h2">Trois étapes, aucune surprise</h2>
+        <ol class="ct-steps">
+          <li class="ct-stepcard" data-next-booked>
+            <span class="ct-when" data-next-tag>Aujourd'hui</span>
+            <span class="ct-ico ct-ico--calendar" aria-hidden="true"></span>
+            <h3>Vous choisissez votre créneau</h3>
+            <p>Tout de suite, dans l'agenda. Pas de rappel à attendre, pas de relance.</p>
+          </li>
+          <li class="ct-stepcard" data-next-meeting>
+            <span class="ct-when" data-next-date>Le créneau choisi</span>
+            <span class="ct-ico ct-ico--video" aria-hidden="true"></span>
+            <h3>30 minutes en visio sur votre réseau</h3>
+            <p>Votre stade, vos contrats existants, vos questions. Vous voyez la plateforme sur votre cas, pas une démo générique.</p>
+          </li>
+          <li class="ct-stepcard">
+            <span class="ct-when">4 semaines jusqu'à l'autonomie</span>
+            <span class="ct-ico ct-ico--check" aria-hidden="true"></span>
+            <h3>Si ça vous parle, vos premiers modèles</h3>
+            <p>Vos modèles validés par un avocat dédié au droit de la franchise, en 48 h en moyenne. Sans engagement.</p>
+          </li>
+        </ol>
+
+        <!-- Questions : titre dans la 1re colonne, accordéon (mêmes .hp-faq
+             que la homepage, css/base.css) sur les deux suivantes -->
+        <div class="ct-proof">
+          <h3 class="ct-faq-h">Vos questions</h3>
+          <div class="hp-faq ct-faq">
+            <details class="hp-faq-i">
+              <summary>Est-ce que je dois préparer quelque chose ?</summary>
+              <div class="hp-faq-a"><p>Non. Si vous avez un contrat ou un DIP existant, apportez-le : on vous montre comment il se reprend dans la plateforme.</p></div>
+            </details>
+            <details class="hp-faq-i">
+              <summary>Est-ce un engagement ?</summary>
+              <div class="hp-faq-a"><p>Non. La démo sert à savoir si Legaleo est fait pour votre réseau. Vous repartez avec une réponse claire, dans un sens ou dans l'autre.</p></div>
+            </details>
+            <details class="hp-faq-i">
+              <summary>Qui fait la démo ?</summary>
+              <div class="hp-faq-a"><p>Un co-fondateur. Il connaît la franchise et la plateforme. Pour les questions de droit, il s'appuie sur les avocats partenaires.</p></div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Mobile / tablette : raccourci vers la réservation, collé en bas de
+       l'écran tant que la carte n'est pas visible (js/contact.js). -->
+  <a href="#reserver" class="hp-btn hp-btn-primary ct-sticky" data-sticky>Réserver ma démo</a>
+
+  <script src="js/contact.js"></script>
+</body>
+</html>

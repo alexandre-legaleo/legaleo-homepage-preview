@@ -1,0 +1,29 @@
+<!-- Accueil de l'espace avocat (mockup), retiré de la homepage le
+     2026-09-30 : l'étape 03 « Valider » y montre désormais l'éditeur avec la
+     recommandation de l'avocat. Conservé tel quel pour une future page dédiée
+     aux avocats : à placer dans un .hp-feature-visual ; styles dans
+     css/mockups.css (.hp-win--dark, .hp-lw-*, .hp-app-kpi*), animation dans
+     js/main.js (mockLawyer, data-mock="lawyer", enregistrée dans MOCKS). -->
+            <div class="hp-win hp-win--dark" data-mock="lawyer" aria-hidden="true">
+              <div class="hp-shell-top"><span class="hp-shell-logo" role="img" aria-label="Legaleo"></span><span class="hp-shell-search"><i class="hp-shell-i" data-i="search"></i>Rechercher un contrat, un modèle…</span><i class="hp-shell-i hp-shell-bell" data-i="bell"></i><span class="hp-shell-me"><span class="hp-shell-av">PM</span><span class="hp-shell-name">Pierre Martin</span><i class="hp-shell-i" data-i="chevron-down"></i></span></div>
+              <div class="hp-shell-rail"><span class="hp-shell-item is-active"><i class="hp-shell-i" data-i="layout-dashboard"></i><span>Accueil</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="clipboard-check"></i><span>Révisions en cours</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="file-text"></i><span>Mes contrats</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="users"></i><span>Mes clients</span></span><span class="hp-shell-foot"><span class="hp-shell-item"><i class="hp-shell-i" data-i="user-cog"></i><span>Mon compte</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="book-open"></i><span>Documentation</span></span></span></div>
+              <div class="hp-winbody">
+                <div class="hp-lw-hello"><span class="hp-lw-av">PM</span><span><span class="hp-lw-date">Lundi 1er septembre</span><span class="hp-lw-h">Bonjour Maître Martin</span></span></div>
+                <div class="hp-app-kpis">
+                  <div class="hp-app-kpi"><span class="hp-app-kpi-top"><span class="hp-app-kpi-ico hp-app-kpi-ico--clients"></span>Clients assignés</span><span class="hp-app-kpi-row"><span class="hp-app-kpi-n">4</span></span><span class="hp-app-kpi-link">Voir mes clients</span></div>
+                  <div class="hp-app-kpi hp-app-kpi--orange"><span class="hp-app-kpi-top"><span class="hp-app-kpi-ico hp-app-kpi-ico--pending"></span>En attente</span><span class="hp-app-kpi-row"><span class="hp-app-kpi-n" data-lw-pending>2</span></span><span class="hp-app-kpi-bar"><span></span></span><span class="hp-app-kpi-foot" data-lw-done>3 / 5 traités</span></div>
+                  <div class="hp-app-kpi hp-app-kpi--red"><span class="hp-app-kpi-top"><span class="hp-app-kpi-ico hp-app-kpi-ico--due"></span>Échéances</span><span class="hp-app-kpi-row"><span class="hp-app-kpi-n">1</span><span class="hp-app-kpi-meta">sous 7 jours</span></span><span class="hp-app-kpi-foot">Aucune échéance dépassée</span></div>
+                </div>
+                <div class="hp-lw-sec"><span class="hp-lw-sec-h">À réviser</span><span class="hp-lw-link">Voir toutes mes révisions</span></div>
+                <div class="hp-lw-tabs"><span class="hp-lw-tab"><i class="hp-shell-i" data-i="files"></i>Modèles en relecture <b>0</b></span><span class="hp-lw-tab is-active"><i class="hp-shell-i" data-i="file-text"></i>Contrats en relecture <b>2</b></span></div>
+                <div class="hp-rows">
+                  <div class="hp-row" data-lw-row>
+                    <div><span class="hp-pill hp-pill--orange" data-lw-status>En attente</span><span class="hp-row-t">Contrat de franchise · Réseau Jean Dupont</span></div>
+                    <span class="hp-row-note" data-lw-note>3 annotations</span>
+                  </div>
+                  <div class="hp-row">
+                    <div><span class="hp-pill hp-pill--orange">En attente</span><span class="hp-row-t">DIP · Réseau Jean Dupont</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>

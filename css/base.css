@@ -228,7 +228,8 @@ body {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: var(--color-teal-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23087f83' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 12px no-repeat;
+  /* Pastille teal pleine, coche blanche (homepage et page contact) */
+  background: var(--color-teal) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fffefb' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 12px no-repeat;
 }
 
 /* Points clés d'une feature : encadrés, pour se détacher du paragraphe
@@ -294,7 +295,7 @@ body {
 .hp-pill--orange { color: #f57c00; background-color: #fff4e6; }
 .hp-pill--green { color: #24856d; background-color: color-mix(in srgb, #24856d 10%, white); }
 .hp-pill--blue { color: #00a5eb; background-color: #e5f3fe; }
-.hp-pill--purple { color: #8c3ddb; background-color: #f6e9fd; }
+.hp-pill--purple { color: var(--color-purple-text); background-color: var(--color-purple-bg); }
 .hp-pill--dark { color: var(--color-white); background-color: var(--color-black); }
 
 .hp-avatar {
@@ -312,6 +313,7 @@ body {
 
 .hp-avatar--teal { background-color: var(--color-teal); }
 .hp-avatar--orange { background-color: #fc9d1f; }
+.hp-avatar--purple { background-color: var(--color-purple-text); }
 
 /* Glyphe Leo (étoile à 8 branches, cf. badge de la page Leo) */
 .hp-leo-glyph {
@@ -438,6 +440,84 @@ body {
 
   .hp-lede2,
   .hp-lede-c {
+    font-size: 16px;
+  }
+}
+
+/* Pastille Bêta dans un bouton cyan : fond encre pour rester lisible */
+.hp-btn .hp-beta {
+  color: var(--color-lime);
+  background-color: var(--color-black);
+}
+
+/* ---------- FAQ : accordéon (homepage, page contact) ---------- */
+.hp-faq {
+  margin-top: 48px;
+  border-top: 1px solid var(--color-border);
+}
+
+.hp-faq-i {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.hp-faq-i summary {
+  position: relative;
+  display: block;
+  padding: 24px 48px 24px 4px;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.35;
+  cursor: pointer;
+  list-style: none;
+  transition: color 0.2s ease;
+}
+
+.hp-faq-i summary::-webkit-details-marker {
+  display: none;
+}
+
+.hp-faq-i summary:hover {
+  color: var(--color-teal);
+}
+
+/* + qui devient − */
+.hp-faq-i summary::before,
+.hp-faq-i summary::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 14px;
+  height: 2px;
+  border-radius: 1px;
+  background-color: currentColor;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.hp-faq-i summary::after {
+  transform: rotate(90deg);
+}
+
+.hp-faq-i[open] summary::after {
+  transform: rotate(0);
+}
+
+.hp-faq-a {
+  overflow: hidden;
+}
+
+.hp-faq-a p {
+  max-width: 680px;
+  padding: 0 4px 24px;
+  color: var(--color-muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .hp-faq-i summary {
+    padding: 20px 40px 20px 0;
     font-size: 16px;
   }
 }

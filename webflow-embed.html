@@ -40,6 +40,14 @@
     var NAV_OFFSET = 80;
     var frame = document.getElementById("legaleo-home-frame");
 
+    // Hauteur de la fenêtre, pour que hero + logos remplissent le premier écran
+    function sendViewport() {
+      if (!frame.contentWindow) return;
+      frame.contentWindow.postMessage({ type: "legaleo-home:viewport", height: window.innerHeight }, PAGE_ORIGIN);
+    }
+    frame.addEventListener("load", sendViewport);
+    window.addEventListener("resize", sendViewport);
+
     window.addEventListener("message", function (e) {
       if (e.origin !== PAGE_ORIGIN || e.source !== frame.contentWindow) return;
       var data = e.data || {};
@@ -53,4 +61,12 @@
     });
   })();
 </script>
+<!-- Agent Leo (bulle en bas à droite), chargé ici dans la page parente et
+     non dans l'iframe, pour qu'il reste fixé à l'écran. Hébergé avec la
+     homepage (leo-widget/ sur GitHub Pages), réglages dans
+     leo-widget/config.js. S'il passe un jour dans le Footer code du site
+     (toutes les pages), retirer ces trois lignes pour éviter un doublon. -->
+<link rel="stylesheet" href="https://alexandre-legaleo.github.io/legaleo-homepage-preview/leo-widget/leo-widget.min.css">
+<script src="https://alexandre-legaleo.github.io/legaleo-homepage-preview/leo-widget/config.js" defer></script>
+<script src="https://alexandre-legaleo.github.io/legaleo-homepage-preview/leo-widget/leo-widget.min.js" defer></script>
 <!-- JUSQU'ICI -->

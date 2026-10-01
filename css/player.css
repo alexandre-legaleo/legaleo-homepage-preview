@@ -1,0 +1,1423 @@
+/* ---------- Player : aperçu de la plateforme ----------
+   Dans la colonne droite du hero (.hp-hero-visual). Une scène « motion design » par
+   chapitre de « La plateforme », chacune centrée sur une seule
+   fonctionnalité en gros plan (et non l'écran complet, déjà montré plus
+   bas). js/main.js : initHeroPlayer.
+   - Pas de carton-titre : la scène démarre tout de suite, le verbe du
+     chapitre s'affiche en haut à gauche.
+   - Scènes : canevas fixe 880 × 440, réduit à la largeur dispo (--fit, posé
+     par le JS). Les étapes s'empilent en classes .is-s1, .is-s2… ; tout le
+     mouvement est en CSS, le JS ne fait que cadencer (et taper du texte).
+   - Barres dessous, dans le cadre : progression du chapitre en cours, saut
+     à un chapitre. */
+.hp-player {
+  --pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --reveal-delay: 300ms;
+}
+
+/* Sans JS (ou avant que le player soit monté) : rien à montrer. */
+.hp-player:not(.is-ready) {
+  display: none;
+}
+
+.hp-player-stage {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  padding: 60px 18px 22px;
+  background: linear-gradient(200deg, #fbf7ef, #fffdf9);
+  box-shadow: 0 0 200px 0 rgb(31 18 14 / 13%);
+}
+
+/* ---------- Verbe du chapitre, en haut à gauche ----------
+   Masqué par son propre cadre : il monte depuis translateY(100px) quand le
+   chapitre démarre (.is-corner), et redescend hors cadre au suivant. */
+.hp-player-corner {
+  position: absolute;
+  top: 16px;
+  left: 22px;
+  z-index: 4;
+  overflow: hidden;
+  /* Cadre-masque : marges internes pour garder accents et jambages (g, é) */
+  padding-block: 0.1em 0.16em;
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.6px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.hp-player-corner > span {
+  display: inline-block;
+  will-change: transform;
+  transform: translateY(100px);
+  transition: transform 0.45s ease-in;
+}
+
+.is-corner .hp-player-corner > span {
+  transform: none;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s;
+}
+
+/* ---------- Scènes ---------- */
+.hp-sc-viewport {
+  --fit: 1;
+  position: relative;
+  height: calc(440px * var(--fit));
+}
+
+.hp-sc {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 880px;
+  height: 440px;
+  translate: -50% 0;
+  scale: var(--fit);
+  transform-origin: top center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.45s ease, visibility 0s linear 0.45s;
+}
+
+/* Remise à zéro d'une scène (js/main.js : resetScene) : ses éléments
+   reviennent à l'état initial sans transition. */
+.hp-sc.is-resetting *,
+.hp-sc.is-resetting *::before,
+.hp-sc.is-resetting *::after {
+  transition: none !important;
+}
+
+.hp-sc.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+/* Caméra : léger recul continu pendant toute la scène */
+.hp-sc-cam {
+  position: absolute;
+  inset: 0;
+}
+
+/* .is-leaving (posé par le JS pendant le fondu de sortie) garde la même
+   animation : elle continue là où elle en était au lieu de sauter à sa fin,
+   quand on change de chapitre en cours de scène. */
+.hp-sc.is-active .hp-sc-cam,
+.hp-sc.is-leaving .hp-sc-cam {
+  animation: hp-cam 7s var(--ease-out) both;
+}
+
+@keyframes hp-cam {
+  from { transform: scale(1.07) translateY(10px); }
+  to { transform: none; }
+}
+
+/* Calques GPU permanents pour les éléments animés de la scène affichée
+   (et de celle qui sort) : sans will-change, le navigateur les promeut en
+   calque au début de chaque transition et les rétrograde à la fin, et le
+   texte change d'anticrénelage au passage (petit scintillement), surtout
+   sur les cartes qui tournent ou changent de bordure. Limité aux scènes
+   visibles pour ne pas garder des calques inutiles en mémoire. */
+.hp-sc.is-active,
+.hp-sc.is-leaving {
+  will-change: opacity;
+}
+
+.hp-sc.is-active .hp-sc-cam,
+.hp-sc.is-leaving .hp-sc-cam {
+  will-change: transform;
+}
+
+.hp-sc.is-active :is(.hp-sc-card, .hp-sc-toast, .hp-sc-signer, .hp-sc-cursor, .hp-sc-drag, .hp-sc-kb-card),
+.hp-sc.is-leaving :is(.hp-sc-card, .hp-sc-toast, .hp-sc-signer, .hp-sc-cursor, .hp-sc-drag, .hp-sc-kb-card) {
+  will-change: transform, translate, rotate, scale, opacity;
+  backface-visibility: hidden;
+}
+
+/* Éléments communs */
+.hp-sc-card {
+  position: absolute;
+  border: 1px solid #e3e3e3;
+  border-radius: 16px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgb(31 18 14 / 0.04), 0 30px 60px -24px rgb(31 18 14 / 0.28);
+  opacity: 0;
+  transform: translateY(24px) scale(0.96);
+  /* height : cartes qui grandissent avec leur contenu (js/main.js,
+     fitHeight) */
+  transition: opacity 0.5s ease, transform 0.8s var(--ease-out), translate 0.9s var(--ease-out), scale 0.9s var(--ease-out), height 0.2s var(--ease-out);
+}
+
+.hp-sc.is-s1 .hp-sc-card {
+  opacity: 1;
+  transform: none;
+}
+
+.hp-sc-k {
+  display: block;
+  color: var(--color-teal);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hp-sc-l {
+  display: block;
+  margin-top: 14px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.hp-sc .hp-pill {
+  padding: 4px 11px;
+  font-size: 12.5px;
+}
+
+.hp-sc .hp-avatar {
+  width: 36px;
+  height: 36px;
+  font-size: 12px;
+}
+
+.hp-sc-paper-t {
+  color: var(--color-teal);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.hp-sc-paper-p {
+  margin-top: 14px;
+  color: var(--color-black);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+
+/* Pastille flottante de conclusion */
+.hp-sc-toast {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: var(--radius-pill);
+  padding: 8px 18px 8px 8px;
+  color: #fff;
+  background-color: var(--color-black);
+  box-shadow: 0 20px 40px -16px rgb(31 18 14 / 0.5);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(12px) scale(0.8);
+  transition: opacity 0.35s ease, transform 0.6s var(--pop);
+}
+
+.hp-sc-toast-ico {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--color-cyan) center / 16px no-repeat;
+}
+
+.hp-sc-ico--check { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231f120e' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E"); }
+.hp-sc-ico--scale { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231f120e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z'/%3E%3Cpath d='m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z'/%3E%3Cpath d='M7 21h10'/%3E%3Cpath d='M12 3v18'/%3E%3Cpath d='M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2'/%3E%3C/svg%3E"); }
+
+/* Deux pastilles de statut dans la même case : l'une chasse l'autre */
+.hp-sc-status {
+  display: inline-grid;
+  justify-items: end;
+}
+
+.hp-sc-status > * {
+  grid-area: 1 / 1;
+  transition: opacity 0.3s ease, transform 0.5s var(--pop);
+}
+
+.hp-sc-status > :last-child {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+/* Curseur de souris : pointe en haut à gauche, posé en left / top */
+/* Déplacé par translate (GPU) et non top/left : pas de relayout à chaque
+   image, pas de saut de demi-pixel. */
+.hp-sc-cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  translate: 780px 400px;
+  z-index: 5;
+  width: 20px;
+  height: 26px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 20'%3E%3Cpath d='M1 1v15.5l4-3.8 2.6 5.8 2.6-1.1-2.5-5.7H13z' fill='%231f120e' stroke='%23fff' stroke-width='1.3' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0 / contain no-repeat;
+  filter: drop-shadow(0 3px 4px rgb(31 18 14 / 0.3));
+  opacity: 0;
+  transition: translate 0.65s cubic-bezier(0.45, 0.05, 0.25, 1), opacity 0.3s ease, scale 0.12s ease;
+}
+
+.hp-sc-cursor.is-down {
+  scale: 0.85;
+}
+
+.hp-sc-cursor::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: rgb(8 127 131 / 0.35);
+  opacity: 0;
+}
+
+.hp-sc-cursor.is-down::before {
+  animation: hp-cursor-click 0.45s ease-out;
+}
+
+/* ---------- 01 Personnaliser ---------- */
+.hp-sc-onb-field {
+  top: 40px;
+  left: 230px;
+  z-index: 2;
+  width: 420px;
+  padding: 26px;
+}
+
+.hp-sc-select {
+  position: relative;
+  display: grid;
+  align-items: center;
+  height: 50px;
+  margin-top: 8px;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  padding: 0 44px 0 16px;
+  font-size: 15px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hp-sc-select > span {
+  grid-area: 1 / 1;
+  transition: opacity 0.3s ease, transform 0.4s var(--ease-out);
+}
+
+.hp-sc-select-ph {
+  color: #a3a3a3;
+}
+
+.hp-sc-select-v {
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.hp-sc-select::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23757575' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.hp-sc-menu {
+  position: absolute;
+  top: 176px;
+  right: 26px;
+  left: 26px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  padding: 6px;
+  background-color: #fff;
+  z-index: 3; /* par-dessus le choix « Type de réseau » */
+  box-shadow: 0 16px 36px -12px rgb(31 18 14 / 0.3);
+  font-size: 14px;
+  opacity: 0;
+  transform: translateY(-6px);
+  transform-origin: top;
+  transition: opacity 0.2s ease, transform 0.3s var(--ease-out);
+}
+
+/* « Type de réseau » : trois choix, celui cliqué passe en teal (.is-picked,
+   posé par js/main.js) */
+.hp-sc-l--seg {
+  margin-top: 22px;
+}
+
+.hp-sc-seg {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.hp-sc-seg > span {
+  flex: 1;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  padding: 12px 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  transition: border-color 0.25s ease, background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hp-sc-seg > span.is-picked {
+  border-color: var(--color-teal);
+  color: var(--color-teal-text);
+  background-color: var(--color-teal-bg);
+  box-shadow: 0 0 0 3px rgb(8 127 131 / 0.12);
+}
+
+.hp-sc-menu > span {
+  border-radius: 6px;
+  padding: 10px 12px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.hp-sc-cursor {
+  translate: 760px 400px;
+}
+
+/* s2 : le curseur va sur le champ */
+.hp-sc--onb.is-s2 .hp-sc-cursor { translate: 560px 142px; opacity: 1; }
+/* s3 : liste ouverte, survol de la bonne option */
+.hp-sc--onb.is-s3 .hp-sc-select { border-color: var(--color-teal); box-shadow: 0 0 0 4px rgb(8 127 131 / 0.12); }
+.hp-sc--onb.is-s3 .hp-sc-select::after { transform: rotate(180deg); }
+.hp-sc--onb.is-s3 .hp-sc-menu { opacity: 1; transform: none; }
+.hp-sc--onb.is-s3 .hp-sc-cursor { translate: 430px 280px; }
+.hp-sc--onb.is-s3 .hp-sc-menu-pick { background-color: #f5f8f8; }
+/* s4 : choisi, liste refermée */
+.hp-sc--onb.is-s4 .hp-sc-menu { opacity: 0; transform: translateY(-6px); }
+.hp-sc--onb.is-s4 .hp-sc-select::after { transform: none; }
+.hp-sc--onb.is-s4 .hp-sc-select-ph { opacity: 0; transform: translateY(-8px); }
+.hp-sc--onb.is-s4 .hp-sc-select-v { opacity: 1; transform: none; }
+/* s5 : le champ s'écarte, le profil du réseau se compose à côté */
+.hp-sc--onb.is-s5 .hp-sc-onb-field { translate: -160px 20px; scale: 0.94; }
+.hp-sc--onb.is-s5 .hp-sc-cursor { translate: 860px 430px; opacity: 0; }
+
+.hp-sc-onb-profile {
+  top: 130px;
+  left: 520px;
+  width: 300px;
+  padding: 24px;
+  rotate: 3deg;
+}
+
+.hp-sc.is-s1 .hp-sc-onb-profile {
+  opacity: 0;
+  transform: translateX(40px) scale(0.92);
+}
+
+.hp-sc--onb.is-s5 .hp-sc-onb-profile {
+  opacity: 1;
+  transform: none;
+}
+
+.hp-sc-onb-name {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.hp-sc-onb-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.hp-sc-chip {
+  border: 1px solid rgb(8 127 131 / 0.3);
+  border-radius: 8px;
+  padding: 7px 12px;
+  color: var(--color-teal-text);
+  background-color: var(--color-teal-bg);
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.3s ease, transform 0.5s var(--pop);
+}
+
+.hp-sc--onb.is-s5 .hp-sc-chip { opacity: 1; transform: none; }
+.hp-sc-chip:nth-child(1) { transition-delay: 0.35s; }
+.hp-sc-chip:nth-child(2) { transition-delay: 0.5s; }
+.hp-sc-chip:nth-child(3) { transition-delay: 0.65s; }
+.hp-sc-chip:nth-child(4) { transition-delay: 0.8s; }
+
+.hp-sc-onb-toast {
+  top: 60px;
+  left: 560px;
+}
+
+.hp-sc--onb.is-s6 .hp-sc-onb-toast { opacity: 1; transform: none; }
+
+/* ---------- 02 Générer ---------- */
+.hp-sc-gen-fields {
+  top: 120px;
+  left: 30px;
+  z-index: 2;
+  width: 260px;
+  padding: 22px;
+  rotate: -2deg;
+}
+
+.hp-sc.is-s1 .hp-sc-gen-fields {
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.hp-sc--gen.is-s2 .hp-sc-gen-fields {
+  opacity: 1;
+  transform: none;
+}
+
+.hp-sc-gen-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 8px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 9px 11px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.hp-sc-gen-row b {
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+/* Survol avant insertion : la ligne prend les couleurs du chip qu'elle va
+   insérer dans le texte (.hp-sc-var), pour relier les deux. */
+.hp-sc-gen-row.is-on {
+  border-color: rgb(8 127 131 / 0.3);
+  background-color: var(--color-teal-bg);
+  box-shadow: 0 4px 12px -4px rgb(8 127 131 / 0.25);
+  transform: translateX(4px);
+}
+
+.hp-sc-gen-row.is-on b {
+  color: var(--color-teal-text);
+}
+
+/* Clic sur la ligne, juste avant l'insertion */
+.hp-sc-gen-row.is-press {
+  transform: translateX(4px) scale(0.97);
+}
+
+.hp-sc-gen-foot {
+  display: block;
+  margin-top: 10px;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  color: #a3a3a3;
+  font-size: 11px;
+}
+
+/* Hauteur suivant le texte tapé, animée (js/main.js, fitHeight) ; ~280px
+   une fois le paragraphe complet. */
+.hp-sc-paper {
+  top: 56px;
+  left: 320px;
+  width: 520px;
+  overflow: hidden; /* nouvelle ligne découverte par la carte, pas de débord */
+  padding: 34px 38px;
+}
+
+.hp-sc-paper-h {
+  display: block;
+  margin-bottom: 18px;
+  color: #a3a3a3;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Chip de variable (violet, comme .rte-variable) : absent du texte tant
+   qu'il n'est pas inséré, puis entre en ressort. */
+/* Curseur de frappe au bout du paragraphe (js/main.js, scène editor) */
+.hp-sc-tcaret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 1px;
+  vertical-align: -0.15em;
+  background-color: var(--color-teal);
+  animation: hp-sc-blink 1s steps(1) infinite;
+}
+
+@keyframes hp-sc-blink {
+  50% { opacity: 0; }
+}
+
+/* Champ dynamique inséré : teal (le violet reste réservé à l'avocat) */
+.hp-sc-var {
+  display: none;
+  border: 1px solid rgb(8 127 131 / 0.3);
+  border-radius: 5px;
+  padding: 0 6px;
+  color: var(--color-teal-text);
+  background-color: var(--color-teal-bg);
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+.hp-sc-var.is-in {
+  display: inline-block;
+  animation: hp-var-in 0.5s var(--pop);
+}
+
+
+/* Calé sur le bord droit du document (.hp-sc-paper : 320 + 520 = 840px),
+   quelle que soit la longueur du texte : reste dans le canevas, même au
+   zoom de départ de la caméra (107 %). */
+.hp-sc-gen-toast {
+  top: 332px; /* à cheval sur le bas du document (56 + 300) */
+  right: 40px;
+}
+
+.hp-sc--gen.is-s6 .hp-sc-gen-toast { opacity: 1; transform: none; }
+
+/* ---------- 03 Valider ---------- */
+.hp-sc-clause {
+  top: 40px;
+  left: 110px;
+  width: 570px;
+  overflow: hidden; /* nouvelle ligne découverte par la carte, pas de débord */
+  padding: 30px 34px;
+}
+
+.hp-sc-clause-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Surlignage de l'avocat : même fond plein que les statuts « En relecture »
+   et le commentaire (--color-purple-bg), pas de transparence. */
+.hp-sc-mark {
+  border-radius: 4px;
+  color: inherit;
+  background: linear-gradient(var(--color-purple-bg), var(--color-purple-bg)) 0 0 / 0% 100% no-repeat;
+  transition: background-size 0.8s var(--ease-out);
+}
+
+.hp-sc--val.is-s2 .hp-sc-mark {
+  background-size: 100% 100%;
+}
+
+.hp-sc-ins {
+  display: none;
+  border-radius: 4px;
+  color: var(--color-green-text);
+  background-color: var(--color-green-bg);
+  text-decoration: none;
+}
+
+/* Ajout de l'avocat : écrit au clavier (js/main.js, scène lawyer), avec
+   le même curseur que la scène Générez (.hp-sc-tcaret) */
+.hp-sc--val.is-s4 .hp-sc-ins {
+  display: inline;
+}
+
+/* Commentaire de l'avocat : teinte violette (celle des statuts « En
+   relecture » / « Relecture avocat »), pour signaler d'un coup d'œil que
+   c'est une autre personne qui intervient. */
+.hp-sc-comment {
+  top: 190px;
+  left: 470px;
+  z-index: 2;
+  width: 340px;
+  border-color: var(--color-purple-line);
+  padding: 18px 20px;
+  background-color: var(--color-purple-bg);
+}
+
+/* Il jaillit du passage surligné (.hp-sc-mark) : départ réduit, coin posé
+   sur le centre du surlignage (--fx / --fy, js/main.js), puis il grandit
+   jusqu'à sa place. Droit, courbe classique (pas de rebond). */
+.hp-sc-comment {
+  transform-origin: 0 0;
+}
+
+.hp-sc.is-s1 .hp-sc-comment {
+  opacity: 0;
+  transform: translate(var(--fx, 0px), var(--fy, 0px)) scale(0.5);
+}
+
+.hp-sc--val.is-s3 .hp-sc-comment {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+  transition: opacity 0.45s ease, transform 0.8s var(--ease-out);
+}
+
+.hp-sc-comment-who {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hp-sc-comment-who > span:last-child,
+.hp-sc-signer > span:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+}
+
+.hp-sc-comment-who b,
+.hp-sc-signer b {
+  font-size: 14px;
+}
+
+.hp-sc-comment-who span span,
+.hp-sc-signer > span:nth-child(2) span {
+  color: #757575;
+  font-size: 12px;
+}
+
+.hp-sc-comment p {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.hp-sc--val.is-s5 .hp-sc-status > :first-child {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.hp-sc--val.is-s5 .hp-sc-status > :last-child {
+  opacity: 1;
+  transform: none;
+}
+
+.hp-sc-val-toast {
+  top: 208px; /* à cheval sur le bas de la clause */
+  left: 130px;
+}
+
+.hp-sc--val.is-s5 .hp-sc-val-toast {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.25s;
+}
+
+/* ---------- 04 Signer ----------
+   Un seul contrat, avec un emplacement de signature par partie (A :
+   franchiseur, B : franchisé). Chronologie (js/main.js, scène sign) : les
+   signataires apparaissent (1) ; le contrat émane de A et vient se poser au
+   centre (2) ; il passe au premier plan (.is-focus) et les deux parties y
+   signent en même temps ; il se dédouble (copie .hp-sc-doc--copy, ajoutée
+   par le JS) et chaque exemplaire va se poser au-dessus de sa partie (3). */
+.hp-sc-doc {
+  top: 22px;
+  left: 260px; /* centré (440px) ; A et B : ∓200px */
+  z-index: 2;
+  width: 360px;
+  padding: 20px;
+  transform-origin: 50% 100%;
+  transition: opacity 0.4s ease, transform 0.8s var(--ease-out), translate 0.9s var(--ease-out), scale 0.8s var(--ease-out), box-shadow 0.35s ease;
+}
+
+/* Avant (2) : réduit, tapi contre la carte de A */
+.hp-sc--sign.is-s1 .hp-sc-doc {
+  opacity: 0;
+  translate: -200px 50px;
+  scale: 0.2;
+}
+
+.hp-sc--sign.is-s2 .hp-sc-doc {
+  opacity: 1;
+  translate: 0 0;
+  scale: 1;
+}
+
+/* Au premier plan pendant la signature */
+.hp-sc--sign .hp-sc-doc.is-focus {
+  scale: 1.06;
+  box-shadow: 0 2px 4px rgb(31 18 14 / 0.05), 0 40px 70px -24px rgb(31 18 14 / 0.35);
+}
+
+/* Dédoublement : la copie naît sous le contrat (.is-new, retiré par le JS
+   à l'image suivante), apparaît en fondu en glissant légèrement de côté
+   (pile de deux feuilles), puis chaque exemplaire part vers sa partie,
+   réduit. */
+.hp-sc--sign.is-s2 .hp-sc-doc--copy {
+  z-index: 1;
+  translate: 10px 8px;
+  transition: opacity 0.6s ease, translate 0.8s var(--ease-out), scale 0.8s var(--ease-out);
+}
+
+.hp-sc--sign.is-s2 .hp-sc-doc--copy.is-new {
+  opacity: 0;
+  translate: 0 0;
+}
+
+.hp-sc--sign.is-s3 .hp-sc-doc { translate: 200px 0; scale: 0.64; }
+.hp-sc--sign.is-s3 .hp-sc-doc--copy { translate: -200px 0; }
+
+/* Corps du contrat, en lignes de texte stylisées */
+.hp-sc-doc-lines {
+  display: grid;
+  gap: 9px;
+  margin-top: 16px;
+}
+
+.hp-sc-doc-lines i {
+  height: 7px;
+  border-radius: 4px;
+  background-color: #ececec;
+}
+
+.hp-sc-doc-lines i:nth-child(2) { width: 88%; }
+.hp-sc-doc-lines i:nth-child(3) { width: 62%; }
+
+.hp-sc-doc-sigs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.hp-sc-sigbox {
+  position: relative;
+  display: block;
+  height: 104px;
+  border-radius: 12px;
+  background-color: #f5f8f8;
+}
+
+/* Signature (SVG tracé depuis Illustrator) : posée au-dessus de la ligne,
+   proportions conservées (meet). Chaque trait est dessiné par
+   stroke-dashoffset, longueur (--len) et cadence (transition) posées par
+   js/main.js (scène sign) : les traits s'enchaînent à vitesse constante. */
+.hp-sc-sigsvg {
+  position: absolute;
+  top: 6px;
+  /* Au-dessus de tout le contenu de l'emplacement (ligne de signature, nom) */
+  z-index: 2;
+  left: 50%;
+  width: 128px;
+  height: 74px;
+  translate: -50% 0;
+  overflow: visible;
+}
+
+.hp-sc-sigsvg path {
+  stroke: var(--color-black);
+  stroke-width: 15; /* unités du viewBox, comme dans Illustrator */
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: var(--len);
+  stroke-dashoffset: var(--len);
+  /* Caché avant son tracé : l'embout rond laisse sinon un point visible */
+  opacity: 0;
+}
+
+.hp-sc-sigbox.is-signing .hp-sc-sigsvg path,
+.hp-sc-sigbox.is-signed .hp-sc-sigsvg path {
+  stroke-dashoffset: 0;
+  opacity: 1;
+}
+
+.hp-sc-sigline {
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  left: 14px;
+  border-top: 1.5px dashed #cfcfcf;
+  padding-top: 5px;
+  color: #757575;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.hp-sc-signer {
+  position: absolute;
+  top: 300px;
+  z-index: 1; /* au-dessus du lien entre signataires */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 250px;
+  border: 1px solid #e3e3e3;
+  border-radius: 14px;
+  white-space: nowrap;
+  padding: 12px 14px;
+  background-color: #fff;
+  box-shadow: 0 20px 40px -20px rgb(31 18 14 / 0.3);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.7s var(--ease-out);
+}
+
+.hp-sc-signer > :last-child {
+  margin-left: auto;
+}
+
+/* Chacun centré sous son exemplaire du contrat (centres : 240 et 640px) */
+.hp-sc-signer--a { left: 115px; }
+.hp-sc-signer--b { left: 503px; transition-delay: 0.1s; }
+
+/* Statut : « En attente » → « Signé » une fois sa carte signée */
+.hp-sc-signer.is-signed .hp-sc-status > :first-child {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.hp-sc-signer.is-signed .hp-sc-status > :last-child {
+  opacity: 1;
+  transform: none;
+}
+
+.hp-sc--sign.is-s1 .hp-sc-signer {
+  opacity: 1;
+  transform: none;
+}
+
+/* Lien entre les signataires : pointillé teal qui défile de A vers B.
+   Tendu d'un centre de carte à l'autre (240 → 640px) et passé sous les
+   cartes (z-index) : visible seulement entre les deux, quelle que soit leur
+   largeur (pastille de statut comprise). */
+.hp-sc-signlink {
+  position: absolute;
+  top: 330px;
+  left: 240px;
+  z-index: 0;
+  width: 400px;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, rgb(8 127 131 / 0.6) 0 6px, transparent 6px 12px) 0 0 / 12px 2px;
+  opacity: 0;
+  transition: opacity 0.4s ease 0.25s;
+  animation: hp-sc-dash 0.7s linear infinite;
+}
+
+.hp-sc--sign.is-s1 .hp-sc-signlink {
+  opacity: 1;
+}
+
+@keyframes hp-sc-dash {
+  to { background-position: 12px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hp-sc-signlink {
+    animation: none;
+  }
+}
+
+/* Accord : même toast que les autres scènes, centré au-dessus des deux
+   exemplaires */
+.hp-sc-sign-toast {
+  top: 52px;
+  left: 50%;
+  z-index: 3;
+  translate: -50% 0;
+}
+
+.hp-sc--sign.is-s4 .hp-sc-sign-toast { opacity: 1; transform: none; }
+
+/* ---------- 05 Suivre ----------
+   Tableau des contrats en cours (comme #pf-suivre) : 4 colonnes de statut,
+   plusieurs contrats ; trois avancent d'une colonne l'un après l'autre
+   (js/main.js : FLIP, la carte glisse, les voisines se replacent). */
+.hp-sc-kb {
+  top: 40px;
+  left: 30px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: 12px;
+  width: 820px;
+  padding: 16px;
+}
+
+.hp-sc-kb-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 330px;
+  border-radius: 12px;
+  padding: 12px;
+  background-color: #f6f6f4;
+}
+
+.hp-sc-kb-h {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.hp-sc-kb-n {
+  color: #757575;
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.hp-sc-kb-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  border: 1px solid #e3e3e3;
+  border-radius: 10px;
+  padding: 12px 14px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px -2px rgb(31 18 14 / 0.08);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.35s ease, transform 0.5s var(--ease-out), border-color 0.3s ease;
+  transition-delay: calc(var(--i) * 70ms);
+}
+
+.hp-sc--track.is-s2 .hp-sc-kb-card {
+  opacity: 1;
+  transform: none;
+}
+
+/* Une fois arrivées, plus de délai d'entrée (les replacements suivent le JS) */
+.hp-sc--track.is-s3 .hp-sc-kb-card {
+  transition-delay: 0s;
+}
+
+.hp-sc-kb-card .hp-tag {
+  font-size: 10px;
+}
+
+.hp-sc-kb-card b {
+  font-size: 14px;
+}
+
+.hp-sc-kb-d {
+  color: #757575;
+  font-size: 12.5px;
+}
+
+/* Contrat qui vient d'avancer : bordure teal le temps de l'arrivée */
+.hp-sc-kb-card.is-moved {
+  border-color: var(--color-teal);
+}
+
+/* ---------- 06 Centraliser ----------
+   Même idée que #pf-centraliser : 3 fichiers glissés depuis le bureau
+   (.is-s2) et déposés dans la Contrathèque (.is-s3) deviennent des lignes en
+   cours d'import (fichier + barre), finalisées une à une (.is-s4 : contrat +
+   statut, Leo les classe), puis l'alerte de renouvellement tombe (.is-s5). */
+.hp-sc-lib {
+  top: 40px;
+  left: 170px;
+  display: flex;
+  flex-direction: column;
+  width: 540px;
+  padding: 8px;
+  transition: opacity 0.5s ease, transform 0.8s var(--ease-out), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Dépôt : la Contrathèque s'allume sous les fichiers */
+.hp-sc--lib.is-s2 .hp-sc-lib {
+  border-color: var(--color-teal);
+  box-shadow: 0 0 0 4px rgb(8 127 131 / 0.12), 0 30px 60px -24px rgb(31 18 14 / 0.28);
+}
+
+.hp-sc--lib.is-s3 .hp-sc-lib {
+  border-color: #e3e3e3;
+  box-shadow: 0 2px 4px rgb(31 18 14 / 0.04), 0 30px 60px -24px rgb(31 18 14 / 0.28);
+}
+
+.hp-sc-lib-h {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px 12px;
+}
+
+.hp-sc-lib-import {
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.hp-sc-lrow {
+  display: grid;
+  max-height: 60px;
+  overflow: hidden;
+  border-top: 1px solid #efefef;
+  padding: 14px 12px;
+  font-size: 14px;
+}
+
+.hp-sc-lrow > span {
+  grid-area: 1 / 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  transition: opacity 0.35s ease;
+}
+
+.hp-sc-lrow-final {
+  justify-content: space-between;
+}
+
+.hp-sc-lrow b {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hp-sc-lrow-pend b {
+  flex: 1;
+  font-weight: 600;
+}
+
+.hp-sc-lrow-pend i,
+.hp-sc-drag-doc i {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  color: #fff;
+  background-color: var(--color-teal-deep);
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+/* Barre d'import : se remplit une fois la ligne ouverte */
+.hp-sc-lrow-bar {
+  position: relative;
+  flex: 0 0 120px;
+  height: 5px;
+  overflow: hidden;
+  border-radius: 3px;
+  background-color: #ececec;
+}
+
+.hp-sc-lrow-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: var(--color-teal);
+  transform: scaleX(0.05);
+  transform-origin: left;
+}
+
+.hp-sc--lib.is-s3 .hp-sc-lrow-bar::after {
+  transform: none;
+  transition: transform 1.1s var(--ease-out) calc(0.3s + var(--i) * 0.25s);
+}
+
+/* Lignes importées : repliées, en cours (.is-s3), finalisées (.is-s4) */
+.hp-sc-lrow.is-new {
+  max-height: 0;
+  border-top-color: transparent;
+  padding-block: 0;
+  opacity: 0;
+}
+
+.hp-sc--lib.is-s3 .hp-sc-lrow.is-new {
+  max-height: 60px;
+  border-top-color: #efefef;
+  padding-block: 14px;
+  opacity: 1;
+  transition: max-height 0.5s var(--ease-out), padding 0.5s var(--ease-out), opacity 0.3s ease;
+  transition-delay: calc(var(--i) * 0.25s);
+}
+
+.hp-sc-lrow.is-new .hp-sc-lrow-final,
+.hp-sc--lib.is-s4 .hp-sc-lrow.is-new .hp-sc-lrow-pend {
+  opacity: 0;
+}
+
+.hp-sc--lib.is-s4 .hp-sc-lrow.is-new .hp-sc-lrow-final {
+  opacity: 1;
+}
+
+.hp-sc--lib.is-s4 .hp-sc-lrow.is-new > span {
+  transition-delay: calc(var(--i) * 0.2s);
+}
+
+/* Fichiers glissés : pile de 3 documents + pointeur, du coin bas droit
+   jusqu'au milieu de la Contrathèque, puis lâchés */
+.hp-sc-drag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  width: 52px;
+  height: 60px;
+  opacity: 0;
+  translate: 780px 360px;
+  transition: translate 1s cubic-bezier(0.45, 0.05, 0.25, 1), opacity 0.3s ease, scale 0.3s ease;
+}
+
+.hp-sc--lib.is-s2 .hp-sc-drag {
+  opacity: 1;
+  translate: 420px 130px;
+}
+
+.hp-sc--lib.is-s3 .hp-sc-drag {
+  translate: 420px 130px;
+  opacity: 0;
+  scale: 0.6;
+}
+
+.hp-sc-drag-doc {
+  position: absolute;
+  inset: 0 8px 0 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e3e3e3;
+  border-radius: 7px;
+  background-color: #fff;
+  box-shadow: 0 12px 24px -10px rgb(31 18 14 / 0.35);
+}
+
+.hp-sc-drag-doc:nth-child(1) { rotate: -10deg; translate: -7px 2px; }
+.hp-sc-drag-doc:nth-child(2) { rotate: 6deg; translate: 6px 1px; }
+
+.hp-sc-drag-n {
+  position: absolute;
+  top: -8px;
+  right: -2px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: #fff;
+  background-color: var(--color-teal);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.hp-sc-drag-cursor {
+  position: absolute;
+  right: -14px;
+  bottom: -16px;
+  width: 20px;
+  height: 26px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 20'%3E%3Cpath d='M1 1v15.5l4-3.8 2.6 5.8 2.6-1.1-2.5-5.7H13z' fill='%231f120e' stroke='%23fff' stroke-width='1.3' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0 / contain no-repeat;
+  filter: drop-shadow(0 3px 4px rgb(31 18 14 / 0.3));
+}
+
+/* Toasts de Leo (onboarding, classement des contrats) : badge Leo
+   (base.css, .hp-leo-tile, animation Lottie) à la taille de l'icône du toast */
+/* Badge carré dans une pill : l'arrondi jure. Le toast prend un arrondi
+   concentrique au badge (son rayon + les 8px de marge intérieure). */
+.hp-sc-toast--leo {
+  border-radius: calc(30px * 7 / 34 + 8px);
+}
+
+.hp-sc-toast-leo {
+  width: 30px;
+  height: 30px;
+  border-radius: calc(30px * 7 / 34);
+  /* Liseré cyan : le badge (#00383c) se détache du toast sombre */
+  box-shadow: inset 0 0 0 1px rgb(98 231 235 / 0.35);
+}
+
+.hp-sc-toast-leo .hp-leo-glyph {
+  width: 17px;
+  height: 17px;
+}
+
+.hp-sc-lib-toast {
+  top: 330px;
+  left: 120px;
+  z-index: 3;
+}
+
+.hp-sc--lib.is-s4 .hp-sc-lib-toast {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.5s;
+}
+
+.hp-sc-alert {
+  top: 250px;
+  left: 470px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 330px;
+  padding: 16px 18px;
+}
+
+.hp-sc.is-s1 .hp-sc-alert {
+  opacity: 0;
+  transform: translateY(16px) scale(0.9);
+}
+
+.hp-sc--lib.is-s5 .hp-sc-alert {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.35s ease, transform 0.6s var(--pop);
+}
+
+.hp-sc--lib.is-s5 .hp-bell {
+  animation: hp-ring 0.9s ease 0.3s;
+}
+
+.hp-sc-alert > span:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hp-sc-alert b {
+  font-size: 14.5px;
+}
+
+.hp-sc-alert span span {
+  color: #757575;
+  font-size: 12.5px;
+}
+
+/* ---------- Onglets de chapitres ---------- */
+/* Progression dans le cadre, sous les scènes : une fine barre par chapitre
+   (piste + remplissage), numéro et verbe en texte simple dessous. */
+.hp-player-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.hp-player-tab {
+  position: relative;
+  display: block;
+  min-width: 0;
+  border: 0;
+  padding: 10px 0 0;
+  color: var(--color-faint);
+  background: none;
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+
+/* Piste de la barre */
+.hp-player-tab::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 2px;
+  border-radius: 1px;
+  background-color: rgb(31 18 14 / 0.1);
+}
+
+.hp-player-tab:hover,
+.hp-player-tab.is-active {
+  color: var(--color-black);
+}
+
+.hp-player-tab.is-done {
+  color: var(--color-muted);
+}
+
+.hp-player-tab:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.hp-player-tab-n {
+  margin-right: 5px;
+  color: var(--color-faint);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.hp-player-tab.is-active .hp-player-tab-n {
+  color: var(--color-teal);
+}
+
+/* Remplissage */
+.hp-player-tab-bar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 2px;
+  border-radius: 1px;
+  background-color: var(--color-teal);
+  transform: scaleX(0);
+  transform-origin: left;
+  will-change: transform;
+}
+
+.hp-player-tab.is-done .hp-player-tab-bar {
+  transform: none;
+}
+
+/* --dur : durée du chapitre, posée par le JS */
+.hp-player-tab.is-active .hp-player-tab-bar {
+  animation: hp-player-bar var(--dur, 9s) linear forwards;
+}
+
+.hp-player.is-paused .hp-player-tab-bar,
+.hp-player.is-paused .hp-sc-cam {
+  animation-play-state: paused;
+}
+
+@keyframes hp-player-bar {
+  to { transform: scaleX(1); }
+}
+
+/* Hero empilé : le player reprend (presque) sa largeur pleine */
+@media (max-width: 1100px) {
+  .hp-player-stage {
+    padding: 76px 24px 28px;
+  }
+
+  .hp-player-corner {
+    top: 20px;
+    left: 30px;
+    font-size: 30px;
+  }
+}
+
+/* Reduced-motion : pas de caméra ni de titre animé */
+@media (prefers-reduced-motion: reduce) {
+  .hp-sc.is-active .hp-sc-cam,
+  .hp-sc.is-leaving .hp-sc-cam {
+    animation: none;
+  }
+
+  .hp-player-corner > span {
+    transition: none !important;
+  }
+}
+
+/* Sur mobile : pas de player (css/hero.css, .hp-hero-visual). */

@@ -1,0 +1,24 @@
+{
+  "name": "leo-video",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Vidéo marketing de l'assistant IA Leo (Legaleo), réalisée avec Remotion. Projet annexe, indépendant de la homepage.",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render LeoPromo out/leo-promo.mp4",
+    "still": "remotion still LeoPromo out/leo-poster.png --frame=545"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.300",
+    "@remotion/google-fonts": "4.0.300",
+    "@remotion/lottie": "4.0.300",
+    "lottie-web": "5.12.2",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.300"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "typescript": "5.6.3"
+  }
+}
