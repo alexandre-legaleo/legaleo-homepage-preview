@@ -53,60 +53,71 @@ body {
   text-wrap: pretty;
 }
 
-.ct-label {
-  display: block;
-  margin-top: 32px;
-  color: var(--color-muted);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.ct-checks {
+/* Gain mis en avant sous l'intro */
+.ct-gain {
   margin-top: 14px;
+  color: var(--color-teal);
+  font-size: 17px;
+  font-weight: 700;
 }
 
-/* Carte de l'interlocuteur */
+/* Carte de l'interlocuteur : grande photo, nom, puis la caution de la
+   Fédération Française de la Franchise sous un filet */
 .ct-host {
-  display: flex;
-  align-items: center;
-  gap: 16px;
   max-width: 560px;
-  margin-top: 32px;
+  margin-top: 30px;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-radius: 18px;
   padding: 18px 20px;
   background-color: var(--color-white);
+  box-shadow: 0 14px 40px rgb(31 18 14 / 0.06);
+}
+
+.ct-host-top {
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
 
 /* Photo déjà détourée sur un disque cyan (assets/mehdi.webp) */
 .ct-host-av {
   flex-shrink: 0;
-  width: 52px;
-  height: 52px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
 }
 
-.ct-host b {
-  font-size: 15px;
+.ct-host-h {
+  font-family: var(--font-serif);
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.18;
+  text-wrap: balance;
 }
 
-.ct-host p {
-  margin-top: 3px;
-  color: var(--color-muted);
-  font-size: 13.5px;
-  line-height: 1.5;
-}
-
-.ct-host a {
+.ct-host-h .hp-em {
   color: var(--color-teal);
-  font-weight: 700;
-  white-space: nowrap;
 }
 
-.ct-host a:hover {
-  text-decoration: underline;
+.ct-host-fff {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+  border-top: 1px solid var(--color-border);
+  padding-top: 12px;
+}
+
+.ct-host-fff img {
+  flex-shrink: 0;
+  width: auto;
+  height: 28px;
+}
+
+.ct-host-fff p {
+  color: var(--color-muted);
+  font-size: 13px;
+  line-height: 1.45;
 }
 
 /* ---------- Carte de réservation ---------- */
@@ -718,7 +729,7 @@ body {
   text-decoration: underline;
 }
 
-/* ---------- Ensuite : frise des 3 étapes ----------
+/* ---------- Ensuite : les 4 étapes ----------
    Une ligne pointillée relie les cartes ; au-dessus de chacune, son repère
    de temps (.ct-when) posé sur la ligne avec un point. Après réservation
    (js/contact.js) : étape 1 faite (vert), étape 2 datée. */
@@ -734,8 +745,8 @@ body {
   --rail-y: 27px;
   position: relative;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
   margin: 28px 0 0;
   padding: 58px 0 0;
   list-style: none;
@@ -790,17 +801,14 @@ body {
   background-color: var(--color-lime);
 }
 
-/* Picto de l'étape */
-.ct-ico {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: var(--color-teal-bg) center / 20px no-repeat;
+/* Numéro de l'étape, en italique */
+.ct-n {
+  color: var(--color-teal);
+  font-family: var(--font-serif);
+  font-size: 44px;
+  font-style: italic;
+  line-height: 1;
 }
-
-.ct-ico--calendar { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23087f83' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4.5' width='18' height='17' rx='2.5'/%3E%3Cpath d='M16 2.5v4M8 2.5v4M3 10h18'/%3E%3Cpath d='m9 15.5 2 2 4-4'/%3E%3C/svg%3E"); }
-.ct-ico--video { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23087f83' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2.5' y='6' width='13' height='12' rx='2.5'/%3E%3Cpath d='m15.5 10.5 5-3v9l-5-3'/%3E%3C/svg%3E"); }
-.ct-ico--check { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23087f83' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 2.5H6.5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V8z'/%3E%3Cpath d='M14 2.5V8h5.5'/%3E%3Cpath d='m9 15 2 2 4-4'/%3E%3C/svg%3E"); }
 
 .ct-stepcard h3 {
   margin-top: 16px;
@@ -835,14 +843,14 @@ body {
    Mehdi : trois colonnes, chiffre ou logos d'abord, libellé dessous. */
 .ct-trust {
   display: grid;
-  /* Dernière colonne un peu plus large, pour le logo (entre colonnes
-     égales et 0.85fr 0.85fr 1.3fr, à reprendre si le logo Barreau revient) */
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 0.92fr) minmax(0, 1.16fr);
+  /* Dernière colonne plus large, pour le logo et son libellé */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.3fr);
   gap: 32px;
+  align-items: start;
   max-width: 560px;
-  margin-top: 32px;
+  margin-top: 40px;
   border-top: 1px solid var(--color-border);
-  padding-top: 24px;
+  padding-top: 30px;
 }
 
 .ct-trust li {
@@ -856,54 +864,43 @@ body {
   line-height: 1.45;
 }
 
+/* Rangée de tête commune aux trois preuves (chiffre ou logo), calée en
+   bas : les libellés démarrent tous à la même hauteur */
 .ct-trust-big {
   display: flex;
-  align-items: center;
-  height: 44px;
+  align-items: flex-end;
+  height: 64px;
+  margin-bottom: 10px;
   color: var(--color-teal);
   font-family: var(--font-serif);
-  font-size: 32px;
+  font-size: 38px;
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.5px;
 }
 
-/* Même surface pour les deux logos : Barreau vertical (513 × 689),
-   EuraTechnologies horizontal (991 × 155) → hauteur d'EuraTechnologies
-   = hauteur du Barreau × √((513/689) / (991/155)) ≈ × 0,34.
-   44px → 33 × 44 ≈ 1 450 px² ; 15px → 96 × 15 ≈ 1 440 px². */
+/* « Jusqu'à » en petit devant le chiffre */
+/* « Jusqu'à » posé sur la ligne de base du chiffre */
+.ct-trust-big small {
+  margin: 0 6px 4px 0;
+  color: var(--color-muted);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+/* Logo vertical de l'Incubateur du Barreau de Paris, mis en avant */
 .ct-trust-logos {
   display: flex;
-  align-items: center;
-  gap: 16px;
-  height: 44px;
+  align-items: flex-end;
+  height: 64px;
+  margin-bottom: 10px;
 }
 
 .ct-trust-logo--barreau {
-  height: 44px;
   width: auto;
-}
-
-/* reset.css met les images en display: block, qui l'emporterait sur
-   l'attribut hidden */
-.ct-trust-logo[hidden] {
-  display: none;
-}
-
-/* assets/logo-euratech-teal.svg : logo EuraTechnologies (CDN Webflow)
-   recoloré en teal (#087f83), pictogramme compris. */
-/* Seul logo affiché (Barreau masqué) : il prend toute la largeur de la
-   colonne, sans dépasser la hauteur de la rangée. */
-.ct-trust-logos {
-  width: 100%;
-}
-
-.ct-trust-logo--eura {
-  width: 100%;
-  height: auto;
-  max-height: 44px;
-  object-fit: contain;
-  object-position: left center;
+  height: 64px;
 }
 
 /* ---------- Questions : titre (1re colonne) + accordéon (2 suivantes) ---------- */
@@ -1001,7 +998,7 @@ body {
 /* Frise verticale : ligne à gauche, repère de temps en tête de carte */
 @media (max-width: 860px) {
   .ct-steps {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
     padding: 0 0 0 28px;
   }
@@ -1054,7 +1051,19 @@ body {
   .ct-trust-big,
   .ct-trust-logos {
     flex-shrink: 0;
+    align-items: center;
     min-width: 78px;
+    height: auto;
+    margin-bottom: 0;
+    font-size: 32px;
+  }
+
+  .ct-trust-big small {
+    margin-bottom: 0;
+  }
+
+  .ct-trust-logo--barreau {
+    height: 56px;
   }
 
 
@@ -1124,5 +1133,34 @@ body {
 @media (max-width: 860px) {
   .ct-steps {
     padding: 0;
+  }
+}
+
+/* Petit mobile : une étape par ligne */
+@media (max-width: 560px) {
+  .ct-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Interlocuteur : photo au-dessus du nom */
+@media (max-width: 640px) {
+  .ct-host {
+    padding: 18px;
+  }
+
+  .ct-host-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .ct-host-av {
+    width: 76px;
+    height: 76px;
+  }
+
+  .ct-host-h {
+    font-size: 21px;
   }
 }

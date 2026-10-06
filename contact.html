@@ -30,36 +30,32 @@
       <div class="hp-wrap ct-hero-grid">
         <div class="ct-copy">
           <span class="hp-kicker">Démo de 30 minutes, en visio</span>
-          <h1 class="ct-h1">Voyez Legaleo <em class="hp-em">sur votre réseau</em>, en 30 minutes</h1>
-          <p class="ct-lede">Vous montrez votre réseau, on vous montre comment vos DIP, contrats de franchise et CRZ sont préparés par l'IA, validés par un avocat dédié au droit de la franchise et signés en ligne.</p>
+          <h1 class="ct-h1">30 minutes pour savoir <em class="hp-em">ce que Legaleo ferait pour votre réseau.</em></h1>
+          <p class="ct-lede">En quelques minutes, on vous montre, sur un cas réel de votre réseau, comment vos DIP, contrats de franchise et CRZ sont préparés par l'IA, validés par un avocat dédié et signés en ligne.</p>
+          <p class="ct-gain">Jusqu'à 10 h économisées par mois.</p>
 
-          <span class="ct-label">Ce que l'entretien vous apporte</span>
-          <ul class="hp-checks ct-checks">
-            <li>Une démo sur votre cas : votre stade, votre secteur, vos contrats existants</li>
-            <li>Le temps et le coût pour poser, ou reprendre, votre documentation juridique</li>
-            <li>Vos questions posées à un co-fondateur, pas à un commercial</li>
-            <li>Aucune préparation, aucun engagement</li>
-          </ul>
-
+          <!-- Interlocuteur : photo, nom, caution de la Fédération Française
+               de la Franchise -->
           <div class="ct-host">
-            <img class="ct-host-av" src="assets/mehdi.webp" width="52" height="52" alt="" />
-            <div>
-              <b>Mehdi Taleb, co-fondateur</b>
-              <p>C'est lui qui fait la démo. Une question avant ? <a href="mailto:hello@legaleo.ai">hello@legaleo.ai</a> · <a href="tel:+33757913310">07&nbsp;57&nbsp;91&nbsp;33&nbsp;10</a></p>
+            <div class="ct-host-top">
+              <img class="ct-host-av" src="assets/mehdi.webp" width="80" height="80" alt="Mehdi Taleb" />
+              <p class="ct-host-h">Rencontrez <em class="hp-em">Mehdi TALEB,</em> co&#8209;fondateur Legaleo</p>
+            </div>
+            <div class="ct-host-fff">
+              <img src="assets/logo-fff.svg" alt="Fédération Française de la Franchise" height="28" />
+              <p>Expert auprès de la Fédération Française de la Franchise</p>
             </div>
           </div>
 
-          <!-- Preuves : chiffres clés, chiffre ou logos puis libellé -->
+          <!-- Preuves : chiffre ou logo, puis libellé -->
           <ul class="ct-trust">
-            <li><b class="ct-trust-big">50+</b><span>têtes de réseau interrogées avant le lancement</span></li>
-            <li><b class="ct-trust-big">100&nbsp;%</b><span>des documents validés par un avocat</span></li>
+            <li><b class="ct-trust-big"><small>Jusqu'à</small>10&nbsp;h</b><span>économisées par mois</span></li>
+            <li><b class="ct-trust-big">100&nbsp;%</b><span>des modèles validés par un avocat</span></li>
             <li>
               <span class="ct-trust-logos">
-                <!-- Logo Barreau masqué pour l'instant (retirer hidden pour le réafficher) -->
-                <img src="assets/logo-barreau-paris-incubateur.svg" alt="Incubateur du Barreau de Paris" class="ct-trust-logo ct-trust-logo--barreau" hidden />
-                <img src="assets/logo-euratech-teal.svg" alt="EuraTechnologies" class="ct-trust-logo ct-trust-logo--eura" />
+                <img src="assets/logo-barreau-paris-incubateur-teal.svg" alt="Incubateur du Barreau de Paris" class="ct-trust-logo ct-trust-logo--barreau" />
               </span>
-              <span>Incubée au Barreau de Paris et à EuraTechnologies</span>
+              <span>Incubée par l'Incubateur du Barreau de Paris et EuraTechnologies</span>
             </li>
           </ul>
         </div>
@@ -203,32 +199,36 @@
       </div>
     </section>
 
-    <!-- APRÈS LA RÉSERVATION : frise des 3 étapes (repère de temps sur la
-         ligne, au-dessus de chaque carte ; masquée pour l'instant), puis les
-         questions. Après réservation (js/contact.js) : étape 1 « C'est fait »,
-         étape 2 datée. -->
+    <!-- APRÈS LA RÉSERVATION : 4 étapes numérotées, puis les questions.
+         Les repères de temps (.ct-when, masqués) restent : après
+         réservation, js/contact.js passe l'étape 1 à « C'est fait » et
+         date l'étape 2. -->
     <section class="ct-next">
       <div class="hp-wrap">
         <span class="hp-kicker">Ce qui se passe ensuite</span>
-        <h2 class="hp-h2 hp-h2-left ct-h2">Trois étapes, aucune surprise</h2>
+        <h2 class="hp-h2 hp-h2-left ct-h2">Quatre étapes, aucune surprise</h2>
         <ol class="ct-steps">
           <li class="ct-stepcard" data-next-booked>
             <span class="ct-when" data-next-tag>Aujourd'hui</span>
-            <span class="ct-ico ct-ico--calendar" aria-hidden="true"></span>
-            <h3>Vous choisissez votre créneau</h3>
-            <p>Tout de suite, dans l'agenda. Pas de rappel à attendre, pas de relance.</p>
+            <span class="ct-n" aria-hidden="true">1</span>
+            <h3>Choisissez le créneau qui vous convient</h3>
+            <p>Directement dans l'agenda de Mehdi. Pas de rappel à attendre, pas de relance.</p>
           </li>
           <li class="ct-stepcard" data-next-meeting>
             <span class="ct-when" data-next-date>Le créneau choisi</span>
-            <span class="ct-ico ct-ico--video" aria-hidden="true"></span>
-            <h3>30 minutes en visio sur votre réseau</h3>
-            <p>Votre stade, vos contrats existants, vos questions. Vous voyez la plateforme sur votre cas, pas une démo générique.</p>
+            <span class="ct-n" aria-hidden="true">2</span>
+            <h3>Démo de la plateforme sur un cas réel : le vôtre</h3>
+            <p>30 minutes en visio : votre stade, vos contrats existants, vos questions.</p>
           </li>
           <li class="ct-stepcard">
-            <span class="ct-when">4 semaines jusqu'à l'autonomie</span>
-            <span class="ct-ico ct-ico--check" aria-hidden="true"></span>
-            <h3>Si ça vous parle, vos premiers modèles</h3>
-            <p>Vos modèles validés par un avocat dédié au droit de la franchise, en 48 h en moyenne. Sans engagement.</p>
+            <span class="ct-n" aria-hidden="true">3</span>
+            <h3>Vous recevez une proposition adaptée</h3>
+            <p>Chiffrée et construite sur votre réseau.</p>
+          </li>
+          <li class="ct-stepcard">
+            <span class="ct-n" aria-hidden="true">4</span>
+            <h3>Vous validez, on lance votre onboarding</h3>
+            <p>Un membre de l'équipe Legaleo assure votre onboarding personnalisé.</p>
           </li>
         </ol>
 
