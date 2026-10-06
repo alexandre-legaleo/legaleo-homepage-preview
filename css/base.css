@@ -119,6 +119,12 @@ body {
   color: inherit;
 }
 
+/* Partie mise en valeur renvoyée à la ligne : titre en deux temps, la
+   phrase en noir, puis la couleur en dessous. */
+.hp-em--br {
+  display: block;
+}
+
 .hp-sechead-center {
   max-width: 780px;
   margin: 0 auto;
@@ -270,6 +276,16 @@ body {
   border-radius: 50%;
   background-color: var(--color-teal);
   translate: 0 -50%;
+}
+
+/* Fonctionnalité à venir : en grisé, puce creuse */
+.hp-bars li.is-soon {
+  color: var(--color-faint);
+}
+
+.hp-bars li.is-soon::before {
+  background-color: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--color-faint);
 }
 
 /* Pastilles / tags réutilisés par les mockups */
@@ -513,6 +529,10 @@ body {
   color: var(--color-muted);
   font-size: 16px;
   line-height: 1.6;
+}
+
+.hp-faq-a p:not(:last-child) {
+  padding-bottom: 12px;
 }
 
 @media (max-width: 640px) {

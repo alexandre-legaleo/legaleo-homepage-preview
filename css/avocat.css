@@ -1,7 +1,7 @@
 /* ---------- Avocat ----------
    Fond encre (comme la carte Leo) ; en haut, le texte et un modèle relu par
    l'avocat, puis les trois temps de son intervention, puis les deux façons
-   de travailler avec un avocat. */
+   de travailler avec un avocat et le rappel des crédits. */
 .hp-avocat-sec {
   color: var(--color-white);
   background:
@@ -19,35 +19,6 @@
 .hp-avocat-sec .hp-h2 .hp-em {
   color: var(--color-cyan);
   font-style: italic;
-}
-
-/* Preuves en pastilles, point lime */
-.hp-av-proofs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 28px;
-  padding: 0;
-  list-style: none;
-}
-
-.hp-av-proofs li {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  border: 1px solid rgb(255 254 251 / 0.28);
-  border-radius: var(--radius-pill);
-  padding: 8px 16px 8px 12px;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.hp-av-proofs li::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--color-lime);
 }
 
 /* Modèle relu : carte blanche + note de l'avocat qui la chevauche */
@@ -212,21 +183,31 @@
 .hp-av-visual.is-visible .hp-av-versions i.is-current { opacity: 1; }
 .hp-av-visual.is-visible .hp-av-valid { opacity: 1; transform: none; }
 
-/* Trois temps de l'avocat */
+/* Trois temps de l'avocat : colonnes ouvertes sous un filet, séparées
+   par un filet vertical (pas de cartes) */
 .hp-av-steps {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 64px;
-  padding: 0;
+  margin-top: 72px;
+  border-top: 1px solid rgb(255 254 251 / 0.14);
+  padding: 44px 0 0;
   list-style: none;
 }
 
 .hp-av-step {
-  border: 1px solid rgb(255 254 251 / 0.1);
-  border-radius: var(--radius-lg);
-  padding: 26px;
-  background-color: rgb(255 254 251 / 0.05);
+  padding-inline: 38px;
+}
+
+.hp-av-step:first-child {
+  padding-left: 0;
+}
+
+.hp-av-step:last-child {
+  padding-right: 0;
+}
+
+.hp-av-step + .hp-av-step {
+  border-left: 1px solid rgb(255 254 251 / 0.14);
 }
 
 .hp-av-step:nth-child(2) { --reveal-delay: 80ms; }
@@ -236,29 +217,33 @@
   display: block;
   color: var(--color-cyan);
   font-family: var(--font-serif);
-  font-size: 34px;
+  font-size: 36px;
   font-style: italic;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1;
 }
 
 .hp-av-step-h {
-  margin-top: 14px;
+  margin-top: 20px;
   font-family: var(--font-serif);
-  font-size: 22px;
-  font-weight: 600;
-  line-height: 1.2;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+  text-wrap: balance;
 }
 
 .hp-av-step p {
-  margin-top: 12px;
-  color: rgb(255 254 251 / 0.72);
-  font-size: 15px;
-  line-height: 1.55;
+  margin-top: 14px;
+  color: rgb(255 254 251 / 0.65);
+  font-size: 16px;
+  line-height: 1.6;
+  text-wrap: pretty;
 }
 
 .hp-av-step strong {
-  color: var(--color-white);
+  color: var(--color-cyan);
+  font-weight: 700;
 }
 
 /* Deux façons de travailler avec un avocat, séparées par « ou » */
@@ -266,35 +251,21 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: stretch;
-  gap: 18px;
-  margin-top: 18px;
+  gap: 24px;
+  margin-top: 64px;
 }
 
 .hp-avocat-opts > :nth-child(3) {
   --reveal-delay: 100ms;
 }
 
+/* Carte encre, bord clair : discrète, la section garde le texte en vedette */
 .hp-opt {
-  display: flex;
-  gap: 18px;
+  border: 1px solid rgb(255 254 251 / 0.18);
   border-radius: var(--radius-lg);
-  padding: 26px;
-  /* Carte blanche sur fond encre : texte foncé explicite, sinon les titres
-     héritent du blanc de la section. */
-  color: var(--color-black);
-  background-color: var(--color-white);
+  padding: 22px 30px;
+  background-color: rgb(255 254 251 / 0.03);
 }
-
-.hp-opt-ico {
-  flex-shrink: 0;
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  background: var(--color-teal-bg) center / 24px no-repeat;
-}
-
-.hp-opt-ico--own { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23087f83' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='8' r='3.5'/%3E%3Cpath d='M2.5 20a6.5 6.5 0 0 1 13 0M16 11l2 2 4-4'/%3E%3C/svg%3E"); }
-.hp-opt-ico--legaleo { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23087f83' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v18M8 21h8M4 7h16M6.5 7 3.5 14a3 3 0 0 0 6 0zM17.5 7l-3 7a3 3 0 0 0 6 0z'/%3E%3C/svg%3E"); }
 
 .hp-opt-or {
   align-self: center;
@@ -304,42 +275,44 @@
   font-style: italic;
 }
 
-.hp-opt-body {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
 .hp-opt-h {
-  font-family: var(--font-sans);
-  font-size: 19px;
-  font-weight: 700;
-  line-height: 1.3;
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.25;
 }
 
 .hp-opt-p {
-  margin-top: 8px;
-  color: var(--color-muted);
-  font-size: 15px;
-  line-height: 1.55;
+  margin-top: 6px;
+  color: rgb(255 254 251 / 0.65);
+  font-size: 16px;
+  line-height: 1.5;
 }
 
-.hp-opt-tag {
-  margin-top: auto;
-  border-radius: var(--radius-pill);
-  padding: 5px 12px;
-  color: var(--color-teal-text);
-  background-color: var(--color-cyan-light);
-  font-size: 12.5px;
+/* Rappel des packs de crédits, point lime, centré sous les deux options */
+.hp-av-credits {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 26px;
+  font-size: 16px;
+}
+
+.hp-av-credits::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-lime);
+}
+
+.hp-av-credits strong {
   font-weight: 700;
 }
 
-.hp-opt-p + .hp-opt-tag {
-  margin-top: 16px;
-}
-
 .hp-av-lawyer {
-  margin-top: 28px;
+  margin-top: 64px;
   color: rgb(255 254 251 / 0.65);
   font-size: 15px;
 }
@@ -435,18 +408,31 @@
   .hp-av-note {
     right: 0;
   }
+
+  .hp-av-steps {
+    gap: 32px;
+  }
+
+  .hp-av-step,
+  .hp-av-step:first-child,
+  .hp-av-step:last-child {
+    padding-inline: 0;
+  }
+
+  .hp-av-step + .hp-av-step {
+    border-left: 0;
+    border-top: 1px solid rgb(255 254 251 / 0.14);
+    padding-top: 32px;
+  }
+
+  .hp-opt-or {
+    justify-self: center;
+  }
 }
 
 @media (max-width: 640px) {
   .hp-opt {
-    gap: 14px;
     padding: 20px;
-  }
-
-  .hp-opt-ico {
-    width: 40px;
-    height: 40px;
-    background-size: 20px;
   }
 
   .hp-av-doc {

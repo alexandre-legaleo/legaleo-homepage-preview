@@ -224,9 +224,14 @@
   background-color: var(--color-white);
 }
 
-/* Tout sauf le mini-visuel et l'en-tête reprend le retrait de 36px de la carte. */
+/* Tout sauf le mini-visuel et l'en-tête reprend le retrait de 36px de la
+   carte (--stade-in, réduit sur mobile). */
+.hp-stade {
+  --stade-in: 22px;
+}
+
 .hp-stade > :not(.hp-sv, .hp-stade-offer) {
-  margin-inline: 22px;
+  margin-inline: var(--stade-in);
 }
 
 .hp-stades > :nth-child(2) {
@@ -235,16 +240,6 @@
 
 .hp-stades > :nth-child(3) {
   --reveal-delay: 200ms;
-}
-
-/* Parcours pas encore disponible : puce grise en pointillés */
-.hp-stade .hp-checks li.is-soon {
-  color: var(--color-muted);
-}
-
-.hp-stade .hp-checks li.is-soon::before {
-  background: none;
-  box-shadow: inset 0 0 0 1.5px var(--color-border);
 }
 
 /* En-tête de carte : nom de l'offre dans une pill teal, centrée, à cheval
@@ -270,13 +265,77 @@
 }
 
 /* Montée en gamme des offres : Essentiel (teal) → Growth (teal profond) →
-   Sur mesure (noir). */
+   Corporate (noir), pas encore disponible : mention « À venir » dans la
+   pill, sur fond cyan clair. */
 .hp-stade > .hp-stade-offer--growth {
   background-color: var(--color-teal-deep);
 }
 
 .hp-stade > .hp-stade-offer--custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding-right: 4px;
   background-color: var(--color-black);
+}
+
+.hp-stade-soon {
+  border-radius: var(--radius-pill);
+  padding: 1px 7px;
+  color: #000;
+  background-color: #a1f0f0;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+}
+
+/* Même mention dans une puce : en capitales comme dans la pill de l'offre */
+.hp-checks .hp-stade-soon {
+  display: inline-block;
+  margin-left: 4px;
+  vertical-align: 1px;
+  font-weight: 800;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+/* Growth : bandeau Leo au-dessus des puces, puis l'amorce « Tout
+   l'Essentiel, plus : ». */
+.hp-stade-leo {
+  --leo-pad: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+  border-radius: var(--radius-md);
+  padding: 12px var(--leo-pad);
+  background-color: var(--color-teal-bg);
+  color: var(--color-black);
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+/* Le fond déborde de la marge intérieure : le badge et le texte restent
+   calés sur le reste du contenu de la carte */
+.hp-stade > .hp-stade-leo {
+  margin-inline: calc(var(--stade-in) - var(--leo-pad));
+}
+
+.hp-stade-leo strong {
+  color: var(--color-teal-text);
+  font-weight: 800;
+}
+
+.hp-stade-lead {
+  margin-top: 18px;
+  color: var(--color-muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.hp-stade-lead + .hp-checks {
+  margin-top: 10px;
 }
 
 /* Tranche de franchisés : portée par la courbe sur grand écran, rappelée
@@ -292,6 +351,11 @@
 
 .hp-sv + .hp-h3 {
   margin-top: 30px;
+}
+
+/* Pas de mot seul en dernière ligne des puces */
+.hp-stade .hp-checks li {
+  text-wrap: pretty;
 }
 
 .hp-stade .hp-checks {
@@ -737,8 +801,8 @@
     padding: 30px 10px 26px;
   }
 
-  .hp-stade > :not(.hp-sv, .hp-stade-offer) {
-    margin-inline: 12px;
+  .hp-stade {
+    --stade-in: 12px;
   }
 
 

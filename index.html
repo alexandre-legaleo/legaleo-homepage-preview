@@ -47,9 +47,9 @@
     <section class="hp-hero">
       <div class="hp-wrap hp-hero-grid">
         <div class="hp-hero-copy">
-          <h1 class="hp-h1" data-reveal>La 1<sup>re</sup> plateforme juridique des réseaux de franchise, <em class="hp-em">boostée à l'IA</em></h1>
+          <h1 class="hp-h1" data-reveal><span class="hp-h1-main">La 1<sup>re</sup> plateforme juridique des réseaux de franchise</span> <em class="hp-em hp-em--br">boostée à l'IA</em></h1>
 
-          <p class="hp-lede" data-reveal>DIP, contrat de franchise, CRZ, CGV : toute la documentation juridique nécessaire pour développer votre réseau, préparée par l'IA, validée par un avocat et adaptée à votre réseau, en quelques heures et à coût prévisible. Le tout stocké et suivi au même endroit : Legaleo, votre cockpit juridique.</p>
+          <p class="hp-lede" data-reveal>L'IA prépare vos DIP, contrats de franchise et CRZ. Un avocat valide vos modèles en 48 h. Centralisez, suivez et signez tout au même endroit, et économisez jusqu'à 10 h par mois sur votre gestion juridique.</p>
 
           <div class="hp-ctarow" data-reveal>
             <a href="#plateforme" class="hp-btn hp-btn-primary">Découvrir Legaleo</a>
@@ -57,10 +57,10 @@
           </div>
 
           <ul class="hp-proofs" data-reveal>
-            <li>Modèle validé en 48 h en moyenne</li>
-            <li>Onboarding en 30 min</li>
-            <li>Validation par un avocat dédié à la franchise</li>
-            <li>Signature conforme eIDAS</li>
+            <li>Modèles validés en 48 h en moyenne</li>
+            <li>Onboarding rapide</li>
+            <li>Validation par un avocat dédié au droit de la franchise</li>
+            <li>Signature électronique conforme &amp; intégrée</li>
           </ul>
         </div>
 
@@ -111,7 +111,7 @@
                   </div>
                 </div>
 
-                <!-- 02 Générer : les champs dynamiques s'insèrent dans le préambule -->
+                <!-- 02 Créer son modèle : les champs dynamiques s'insèrent dans le préambule -->
                 <div class="hp-sc hp-sc--gen" data-scene="editor">
                   <div class="hp-sc-cam">
                     <div class="hp-sc-card hp-sc-gen-fields">
@@ -119,13 +119,15 @@
                       <span class="hp-sc-gen-row"><b>Société du franchisé</b></span>
                       <span class="hp-sc-gen-row"><b>Siège social du franchisé</b></span>
                       <span class="hp-sc-gen-row"><b>Représentant du franchisé</b></span>
-                      <span class="hp-sc-gen-foot">Cliquer pour insérer dans le document</span>
+                      <span class="hp-sc-gen-foot">Glisser dans le document pour insérer</span>
                     </div>
                     <div class="hp-sc-card hp-sc-paper">
                       <span class="hp-sc-paper-h">Modèle · Contrat de franchise</span>
                       <span class="hp-sc-paper-t">Préambule</span>
                       <p class="hp-sc-paper-p">Entre la société Réseau Jean Dupont, ci-après « le Franchiseur », d'une part, et <span class="hp-sc-var">Société du franchisé</span>, dont le siège social est situé <span class="hp-sc-var">Siège social du franchisé</span>, représentée par <span class="hp-sc-var">Représentant du franchisé</span>, ci-après « le Franchisé ».</p>
                     </div>
+                    <span class="hp-sc-dragchip"></span>
+                    <span class="hp-sc-cursor hp-sc-gen-cursor"></span>
                     <span class="hp-sc-toast hp-sc-gen-toast"><span class="hp-sc-toast-ico hp-sc-ico--check"></span>Modèle prêt pour chaque franchisé</span>
                   </div>
                 </div>
@@ -145,33 +147,27 @@
                   </div>
                 </div>
 
-                <!-- 04 Signer : un seul contrat, émis par le franchiseur, posé
-                     au centre et signé par les deux parties en même temps
-                     (tracé SVG de chaque signature, dessiné par js/main.js), puis
-                     dédoublé : un exemplaire pour chaque partie (js/main.js,
-                     scène sign). -->
-                <div class="hp-sc hp-sc--sign" data-scene="sign">
+                <!-- 04 Générer les contrats (page Modèles) : le modèle de
+                     franchise validé est choisi, le document du candidat se
+                     remplit -->
+                <div class="hp-sc hp-sc--md" data-scene="create">
                   <div class="hp-sc-cam">
-                    <div class="hp-sc-card hp-sc-doc" data-sig-doc>
-                      <span class="hp-sc-paper-t">Contrat de franchise</span>
-                      <span class="hp-sc-doc-lines"><i></i><i></i><i></i></span>
-                      <span class="hp-sc-doc-sigs">
-                        <span class="hp-sc-sigbox" data-sig-slot="a">
-                          <svg class="hp-sc-sigsvg" viewBox="0 0 662.02 234.73" fill="none" data-sig-draw><path d="M166.2 7.4L141.9 114.2L120.0 222.5" /><path d="M8.5 226.9L28.8 218.4L50.7 210.5L73.9 203.1L98.3 196.4L124.8 190.1L152.3 184.3L223.5 171.9L303.0 160.5L380.7 152.0L458.7 145.9L541.4 142.1" /><path d="M169.9 125.5L175.5 125.3L182.0 123.9L188.2 121.5L192.9 118.5L197.1 114.3L199.1 110.4L198.3 107.5L195.5 105.5L192.0 104.9L187.9 105.4L183.6 106.9L179.6 109.2L176.0 112.2L173.0 115.8L170.7 119.7L169.5 123.6L169.4 126.6L170.3 129.7L172.2 132.4L174.4 133.8L177.4 134.7L181.7 135.0L190.4 133.3L200.8 128.3L210.8 121.7L220.0 113.8L228.2 104.9L227.9 109.4L232.3 115.1L234.3 115.6L229.7 116.1L232.2 114.2L233.7 106.4L232.2 104.0L235.1 105.2L238.5 105.7L242.1 105.6L246.6 104.7L254.1 101.2L266.1 93.2L270.8 91.5L266.8 100.2L270.3 105.4L271.6 105.4L277.7 100.1L277.8 94.9L279.8 97.6L281.7 98.2L284.7 97.7L290.2 95.6L294.9 95.3L299.5 97.0L302.8 99.8L305.4 104.4L305.7 109.4L309.1 108.6L312.7 106.6L325.0 94.4L328.4 91.8L332.0 90.2L334.5 89.6L337.6 89.8L340.9 91.1L343.4 93.3L347.3 101.3L348.7 102.4L350.8 102.9L359.9 101.0L379.4 94.3" /><path d="M437.1 90.3L426.8 88.0L416.9 87.1L405.0 87.8L397.5 89.7L394.7 91.5L393.3 93.6L393.2 95.7L394.3 98.1L396.8 100.4L399.7 101.8L403.3 102.9L407.8 103.3L413.2 102.7L418.4 101.0L423.1 98.3L428.7 93.8L432.3 91.9L436.1 91.3L443.5 91.5L450.5 90.9L480.1 84.5L486.1 84.2L491.1 84.7L510.6 90.9L515.1 91.5L519.3 91.2L524.4 89.6L530.2 86.3L546.6 72.5L552.6 68.4L558.9 65.8L563.5 65.2L568.2 65.6L568.5 64.8" /><path d="M597.3 93.6L654.5 90.4" /></svg>
-                          <span class="hp-sc-sigline">Jean Dupont</span>
-                        </span>
-                        <span class="hp-sc-sigbox" data-sig-slot="b">
-                          <svg class="hp-sc-sigsvg" viewBox="0 0 333.43 342.62" fill="none" data-sig-draw><path d="M102.3 113.1L103.4 98.0L103.2 83.6L101.8 70.4L99.2 57.7L95.8 48.4L91.0 40.3L86.0 34.9L79.2 30.3L73.5 35.2L69.0 40.5L65.3 46.5L61.8 53.8L56.0 71.9L48.8 104.6L42.8 141.7L38.9 179.1L37.3 216.6L37.9 254.1L41.3 297.5L42.5 307.0L44.2 315.1L46.8 322.4L49.9 327.9L54.1 332.1L59.6 335.1L68.1 316.8L75.7 298.7L82.5 280.2L88.4 261.4L93.5 242.5L97.7 223.3L101.6 201.0L103.1 185.9L102.7 178.3L100.7 171.9L97.7 167.6L93.6 165.6L88.5 165.9L81.7 168.4L74.0 172.9L64.8 179.7L47.2 194.1L31.0 208.5L7.5 231.6L7.9 232.5L6.6 232.4L15.2 226.1L43.6 206.6L67.7 191.8L91.6 178.5L115.0 166.6L139.0 155.6L163.3 145.7L188.0 136.8L215.1 128.3L241.5 121.3L263.4 116.5L281.9 114.0L300.8 113.4L316.5 115.0L320.6 116.6L318.8 116.1L316.8 116.8L324.6 118.5L326.1 122.8L326.1 124.1L326.6 124.4" /><path d="M165.9 92.6L152.9 92.3L150.1 92.9L147.8 94.5L146.4 96.4L146.0 98.3L146.6 100.6L147.9 102.2L151.7 103.6L156.4 102.2L161.6 98.5L169.1 91.4L182.1 76.1L181.8 78.5L182.8 82.3L184.4 84.6L175.2 80.7L177.9 80.3L181.2 78.5L182.8 76.2L183.0 78.6L183.9 80.8L185.8 82.9L188.3 84.5L193.4 85.5L198.7 83.7L204.4 78.9L211.7 68.7L215.1 65.0L214.3 66.3L214.3 70.1L215.3 73.6L216.3 74.6L208.5 70.1L210.1 70.5L214.2 69.2L217.4 66.3L217.8 64.8L218.3 68.8L220.1 73.3L223.1 77.1L227.1 79.9L230.9 81.3L234.9 81.6L239.6 80.7L243.2 78.9L248.2 74.2L257.6 60.5L261.7 56.2L267.3 53.1L275.8 51.3L280.0 49.8L284.1 47.1L287.6 43.1L290.8 36.9L292.4 29.8L292.8 21.0L291.6 8.2L292.1 8.6L291.3 8.5L287.3 19.8L283.0 38.4L276.4 78.6L262.2 173.6L257.3 201.4L251.8 227.1L247.3 244.1L242.4 257.0L236.4 268.6L229.6 277.9" /></svg>
-                          <span class="hp-sc-sigline">Crêperie Pivolane</span>
-                        </span>
+                    <div class="hp-sc-card hp-sc-md">
+                      <span class="hp-sc-md-tiles">
+                        <span class="hp-sc-md-tile"><img src="assets/modeles/franchise.svg" alt="" width="80" height="60" /><span>Contrat de franchise</span></span>
+                        <span class="hp-sc-md-tile"><img src="assets/modeles/dip.svg" alt="" width="80" height="60" /><span>DIP</span></span>
+                        <span class="hp-sc-md-tile"><img src="assets/modeles/crz.svg" alt="" width="80" height="60" /><span>CRZ</span></span>
                       </span>
+                      <span class="hp-sc-k">Modèles validés</span>
+                      <span class="hp-sc-md-row hp-sc-md-row--pick"><span class="hp-sc-md-type"><i class="hp-shell-i" data-i="handshake"></i>Franchise</span><b>Contrat de franchise — Réseau Jean Dupont</b><span class="hp-pill hp-pill--green">Validé</span></span>
+                      <span class="hp-sc-md-row"><span class="hp-sc-md-type"><i class="hp-shell-i" data-i="file-text"></i>DIP</span><b>DIP — Réseau Jean Dupont</b><span class="hp-pill hp-pill--green">Validé</span></span>
+                      <span class="hp-sc-md-row"><span class="hp-sc-md-type"><i class="hp-shell-i" data-i="map-pinned"></i>CRZ</span><b>CRZ — Réseau Jean Dupont</b><span class="hp-pill hp-pill--green">Validé</span></span>
                     </div>
-                    <span class="hp-sc-signer hp-sc-signer--a" data-sig-signer="a"><span class="hp-avatar hp-avatar--teal">JD</span><span><b>Jean Dupont</b><span>Franchiseur</span></span><span class="hp-sc-status"><span class="hp-pill hp-pill--blue">En attente</span><span class="hp-pill hp-pill--green">Signé</span></span></span>
-                    <!-- Lien animé entre les deux signataires (pointillé qui défile de
-                         l'expéditeur vers le franchisé) -->
-                    <span class="hp-sc-signlink" aria-hidden="true"></span>
-                    <span class="hp-sc-signer hp-sc-signer--b" data-sig-signer="b"><span class="hp-avatar hp-avatar--orange">CP</span><span><b>Crêperie Pivolane</b><span>Franchisé</span></span><span class="hp-sc-status"><span class="hp-pill hp-pill--blue">En attente</span><span class="hp-pill hp-pill--green">Signé</span></span></span>
-                    <span class="hp-sc-toast hp-sc-sign-toast"><span class="hp-sc-toast-ico hp-sc-ico--check"></span>Contrat signé · conforme eIDAS</span>
+                    <div class="hp-sc-card hp-sc-md-doc">
+                      <span class="hp-sc-paper-h">Contrat de franchise · Crêperie Pivolane</span>
+                      <p class="hp-sc-paper-p">Entre Réseau Jean Dupont, le Franchiseur, et <span class="hp-sc-var">Crêperie Pivolane</span>, représentée par <span class="hp-sc-var">Claire Morel</span>, pour un point de vente situé à <span class="hp-sc-var">Rennes</span>.</p>
+                    </div>
+                    <span class="hp-sc-toast hp-sc-toast--leo hp-sc-md-toast"><span class="hp-leo-tile hp-sc-toast-leo"><span class="hp-leo-glyph"></span><span class="hp-leo-lottie" data-leo-anim="idle.json"></span></span>Contrat prêt · Crêperie Pivolane</span>
                   </div>
                 </div>
 
@@ -204,7 +200,37 @@
                   </div>
                 </div>
 
-                <!-- 06 Centraliser : import de contrats dans la Contrathèque (comme #pf-centraliser), classement par Leo, alerte de renouvellement -->
+                <!-- 06 Signer : un seul contrat, émis par le franchiseur, posé
+                     au centre et signé par les deux parties en même temps
+                     (tracé SVG de chaque signature, dessiné par js/main.js), puis
+                     dédoublé : un exemplaire pour chaque partie (js/main.js,
+                     scène sign). -->
+                <div class="hp-sc hp-sc--sign" data-scene="sign">
+                  <div class="hp-sc-cam">
+                    <div class="hp-sc-card hp-sc-doc" data-sig-doc>
+                      <span class="hp-sc-paper-t">Contrat de franchise</span>
+                      <span class="hp-sc-doc-lines"><i></i><i></i><i></i></span>
+                      <span class="hp-sc-doc-sigs">
+                        <span class="hp-sc-sigbox" data-sig-slot="a">
+                          <svg class="hp-sc-sigsvg" viewBox="0 0 662.02 234.73" fill="none" data-sig-draw><path d="M166.2 7.4L141.9 114.2L120.0 222.5" /><path d="M8.5 226.9L28.8 218.4L50.7 210.5L73.9 203.1L98.3 196.4L124.8 190.1L152.3 184.3L223.5 171.9L303.0 160.5L380.7 152.0L458.7 145.9L541.4 142.1" /><path d="M169.9 125.5L175.5 125.3L182.0 123.9L188.2 121.5L192.9 118.5L197.1 114.3L199.1 110.4L198.3 107.5L195.5 105.5L192.0 104.9L187.9 105.4L183.6 106.9L179.6 109.2L176.0 112.2L173.0 115.8L170.7 119.7L169.5 123.6L169.4 126.6L170.3 129.7L172.2 132.4L174.4 133.8L177.4 134.7L181.7 135.0L190.4 133.3L200.8 128.3L210.8 121.7L220.0 113.8L228.2 104.9L227.9 109.4L232.3 115.1L234.3 115.6L229.7 116.1L232.2 114.2L233.7 106.4L232.2 104.0L235.1 105.2L238.5 105.7L242.1 105.6L246.6 104.7L254.1 101.2L266.1 93.2L270.8 91.5L266.8 100.2L270.3 105.4L271.6 105.4L277.7 100.1L277.8 94.9L279.8 97.6L281.7 98.2L284.7 97.7L290.2 95.6L294.9 95.3L299.5 97.0L302.8 99.8L305.4 104.4L305.7 109.4L309.1 108.6L312.7 106.6L325.0 94.4L328.4 91.8L332.0 90.2L334.5 89.6L337.6 89.8L340.9 91.1L343.4 93.3L347.3 101.3L348.7 102.4L350.8 102.9L359.9 101.0L379.4 94.3" /><path d="M437.1 90.3L426.8 88.0L416.9 87.1L405.0 87.8L397.5 89.7L394.7 91.5L393.3 93.6L393.2 95.7L394.3 98.1L396.8 100.4L399.7 101.8L403.3 102.9L407.8 103.3L413.2 102.7L418.4 101.0L423.1 98.3L428.7 93.8L432.3 91.9L436.1 91.3L443.5 91.5L450.5 90.9L480.1 84.5L486.1 84.2L491.1 84.7L510.6 90.9L515.1 91.5L519.3 91.2L524.4 89.6L530.2 86.3L546.6 72.5L552.6 68.4L558.9 65.8L563.5 65.2L568.2 65.6L568.5 64.8" /><path d="M597.3 93.6L654.5 90.4" /></svg>
+                          <span class="hp-sc-sigline">Jean Dupont</span>
+                        </span>
+                        <span class="hp-sc-sigbox" data-sig-slot="b">
+                          <svg class="hp-sc-sigsvg" viewBox="0 0 333.43 342.62" fill="none" data-sig-draw><path d="M102.3 113.1L103.4 98.0L103.2 83.6L101.8 70.4L99.2 57.7L95.8 48.4L91.0 40.3L86.0 34.9L79.2 30.3L73.5 35.2L69.0 40.5L65.3 46.5L61.8 53.8L56.0 71.9L48.8 104.6L42.8 141.7L38.9 179.1L37.3 216.6L37.9 254.1L41.3 297.5L42.5 307.0L44.2 315.1L46.8 322.4L49.9 327.9L54.1 332.1L59.6 335.1L68.1 316.8L75.7 298.7L82.5 280.2L88.4 261.4L93.5 242.5L97.7 223.3L101.6 201.0L103.1 185.9L102.7 178.3L100.7 171.9L97.7 167.6L93.6 165.6L88.5 165.9L81.7 168.4L74.0 172.9L64.8 179.7L47.2 194.1L31.0 208.5L7.5 231.6L7.9 232.5L6.6 232.4L15.2 226.1L43.6 206.6L67.7 191.8L91.6 178.5L115.0 166.6L139.0 155.6L163.3 145.7L188.0 136.8L215.1 128.3L241.5 121.3L263.4 116.5L281.9 114.0L300.8 113.4L316.5 115.0L320.6 116.6L318.8 116.1L316.8 116.8L324.6 118.5L326.1 122.8L326.1 124.1L326.6 124.4" /><path d="M165.9 92.6L152.9 92.3L150.1 92.9L147.8 94.5L146.4 96.4L146.0 98.3L146.6 100.6L147.9 102.2L151.7 103.6L156.4 102.2L161.6 98.5L169.1 91.4L182.1 76.1L181.8 78.5L182.8 82.3L184.4 84.6L175.2 80.7L177.9 80.3L181.2 78.5L182.8 76.2L183.0 78.6L183.9 80.8L185.8 82.9L188.3 84.5L193.4 85.5L198.7 83.7L204.4 78.9L211.7 68.7L215.1 65.0L214.3 66.3L214.3 70.1L215.3 73.6L216.3 74.6L208.5 70.1L210.1 70.5L214.2 69.2L217.4 66.3L217.8 64.8L218.3 68.8L220.1 73.3L223.1 77.1L227.1 79.9L230.9 81.3L234.9 81.6L239.6 80.7L243.2 78.9L248.2 74.2L257.6 60.5L261.7 56.2L267.3 53.1L275.8 51.3L280.0 49.8L284.1 47.1L287.6 43.1L290.8 36.9L292.4 29.8L292.8 21.0L291.6 8.2L292.1 8.6L291.3 8.5L287.3 19.8L283.0 38.4L276.4 78.6L262.2 173.6L257.3 201.4L251.8 227.1L247.3 244.1L242.4 257.0L236.4 268.6L229.6 277.9" /></svg>
+                          <span class="hp-sc-sigline">Crêperie Pivolane</span>
+                        </span>
+                      </span>
+                    </div>
+                    <span class="hp-sc-signer hp-sc-signer--a" data-sig-signer="a"><span class="hp-avatar hp-avatar--teal">JD</span><span><b>Jean Dupont</b><span>Franchiseur</span></span><span class="hp-sc-status"><span class="hp-pill hp-pill--blue">En attente</span><span class="hp-pill hp-pill--green">Signé</span></span></span>
+                    <!-- Lien animé entre les deux signataires (pointillé qui défile de
+                         l'expéditeur vers le franchisé) -->
+                    <span class="hp-sc-signlink" aria-hidden="true"></span>
+                    <span class="hp-sc-signer hp-sc-signer--b" data-sig-signer="b"><span class="hp-avatar hp-avatar--orange">CP</span><span><b>Crêperie Pivolane</b><span>Franchisé</span></span><span class="hp-sc-status"><span class="hp-pill hp-pill--blue">En attente</span><span class="hp-pill hp-pill--green">Signé</span></span></span>
+                    <span class="hp-sc-toast hp-sc-sign-toast"><span class="hp-sc-toast-ico hp-sc-ico--check"></span>Contrat signé · conforme eIDAS</span>
+                  </div>
+                </div>
+
+                <!-- 07 Centraliser : import de contrats dans la Contrathèque (comme #pf-centraliser), classement par Leo, alerte de renouvellement -->
                 <div class="hp-sc hp-sc--lib" data-scene="library">
                   <div class="hp-sc-cam">
                     <div class="hp-sc-card hp-sc-lib">
@@ -358,8 +384,8 @@
       <div class="hp-wrap">
         <div class="hp-sechead-center" data-reveal>
           <span class="hp-kicker">Une plateforme, tous les stades</span>
-          <h2 class="hp-h2">Une solution qui s'adapte à <em class="hp-em">tous les stades de vie de votre réseau</em></h2>
-          <p class="hp-lede-c">Que votre réseau soit en phase de création ou que vous ayez 100+ franchisés, la plateforme s'adapte à vos besoins juridiques.</p>
+          <h2 class="hp-h2">Avec Legaleo, vous changez de taille, <em class="hp-em">pas de plateforme</em></h2>
+          <p class="hp-lede-c">Vos modèles, vos contrats et votre historique vous suivent, du premier franchisé au centième et plus.</p>
         </div>
 
         <!-- Courbe de croissance : un repère au-dessus de chaque carte -->
@@ -405,11 +431,11 @@
 
             <h3 class="hp-h3">Posez vos fondations avant votre premier franchisé</h3>
             <ul class="hp-checks">
-              <li>DIP établi selon la loi Doubin, à remettre 20 jours avant la signature</li>
-              <li>Modèles validés, puis contrats générés en autonomie</li>
-              <li>Signature électronique incluse</li>
+              <li>Votre DIP, votre contrat de franchise et votre CRZ</li>
+              <li>Révision par un avocat avant usage, avec vos crédits avocat</li>
+              <li>Puis vos contrats en autonomie, signés en ligne</li>
             </ul>
-            <span class="hp-stade-stat"><strong>48 h</strong> en moyenne pour un modèle validé par un avocat</span>
+            <span class="hp-stade-stat"><strong>48 h</strong> en moyenne pour un modèle révisé par un avocat</span>
           </article>
 
           <article class="hp-stade" data-reveal>
@@ -433,16 +459,24 @@
             </div>
 
             <h3 class="hp-h3">Reprenez la main sur un parc qui grandit</h3>
+            <!-- Leo en bandeau, au-dessus des puces : la différence visible
+                 avec l'Essentiel -->
+            <p class="hp-stade-leo">
+              <span class="hp-leo-tile hp-leo-tile--sm" aria-hidden="true"><span class="hp-leo-glyph"></span><span class="hp-leo-lottie" data-leo-anim="idle.json"></span></span>
+              <span><strong>Leo</strong>, l'agent IA juridique des réseaux de franchise, vous aide à rédiger et répond à vos questions dans la plateforme</span>
+            </p>
+            <p class="hp-stade-lead">Tout l'Essentiel, plus :</p>
             <ul class="hp-checks">
-              <li>Import de vos contrats existants, relus par un avocat dédié au droit de la franchise</li>
-              <li>Alertes avant chaque renouvellement, parcours de fin de contrat</li>
-              <li>Module litiges : chaque contentieux suivi sans ressortir le contrat</li>
+              <li>Import de vos contrats signés</li>
+              <li>Alertes avant chaque renouvellement</li>
+              <li>Litiges suivis sans ressortir le contrat</li>
+              <li>Mise à jour juridique de vos modèles, à la demande</li>
             </ul>
-            <span class="hp-stade-stat"><strong>10 h</strong> environ gagnées par mois</span>
+            <span class="hp-stade-stat"><strong>5 à 10 h</strong> gagnées en moyenne chaque mois</span>
           </article>
 
           <article class="hp-stade" data-reveal>
-            <span class="hp-stade-offer hp-stade-offer--custom">Sur mesure</span>
+            <span class="hp-stade-offer hp-stade-offer--custom">Corporate<span class="hp-stade-soon">À venir</span></span>
             <span class="hp-stade-range">30 franchisés et plus</span>
 
             <!-- Mini-visuel : le parc contractuel d'un grand réseau, chiffres
@@ -460,13 +494,20 @@
               </div>
             </div>
 
-            <h3 class="hp-h3">Structurez un grand réseau sans multiplier les outils</h3>
+            <h3 class="hp-h3">Un grand réseau mature, un seul espace juridique</h3>
+            <!-- Leo en version renforcée, pour les équipes juridiques -->
+            <p class="hp-stade-leo">
+              <span class="hp-leo-tile hp-leo-tile--sm" aria-hidden="true"><span class="hp-leo-glyph"></span><span class="hp-leo-lottie" data-leo-anim="idle.json"></span></span>
+              <span><strong>Leo</strong>, en version renforcée et dédiée à vos juristes, pour aller plus loin dans l'analyse de vos contrats</span>
+            </p>
+            <p class="hp-stade-lead">Tout Growth, plus :</p>
             <ul class="hp-checks">
-              <li>Vos avocats et vos équipes juridiques dans le même espace</li>
-              <li>Reprise de votre documentation existante, remise d'équerre par un avocat</li>
-              <li class="is-soon">Master-franchise et développement international : parcours en préparation</li>
+              <li>Un workspace par enseigne et par équipe</li>
+              <li>Juristes et avocats connectés au même espace</li>
+              <li>Reprise de toute votre documentation existante</li>
+              <li>Master-franchise et international <span class="hp-stade-soon">À venir</span></li>
             </ul>
-            <span class="hp-stade-stat"><strong>4 sem.</strong> de la signature à l'autonomie, onboarding juridique dédié</span>
+            <span class="hp-stade-stat"><strong>100+</strong> franchisés, dans un seul espace juridique</span>
           </article>
         </div>
 
@@ -481,9 +522,8 @@
     <section class="hp-block" id="plateforme">
       <div class="hp-wrap">
         <div class="hp-sechead-center" data-reveal>
-          <span class="hp-kicker">La plateforme</span>
-          <h2 class="hp-h2">Générez, faites valider, signez, suivez : <em class="hp-em">le tout au même endroit</em></h2>
-          <p class="hp-lede-c">Chaque étape de vos contrats de franchise, de la première ligne au renouvellement, sur une seule interface.</p>
+          <span class="hp-kicker">Avec Legaleo</span>
+          <h2 class="hp-h2">De vos modèles de contrats aux contrats signés, <em class="hp-em">tout au même endroit</em></h2>
         </div>
 
         <!-- 1. Personnaliser : onboarding.
@@ -492,17 +532,12 @@
         <div class="hp-feature" id="pf-personnaliser">
           <div class="hp-feature-copy" data-reveal>
             <header class="hp-step" data-step>
-              <span class="hp-step-n">01<span class="hp-step-of"> / 06</span></span>
+              <span class="hp-step-n">01<span class="hp-step-of"> / 07</span></span>
               <h3 class="hp-step-verb"><span>Personnalisez</span></h3>
             </header>
             <span class="hp-kicker">Onboarding</span>
             <h4 class="hp-h3b">En 30 minutes, Legaleo apprend à connaître votre réseau</h4>
-            <p class="hp-p">Enseigne, secteur, type de réseau, nombre de franchisés, objectifs : quelques questions suffisent pour personnaliser votre espace et vos modèles de contrats. Vous avez déjà un contrat ? Importez-le, il pré-remplit l'onboarding pour vous.</p>
-            <ul class="hp-bars">
-              <li>Un parcours guidé de <strong>30 minutes</strong></li>
-              <li><strong>Pré-rempli</strong> depuis votre SIREN ou un contrat existant</li>
-              <li>Des modèles de contrats <strong>adaptés à votre réseau</strong> dès le départ</li>
-            </ul>
+            <p class="hp-p">Enseigne, secteur, nombre de franchisés, objectifs : quelques questions suffisent, le reste se pré-remplit depuis votre SIREN ou un contrat existant.</p>
           </div>
           <div class="hp-feature-visual" data-reveal>
             <!-- Onboarding (app/(page)/onboarding de legaleo-ai) : Topbar
@@ -553,6 +588,11 @@
               </div>
               <span class="hp-cursor" data-onb-cursor></span>
             </div>
+            <!-- Badge Leo fixe : ce que fait l'agent à cette étape -->
+            <div class="hp-float hp-float--leo" aria-hidden="true">
+              <span class="hp-leo-tile hp-onb-toast-ico"><span class="hp-leo-glyph"></span><span class="hp-leo-lottie" data-leo-anim="idle.json"></span></span>
+              <span><strong>Leo</strong><br /><span class="hp-float-meta">guide votre onboarding</span></span>
+            </div>
             <div class="hp-float hp-float--onb" data-onb-toast aria-hidden="true">
               <span class="hp-leo-tile hp-onb-toast-ico"><span class="hp-leo-glyph"></span><span class="hp-leo-lottie" data-leo-anim="idle.json"></span></span>
               <span><strong>Espace personnalisé</strong><br /><span class="hp-float-meta">Modèles adaptés à votre réseau de restauration</span></span>
@@ -560,21 +600,16 @@
           </div>
         </div>
 
-        <!-- 2. Générer : génération & éditeur. -->
+        <!-- 2. Créer son modèle : modèle & éditeur. -->
         <div class="hp-feature hp-feature--rev" id="pf-generer">
           <div class="hp-feature-copy" data-reveal>
             <header class="hp-step" data-step>
-              <span class="hp-step-n">02<span class="hp-step-of"> / 06</span></span>
-              <h3 class="hp-step-verb"><span>Générez</span></h3>
+              <span class="hp-step-n">02<span class="hp-step-of"> / 07</span></span>
+              <h3 class="hp-step-verb" data-short="Créez"><span>Créez votre modèle</span></h3>
             </header>
-            <span class="hp-kicker">Génération &amp; éditeur</span>
-            <h4 class="hp-h3b">Un modèle de contrat de franchise rédigé en quelques minutes</h4>
-            <p class="hp-p">Renseignez les informations de votre réseau une fois : Legaleo assemble votre DIP et votre contrat dans une trame éprouvée, avec champs dynamiques et modèles réutilisables.</p>
-            <ul class="hp-bars">
-              <li><strong>Champs dynamiques</strong> reportés sur votre document</li>
-              <li>Modèles et clauses <strong>réutilisables</strong> d'un contrat à l'autre</li>
-              <li>Résultat : en moyenne <strong>5 à 10 heures par mois gagnées</strong> sur la rédaction</li>
-            </ul>
+            <span class="hp-kicker">Modèle &amp; éditeur</span>
+            <h4 class="hp-h3b">Votre modèle de contrat, pas un modèle standard</h4>
+            <p class="hp-p">Vos zones, vos redevances, vos durées alimentent chaque clause. Vous les saisissez une fois, elles se mettent à jour partout.</p>
           </div>
           <div class="hp-feature-visual" data-reveal>
             <!-- Modèle dans l'éditeur (contracts/modeles/[id], RichEditor de
@@ -620,27 +655,34 @@
                     <span class="hp-ed-var" data-gen-item><b>Représentant du franchisé</b><span>↳ [Représentant]</span></span>
                     <span class="hp-ed-var"><b>Lieu de signature</b><span>↳ Paris</span></span>
                   </div>
-                  <span class="hp-ed-panel-foot">Cliquer pour insérer dans le document</span>
+                  <span class="hp-ed-panel-foot">Glisser dans le document pour insérer</span>
                 </div>
               </div>
+              <!-- Glisser-déposer d'un champ (js/main.js : mockGenerate) -->
+              <span class="hp-gen-ghost" data-gen-ghost></span>
+              <span class="hp-cursor" data-gen-cursor></span>
+            </div>
+            <!-- Badge Leo fixe : ce que fait l'agent à cette étape -->
+            <div class="hp-float hp-float--leo hp-float--leo-bl" aria-hidden="true">
+              <span class="hp-leo-tile hp-onb-toast-ico"><span class="hp-leo-glyph"></span><span class="hp-leo-lottie" data-leo-anim="idle.json"></span></span>
+              <span><strong>Leo</strong><br /><span class="hp-float-meta">aide à la rédaction</span></span>
             </div>
           </div>
         </div>
 
-        <!-- 2. Validation par avocat -->
+        <!-- 3. Validation par avocat -->
         <div class="hp-feature" id="pf-valider">
           <div class="hp-feature-copy" data-reveal>
             <header class="hp-step" data-step>
-              <span class="hp-step-n">03<span class="hp-step-of"> / 06</span></span>
-              <h3 class="hp-step-verb"><span>Faites valider</span></h3>
+              <span class="hp-step-n">03<span class="hp-step-of"> / 07</span></span>
+              <h3 class="hp-step-verb" data-short="Validez"><span>Faites valider</span></h3>
             </header>
             <span class="hp-kicker">Validation par avocat</span>
-            <h4 class="hp-h3b">Chaque contrat relu par un avocat, dans un canal réservé</h4>
-            <p class="hp-p">D'un clic, soumettez votre document à un avocat dédié au droit de la franchise, qui annote et valide directement dans la plateforme.</p>
+            <h4 class="hp-h3b">Un avocat valide votre modèle, une seule fois</h4>
+            <p class="hp-p">Il annote directement dans le document, avec vos crédits avocat. Ensuite, le modèle est le vôtre : vous l'utilisez en autonomie.</p>
             <ul class="hp-bars">
-              <li>« Soumettre à l'avocat » <strong>en un clic</strong></li>
-              <li>Recommandations <strong>tracées dans le document</strong></li>
-              <li>La fiabilité d'un avocat, <strong>la peur de l'erreur en moins</strong></li>
+              <li><strong>48 h</strong> en moyenne</li>
+              <li><strong>Aucun modèle</strong> utilisé sans validation</li>
             </ul>
           </div>
           <div class="hp-feature-visual" data-reveal>
@@ -666,8 +708,8 @@
                   <div class="hp-ed-page">
                     <span class="hp-ed-h1">Contrat de franchise</span>
                     <span class="hp-ed-title">Article 2 — Territoire</span>
-                    <p class="hp-ed-text">2.1 Le Franchiseur concède au Franchisé, pour la durée du contrat, le droit d'exploiter la marque <span class="hp-field" data-ed-field="réseau">Réseau Jean Dupont</span> sur le territoire défini ci-après.</p>
-                    <p class="hp-ed-text hp-ed-flag">2.2 Le territoire concédé correspond à la commune de <span class="hp-field" data-ed-field="ville">Lyon 6e</span><span class="hp-ed-add">, dans un rayon de 3 km autour du point de vente</span>.</p>
+                    <p class="hp-ed-text">2.1 Le Franchiseur concède au Franchisé, pour la durée du contrat, le droit d'exploiter la marque Réseau Jean Dupont sur le territoire défini ci-après.</p>
+                    <p class="hp-ed-text hp-ed-flag">2.2 Le territoire concédé correspond à la commune de <span class="hp-field hp-field--lawyer">Lyon 6e</span><span class="hp-ed-add">, dans un rayon de 3 km autour du point de vente</span>.</p>
                     <span class="hp-line"></span>
                     <span class="hp-line hp-line--short"></span>
                   </div>
@@ -687,21 +729,189 @@
           </div>
         </div>
 
-        <!-- 3. Signature électronique -->
+        <!-- 4. Générer les contrats de chaque candidat -->
+        <div class="hp-feature hp-feature--rev" id="pf-generer-contrats">
+          <div class="hp-feature-copy" data-reveal>
+            <header class="hp-step" data-step>
+              <span class="hp-step-n">04<span class="hp-step-of"> / 07</span></span>
+              <h3 class="hp-step-verb" data-short="Générez"><span>Générez vos contrats</span></h3>
+            </header>
+            <span class="hp-kicker">Génération des contrats</span>
+            <h4 class="hp-h3b">DIP, contrat, CRZ : prêts en quelques heures pour chaque candidat</h4>
+            <p class="hp-p">Choisissez votre modèle validé, renseignez le candidat : le document est prêt. Commentez-le en interne, avec votre avocat et avec votre franchisé.</p>
+            <ul class="hp-bars">
+              <li><strong>DIP, contrat de franchise, CRZ</strong> depuis vos modèles validés</li>
+              <li>Relecture avocat <strong>à la demande</strong>, avec vos crédits</li>
+            </ul>
+          </div>
+          <div class="hp-feature-visual" data-reveal>
+            <!-- Parcours réel de legaleo-ai, en trois écrans superposés
+                 (js/main.js : mockCreate) :
+                 1. Modèles (dashboard/modeles) : le modèle de franchise
+                    validé est choisi ;
+                 2. Paramétrage (projets/franchise-contrat-v2, gabarit de
+                    l'onboarding) : le franchisé, puis les dates et
+                    modalités ; génération du contrat ;
+                 3. Éditeur du contrat (contracts/[id]) : les valeurs du
+                    franchisé sont dans le document, les commentaires
+                    (interne, avocat, franchisé) arrivent. -->
+            <div class="hp-flow" data-mock="create" aria-hidden="true">
+              <!-- 1. Modèles -->
+              <div class="hp-win hp-fl-w hp-fl-w--list">
+                <div class="hp-shell-top"><span class="hp-shell-logo" role="img" aria-label="Legaleo"></span><span class="hp-shell-search"><i class="hp-shell-i" data-i="search"></i>Rechercher un contrat, un modèle…</span><span class="hp-shell-credits"><i class="hp-shell-i" data-i="hourglass"></i><span>Crédits restants : </span><strong>2h</strong></span><i class="hp-shell-i hp-shell-bell" data-i="bell"></i><span class="hp-shell-me"><span class="hp-shell-av">SL</span><span class="hp-shell-name">Sophie Laurent</span><i class="hp-shell-i" data-i="chevron-down"></i></span></div>
+                <div class="hp-shell-rail"><span class="hp-shell-cta"><i class="hp-shell-i" data-i="plus"></i><span>Créer un contrat</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="layout-dashboard"></i><span>Dashboard</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="file-text"></i><span>Contrats en cours</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="archive"></i><span>Contrathèque</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="users"></i><span>Cocontractants</span></span><span class="hp-shell-item is-active"><i class="hp-shell-i" data-i="files"></i><span>Modèles</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="sparkles"></i><span>Clauses dynamiques</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="leo"></i><span>Assistant IA Leo</span><b class="hp-shell-beta">Beta</b></span><span class="hp-shell-foot"><span class="hp-shell-item"><i class="hp-shell-i" data-i="user-cog"></i><span>Mon compte</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="book-open"></i><span>Documentation</span></span></span></div>
+                <div class="hp-shell-head"><div class="hp-shell-h"><span class="hp-shell-title">Modèles</span></div><p class="hp-shell-sub">Retrouvez tous vos modèles, en cours de création ou déjà validés.</p></div>
+                <div class="hp-winbody">
+                  <div class="hp-md-tiles"><span class="hp-md-tile"><span class="hp-md-ill"><img src="assets/modeles/franchise.svg" alt="" width="80" height="60" /></span><span class="hp-md-tile-l">Contrat de franchise</span><i class="hp-md-badge"><i class="hp-shell-i" data-i="plus"></i></i></span><span class="hp-md-tile"><span class="hp-md-ill"><img src="assets/modeles/dip.svg" alt="" width="80" height="60" /></span><span class="hp-md-tile-l">DIP</span><i class="hp-md-badge"><i class="hp-shell-i" data-i="plus"></i></i></span><span class="hp-md-tile"><span class="hp-md-ill"><img src="assets/modeles/crz.svg" alt="" width="80" height="60" /></span><span class="hp-md-tile-l">CRZ</span><i class="hp-md-badge"><i class="hp-shell-i" data-i="plus"></i></i></span></div>
+                  <span class="hp-md-k">Modèles validés</span>
+                  <div class="hp-md-tbl">
+                    <div class="hp-md-tr" data-md-row><span class="hp-md-type"><i class="hp-shell-i" data-i="handshake"></i>Franchise</span><span class="hp-md-name">Contrat de franchise — Réseau Jean Dupont</span><span><span class="hp-pill hp-pill--green">Validé</span></span></div>
+                    <div class="hp-md-tr"><span class="hp-md-type"><i class="hp-shell-i" data-i="file-text"></i>DIP</span><span class="hp-md-name">DIP — Réseau Jean Dupont</span><span><span class="hp-pill hp-pill--green">Validé</span></span></div>
+                    <div class="hp-md-tr"><span class="hp-md-type"><i class="hp-shell-i" data-i="map-pinned"></i>CRZ</span><span class="hp-md-name">CRZ — Réseau Jean Dupont</span><span><span class="hp-pill hp-pill--green">Validé</span></span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. Paramétrage du contrat -->
+              <div class="hp-win hp-win--onb hp-fl-w hp-fl-w--setup">
+                <div class="hp-shell-top hp-onb-top"><span class="hp-shell-logo hp-shell-logo--ink" role="img" aria-label="Legaleo"></span><span class="hp-shell-me"><span class="hp-shell-av">SL</span><span class="hp-shell-name">Sophie Laurent</span><i class="hp-shell-i" data-i="chevron-down"></i></span></div>
+                <div class="hp-onb">
+                  <div class="hp-onb-form hp-fl-form">
+                    <!-- Étape « co-contractant » puis « dates et modalités »,
+                         superposées -->
+                    <div class="hp-fl-pane hp-fl-pane--who">
+                      <span class="hp-onb-h">Information sur votre co-contractant</span>
+                      <div class="hp-onb-field hp-onb-field--dd">
+                        <span class="hp-onb-l">Pour quel franchisé souhaitez-vous créer ce contrat ?</span>
+                        <span class="hp-onb-select" data-fl-select><span data-fl-select-v>Sélectionnez un franchisé</span><i class="hp-shell-i" data-i="chevron-down"></i></span>
+                        <span class="hp-onb-menu">
+                          <span class="hp-onb-menu-i">Boulangerie Léa</span>
+                          <span class="hp-onb-menu-i" data-fl-pick>Crêperie Pivolane</span>
+                          <span class="hp-onb-menu-i">Café Norah</span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="hp-fl-pane hp-fl-pane--dates">
+                      <span class="hp-onb-h">Dates et modalités</span>
+                      <div class="hp-onb-field">
+                        <span class="hp-onb-l">Prise d'effet du contrat</span>
+                        <span class="hp-fl-radio is-on">À la date de signature (recommandé)</span>
+                        <span class="hp-fl-radio">À une date spécifique</span>
+                      </div>
+                      <div class="hp-onb-field">
+                        <span class="hp-onb-l">Durée du contrat (en mois)</span>
+                        <span class="hp-cr-input" data-fl-duree data-ph="Ex. 60" data-v="84"></span>
+                      </div>
+                    </div>
+                    <div class="hp-onb-actions"><span class="hp-onb-btn hp-onb-btn--ghost">Précédent</span><span class="hp-onb-btn" data-fl-next>Suivant</span></div>
+                    <!-- Génération du contrat (FranchiseContratV2Generating) -->
+                    <div class="hp-fl-gen">
+                      <span class="hp-leo-tile hp-leo-tile--sm"><span class="hp-leo-glyph"></span><span class="hp-leo-lottie" data-leo-anim="idle.json"></span></span>
+                      <b>Génération du contrat en cours…</b>
+                      <span class="hp-fl-gen-bar"><i></i></span>
+                    </div>
+                  </div>
+                  <div class="hp-onb-steps">
+                    <span class="hp-onb-step is-done">Bienvenue</span>
+                    <span class="hp-onb-step" data-fl-step="who">Co-contractant</span>
+                    <span class="hp-onb-step" data-fl-step="dates">Dates et modalités</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. Éditeur du contrat -->
+              <div class="hp-win hp-win--editor hp-fl-w hp-fl-w--editor">
+                <div class="hp-edh">
+                  <i class="hp-shell-i hp-edh-back" data-i="chevron-left"></i>
+                  <div class="hp-edh-t"><span class="hp-edh-title">Contrat de franchise · Crêperie Pivolane</span><span class="hp-edh-meta"><span class="hp-edh-status">Rédaction</span>Créé à l'instant</span></div>
+                  <span class="hp-pill hp-pill--teal">Sauvegardé</span>
+                </div>
+                <div class="hp-ed hp-fl-ed">
+                  <div class="hp-ed-toc">
+                    <span class="hp-ed-toc-h"><i class="hp-shell-i" data-i="list"></i>Table des matières</span>
+                    <span class="hp-ed-toc-i is-active">Préambule</span>
+                    <span class="hp-ed-toc-i">Article 1 — Objet</span>
+                    <span class="hp-ed-toc-i">Article 2 — Territoire</span>
+                    <span class="hp-ed-toc-i">Article 3 — Durée</span>
+                  </div>
+                  <div class="hp-ed-doc">
+                    <div class="hp-ed-page">
+                      <span class="hp-ed-h1">Contrat de franchise</span>
+                      <span class="hp-ed-title">Préambule</span>
+                      <p class="hp-ed-text">Entre la société Réseau Jean Dupont, ci-après « le Franchiseur »,</p>
+                      <p class="hp-ed-text">Et <span class="hp-var is-value" data-fl-var>Crêperie Pivolane</span>, représentée par <span class="hp-var is-value" data-fl-var>Claire Morel</span>, ci-après « le Franchisé », pour une durée de <span class="hp-var is-value" data-fl-var>84 mois</span>.</p>
+                      <span class="hp-line"></span>
+                      <span class="hp-line hp-line--short"></span>
+                    </div>
+                  </div>
+                  <div class="hp-ed-rail"><i class="hp-shell-i" data-i="chevrons-right"></i><i class="hp-shell-i" data-i="list"></i><i class="hp-shell-i" data-i="scale"></i><i class="hp-shell-i is-active" data-i="message-square"></i><i class="hp-shell-i" data-i="clock"></i><span class="hp-leo-tile hp-leo-tile--xs"><span class="hp-leo-glyph"></span></span></div>
+                  <div class="hp-ed-panel">
+                    <span class="hp-ed-panel-h">Commentaires</span>
+                    <div class="hp-fl-cm" style="--i: 0"><span class="hp-fl-cm-who"><span class="hp-avatar hp-avatar--teal">SL</span><span><b>Sophie</b><small>Interne</small></span></span><p>Zone validée avec le développement.</p></div>
+                    <div class="hp-fl-cm" style="--i: 1"><span class="hp-fl-cm-who"><span class="hp-avatar hp-avatar--purple">PM</span><span><b>Me Martin</b><small>Avocat</small></span></span><p>Durée cohérente avec le DIP.</p></div>
+                    <div class="hp-fl-cm" style="--i: 2"><span class="hp-fl-cm-who"><span class="hp-avatar hp-avatar--orange">CP</span><span><b>Claire</b><small>Franchisé</small></span></span><p>Lu, merci !</p></div>
+                  </div>
+                </div>
+              </div>
+              <span class="hp-cursor" data-fl-cursor></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Contrats en cours -->
+        <div class="hp-feature" id="pf-suivre">
+          <div class="hp-feature-copy" data-reveal>
+            <header class="hp-step" data-step>
+              <span class="hp-step-n">05<span class="hp-step-of"> / 07</span></span>
+              <h3 class="hp-step-verb"><span>Suivez</span></h3>
+            </header>
+            <span class="hp-kicker">Contrats en cours</span>
+            <h4 class="hp-h3b">Suivez l'avancée de chaque contrat en un coup d'œil</h4>
+            <p class="hp-p">Relecture interne, relecture avocat, signature, signé : en un clic voyez ce qui bloque le parcours juridique de vos contrats.</p>
+            <ul class="hp-bars">
+              <li>Statut de chaque contrat <strong>en temps réel</strong></li>
+              <li>Vue tableau ou liste, <strong>recherche instantanée</strong></li>
+              <li><strong>Plus aucun contrat oublié</strong> en route et des temps de signature réduits</li>
+            </ul>
+          </div>
+          <div class="hp-feature-visual" data-reveal>
+            <div class="hp-win" data-mock="kanban" aria-hidden="true">
+              <div class="hp-shell-top"><span class="hp-shell-logo" role="img" aria-label="Legaleo"></span><span class="hp-shell-search"><i class="hp-shell-i" data-i="search"></i>Rechercher un contrat, un modèle…</span><span class="hp-shell-credits"><i class="hp-shell-i" data-i="hourglass"></i><span>Crédits restants : </span><strong>2h</strong></span><i class="hp-shell-i hp-shell-bell" data-i="bell"></i><span class="hp-shell-me"><span class="hp-shell-av">SL</span><span class="hp-shell-name">Sophie Laurent</span><i class="hp-shell-i" data-i="chevron-down"></i></span></div>
+              <div class="hp-shell-rail"><span class="hp-shell-cta"><i class="hp-shell-i" data-i="plus"></i><span>Créer un contrat</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="layout-dashboard"></i><span>Dashboard</span></span><span class="hp-shell-item is-active"><i class="hp-shell-i" data-i="file-text"></i><span>Contrats en cours</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="archive"></i><span>Contrathèque</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="users"></i><span>Cocontractants</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="files"></i><span>Modèles</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="sparkles"></i><span>Clauses dynamiques</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="leo"></i><span>Assistant IA Leo</span><b class="hp-shell-beta">Beta</b></span><span class="hp-shell-foot"><span class="hp-shell-item"><i class="hp-shell-i" data-i="user-cog"></i><span>Mon compte</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="book-open"></i><span>Documentation</span></span></span></div>
+              <div class="hp-shell-head"><div class="hp-shell-h"><span class="hp-shell-title">Contrats en cours</span></div></div>
+              <div class="hp-winbody hp-kb">
+                <div class="hp-kb-col" data-kb-col="0">
+                  <div class="hp-kb-h"><span class="hp-pill hp-pill--orange">Relecture interne</span><span class="hp-kb-n">2</span></div>
+                  <div class="hp-kb-card" data-kb-mover><span class="hp-tag">DIP</span><span class="hp-kb-t">Réseau Jean Dupont</span><span class="hp-kb-d" data-kb-date>Créé le 28/08</span></div>
+                  <div class="hp-kb-card"><span class="hp-tag">CRZ</span><span class="hp-kb-t">Boulangerie Léa</span><span class="hp-kb-d">Créé le 28/08</span></div>
+                </div>
+                <div class="hp-kb-col" data-kb-col="1">
+                  <div class="hp-kb-h"><span class="hp-pill hp-pill--purple">Relecture avocat</span><span class="hp-kb-n">1</span></div>
+                  <div class="hp-kb-card"><span class="hp-tag">Franchise</span><span class="hp-kb-t">Réseau Jean Dupont</span><span class="hp-kb-d">Envoyé le 29/08</span></div>
+                </div>
+                <div class="hp-kb-col" data-kb-col="2">
+                  <div class="hp-kb-h"><span class="hp-pill hp-pill--blue">Signature</span><span class="hp-kb-n">1</span></div>
+                  <div class="hp-kb-card"><span class="hp-tag">Franchise</span><span class="hp-kb-t">Crêperie Pivolane</span><span class="hp-kb-d">En attente</span></div>
+                </div>
+                <div class="hp-kb-col" data-kb-col="3">
+                  <div class="hp-kb-h"><span class="hp-pill hp-pill--green">Signé</span><span class="hp-kb-n">1</span></div>
+                  <div class="hp-kb-card"><span class="hp-tag">DIP</span><span class="hp-kb-t">Café Norah</span><span class="hp-kb-d">Signé le 26/08</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Signature électronique -->
         <div class="hp-feature hp-feature--rev" id="pf-signer">
           <div class="hp-feature-copy" data-reveal>
             <header class="hp-step" data-step>
-              <span class="hp-step-n">04<span class="hp-step-of"> / 06</span></span>
+              <span class="hp-step-n">06<span class="hp-step-of"> / 07</span></span>
               <h3 class="hp-step-verb"><span>Signez</span></h3>
             </header>
             <span class="hp-kicker">Signature électronique</span>
-            <h4 class="hp-h3b">Envoyez à signer, suivez chaque signataire</h4>
-            <p class="hp-p">Signature électronique conforme eIDAS intégrée : le contrat signé part automatiquement dans votre Contrathèque.</p>
-            <ul class="hp-bars">
-              <li>Signature <strong>conforme eIDAS</strong>, valeur juridique</li>
-              <li>Statut de chaque signataire <strong>en temps réel</strong></li>
-              <li><strong>Archivage automatique</strong> une fois signé</li>
-            </ul>
+            <h4 class="hp-h3b">Votre franchisé signe en ligne, le contrat s'archive tout seul</h4>
+            <p class="hp-p">Signature conforme eIDAS : vous voyez qui a signé, et quand.</p>
           </div>
           <div class="hp-feature-visual" data-reveal>
             <div class="hp-win" data-mock="sign" aria-hidden="true">
@@ -754,68 +964,23 @@
           </div>
         </div>
 
-        <!-- 4. Contrats en cours -->
-        <div class="hp-feature" id="pf-suivre">
+        <!-- 7. Contrathèque & alertes -->
+        <div class="hp-feature" id="pf-centraliser">
           <div class="hp-feature-copy" data-reveal>
             <header class="hp-step" data-step>
-              <span class="hp-step-n">05<span class="hp-step-of"> / 06</span></span>
-              <h3 class="hp-step-verb"><span>Suivez</span></h3>
-            </header>
-            <span class="hp-kicker">Contrats en cours</span>
-            <h4 class="hp-h3b">Suivez l'avancée de chaque contrat en un coup d'œil</h4>
-            <p class="hp-p">Relecture interne, relecture avocat, signature, signé : en un clic voyez ce qui bloque le parcours juridique de vos contrats.</p>
-            <ul class="hp-bars">
-              <li>Statut de chaque contrat <strong>en temps réel</strong></li>
-              <li>Vue tableau ou liste, <strong>recherche instantanée</strong></li>
-              <li><strong>Plus aucun contrat oublié</strong> en route et des temps de signature réduits</li>
-            </ul>
-          </div>
-          <div class="hp-feature-visual" data-reveal>
-            <div class="hp-win" data-mock="kanban" aria-hidden="true">
-              <div class="hp-shell-top"><span class="hp-shell-logo" role="img" aria-label="Legaleo"></span><span class="hp-shell-search"><i class="hp-shell-i" data-i="search"></i>Rechercher un contrat, un modèle…</span><span class="hp-shell-credits"><i class="hp-shell-i" data-i="hourglass"></i><span>Crédits restants : </span><strong>2h</strong></span><i class="hp-shell-i hp-shell-bell" data-i="bell"></i><span class="hp-shell-me"><span class="hp-shell-av">SL</span><span class="hp-shell-name">Sophie Laurent</span><i class="hp-shell-i" data-i="chevron-down"></i></span></div>
-              <div class="hp-shell-rail"><span class="hp-shell-cta"><i class="hp-shell-i" data-i="plus"></i><span>Créer un contrat</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="layout-dashboard"></i><span>Dashboard</span></span><span class="hp-shell-item is-active"><i class="hp-shell-i" data-i="file-text"></i><span>Contrats en cours</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="archive"></i><span>Contrathèque</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="users"></i><span>Cocontractants</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="files"></i><span>Modèles</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="sparkles"></i><span>Clauses dynamiques</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="leo"></i><span>Assistant IA Leo</span><b class="hp-shell-beta">Beta</b></span><span class="hp-shell-foot"><span class="hp-shell-item"><i class="hp-shell-i" data-i="user-cog"></i><span>Mon compte</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="book-open"></i><span>Documentation</span></span></span></div>
-              <div class="hp-shell-head"><div class="hp-shell-h"><span class="hp-shell-title">Contrats en cours</span></div></div>
-              <div class="hp-winbody hp-kb">
-                <div class="hp-kb-col" data-kb-col="0">
-                  <div class="hp-kb-h"><span class="hp-pill hp-pill--orange">Relecture interne</span><span class="hp-kb-n">2</span></div>
-                  <div class="hp-kb-card" data-kb-mover><span class="hp-tag">DIP</span><span class="hp-kb-t">Réseau Jean Dupont</span><span class="hp-kb-d" data-kb-date>Créé le 28/08</span></div>
-                  <div class="hp-kb-card"><span class="hp-tag">CRZ</span><span class="hp-kb-t">Boulangerie Léa</span><span class="hp-kb-d">Créé le 28/08</span></div>
-                </div>
-                <div class="hp-kb-col" data-kb-col="1">
-                  <div class="hp-kb-h"><span class="hp-pill hp-pill--purple">Relecture avocat</span><span class="hp-kb-n">1</span></div>
-                  <div class="hp-kb-card"><span class="hp-tag">Franchise</span><span class="hp-kb-t">Réseau Jean Dupont</span><span class="hp-kb-d">Envoyé le 29/08</span></div>
-                </div>
-                <div class="hp-kb-col" data-kb-col="2">
-                  <div class="hp-kb-h"><span class="hp-pill hp-pill--blue">Signature</span><span class="hp-kb-n">1</span></div>
-                  <div class="hp-kb-card"><span class="hp-tag">Franchise</span><span class="hp-kb-t">Crêperie Pivolane</span><span class="hp-kb-d">En attente</span></div>
-                </div>
-                <div class="hp-kb-col" data-kb-col="3">
-                  <div class="hp-kb-h"><span class="hp-pill hp-pill--green">Signé</span><span class="hp-kb-n">1</span></div>
-                  <div class="hp-kb-card"><span class="hp-tag">DIP</span><span class="hp-kb-t">Café Norah</span><span class="hp-kb-d">Signé le 26/08</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 5. Contrathèque & alertes -->
-        <div class="hp-feature hp-feature--rev" id="pf-centraliser">
-          <div class="hp-feature-copy" data-reveal>
-            <header class="hp-step" data-step>
-              <span class="hp-step-n">06<span class="hp-step-of"> / 06</span></span>
+              <span class="hp-step-n">07<span class="hp-step-of"> / 07</span></span>
               <h3 class="hp-step-verb"><span>Centralisez</span></h3>
             </header>
             <span class="hp-kicker">Contrathèque &amp; alertes</span>
-            <h4 class="hp-h3b">Que vous ayez 10 ou 100 franchisés, importez tous vos contrats au même endroit</h4>
-            <p class="hp-p">Importez vos contrats existants et ne perdez plus de temps à chercher vos prochains renouvellements : les dates clés sont extraites automatiquement, et Legaleo vous alerte avant chaque renouvellement.</p>
+            <h4 class="hp-h3b">Retrouvez un contrat, ou une info qu'il contient, en deux clics</h4>
+            <p class="hp-p">Dates clés et cocontractant sont extraits automatiquement, et Legaleo vous alerte avant chaque renouvellement.</p>
             <ul class="hp-bars">
-              <li><strong>Import</strong> de vos contrats existants</li>
-              <li>Filtrez par vues <strong>« expiré », « à renouveler »</strong>, etc.</li>
-              <li>Grâce à une recherche intelligente, retrouvez tous vos contrats <strong>en deux clics</strong></li>
+              <li>Vos contrats existants <strong>s'importent aussi</strong></li>
+              <li class="is-soon">Bientôt : tableau de bord juridique de votre réseau</li>
             </ul>
           </div>
           <div class="hp-feature-visual" data-reveal>
-            <div class="hp-win" data-mock="library" aria-hidden="true">
+            <div class="hp-win" data-mock="library" data-mock-once aria-hidden="true">
               <div class="hp-shell-top"><span class="hp-shell-logo" role="img" aria-label="Legaleo"></span><span class="hp-shell-search"><i class="hp-shell-i" data-i="search"></i>Rechercher un contrat, un modèle…</span><span class="hp-shell-credits"><i class="hp-shell-i" data-i="hourglass"></i><span>Crédits restants : </span><strong>2h</strong></span><i class="hp-shell-i hp-shell-bell" data-i="bell"></i><span class="hp-shell-me"><span class="hp-shell-av">SL</span><span class="hp-shell-name">Sophie Laurent</span><i class="hp-shell-i" data-i="chevron-down"></i></span></div>
               <div class="hp-shell-rail"><span class="hp-shell-cta"><i class="hp-shell-i" data-i="plus"></i><span>Créer un contrat</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="layout-dashboard"></i><span>Dashboard</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="file-text"></i><span>Contrats en cours</span></span><span class="hp-shell-item is-active"><i class="hp-shell-i" data-i="archive"></i><span>Contrathèque</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="users"></i><span>Cocontractants</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="files"></i><span>Modèles</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="sparkles"></i><span>Clauses dynamiques</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="leo"></i><span>Assistant IA Leo</span><b class="hp-shell-beta">Beta</b></span><span class="hp-shell-foot"><span class="hp-shell-item"><i class="hp-shell-i" data-i="user-cog"></i><span>Mon compte</span></span><span class="hp-shell-item"><i class="hp-shell-i" data-i="book-open"></i><span>Documentation</span></span></span></div>
               <div class="hp-shell-head"><div class="hp-shell-h"><span class="hp-shell-title">Contrathèque</span><span class="hp-pill hp-pill--green" data-lib-ok>2 actifs</span><span class="hp-pill hp-pill--orange" data-lib-renew-pill><span data-lib-renew>2</span> à renouveler</span></div><p class="hp-shell-sub">Retrouvez l'ensemble de vos contrats signés et suivez leurs échéances.</p></div>
@@ -888,13 +1053,7 @@
         <div class="hp-avocat">
           <div class="hp-avocat-copy" data-reveal>
             <span class="hp-kicker hp-kicker--cyan">L'avocat, au cœur de la plateforme</span>
-            <h2 class="hp-h2 hp-h2-left hp-h2-light">L'IA prépare, un avocat valide : <em class="hp-em">le vôtre, ou un avocat partenaire dédié au droit de la franchise</em></h2>
-            <p class="hp-lede2 hp-lede2-light">Aucun modèle ne quitte Legaleo sans validation par un avocat. Vous choisissez lequel, vous gardez la main sur vos contrats, et vous ne payez que le temps d'avocat que vous utilisez.</p>
-            <ul class="hp-av-proofs">
-              <li>Modèle validé en 48 h en moyenne</li>
-              <li>0 modèle utilisé sans validation</li>
-              <li>Crédits d'heures 5 · 10 · 20 h</li>
-            </ul>
+            <h2 class="hp-h2 hp-h2-left hp-h2-light">L'IA prépare, un avocat valide : <em class="hp-em">le vôtre, ou un avocat partenaire.</em></h2>
           </div>
 
           <!-- Modèle relu par l'avocat : versions, clause annotée, validation.
@@ -920,47 +1079,40 @@
           </div>
         </div>
 
+        <!-- Trois temps de l'avocat, en colonnes séparées par un filet -->
         <ol class="hp-av-steps">
           <li class="hp-av-step" data-reveal>
             <span class="hp-av-step-n">1</span>
             <h3 class="hp-av-step-h">Il valide vos modèles, une fois</h3>
-            <p>Cohérence des clauses, obligations légales, adaptation à votre réseau : <strong>48 h en moyenne</strong>. Ensuite, vous générez vos contrats en autonomie, sur vos modèles validés.</p>
+            <p><strong>48 h en moyenne</strong>, aucun modèle utilisé sans validation. Ensuite, vous générez vos contrats en autonomie.</p>
           </li>
           <li class="hp-av-step" data-reveal>
             <span class="hp-av-step-n">2</span>
             <h3 class="hp-av-step-h">Il annote dans le document, pas par mail</h3>
-            <p>Recommandations tracées, versions conservées, canal réservé entre vous et lui. <strong>Fini la version 7 finale</strong> en pièce jointe.</p>
+            <p>Fini la version 7 finale en pièce jointe.</p>
           </li>
           <li class="hp-av-step" data-reveal>
             <span class="hp-av-step-n">3</span>
             <h3 class="hp-av-step-h">Il reste à un clic quand ça sort du cadre</h3>
-            <p>Une négociation avec un candidat, une zone qui bouge, un litige : vous activez des <strong>crédits d'heures</strong> et l'avocat reprend le dossier là où il est, sans être briefé.</p>
+            <p>Négociation, zone qui bouge, litige : il reprend le dossier sans être briefé.</p>
           </li>
         </ol>
 
-        <!-- Deux solutions possibles, présentées côte à côte (pas un choix
-             à cocher) -->
+        <!-- Deux solutions possibles, côte à côte (pas un choix à cocher) -->
         <div class="hp-avocat-opts">
           <article class="hp-opt" data-reveal>
-            <span class="hp-opt-ico hp-opt-ico--own" aria-hidden="true"></span>
-            <div class="hp-opt-body">
-              <h3 class="hp-opt-h">Votre avocat habituel</h3>
-              <p class="hp-opt-p">Invitez-le en un e-mail. Il retrouve vos modèles, vos contrats et leur historique dans son propre espace. Vous conservez votre relation et vos conditions.</p>
-              <span class="hp-opt-tag">Invitation en un e-mail</span>
-            </div>
+            <h3 class="hp-opt-h">Votre avocat habituel</h3>
+            <p class="hp-opt-p">Invitez-le par e-mail, il retrouve tout dans son espace.</p>
           </article>
           <span class="hp-opt-or" aria-hidden="true">ou</span>
           <article class="hp-opt" data-reveal>
-            <span class="hp-opt-ico hp-opt-ico--legaleo" aria-hidden="true"></span>
-            <div class="hp-opt-body">
-              <h3 class="hp-opt-h">Un avocat partenaire, dédié au droit de la franchise</h3>
-              <p class="hp-opt-p">Pas d'avocat en droit de la franchise ? Un avocat partenaire intervient sur la plateforme. Vous activez des crédits d'heures à tout moment et ne payez que le temps utilisé.</p>
-              <span class="hp-opt-tag">Crédits d'heures 5 · 10 · 20 h</span>
-            </div>
+            <h3 class="hp-opt-h">Un avocat partenaire</h3>
+            <p class="hp-opt-p">Dédié au droit de la franchise, il intervient sur la plateforme.</p>
           </article>
         </div>
+        <p class="hp-av-credits" data-reveal><strong>Crédits avocat : 5, 10 ou 20 h.</strong></p>
 
-        <p class="hp-av-lawyer" data-reveal>Vous êtes avocat ? <a href="https://www.legaleo.ai/avocat-droit-franchise" target="_top">Découvrez votre espace sur Legaleo <span aria-hidden="true">→</span></a></p>
+        <p class="hp-av-lawyer" data-reveal>Vous êtes avocat ? Concentrez-vous sur le conseil, l'IA prépare le reste. <a href="https://www.legaleo.ai/avocat-droit-franchise" target="_top">Découvrez votre espace <span aria-hidden="true">→</span></a></p>
       </div>
     </section>
 
@@ -968,45 +1120,14 @@
     <section class="hp-block" id="pourquoi">
       <div class="hp-wrap">
         <div class="hp-sechead-center" data-reveal>
-          <span class="hp-kicker">Pourquoi Legaleo</span>
-          <h2 class="hp-h2">4 raisons de <em class="hp-em">passer dans une autre dimension juridique pour le développement de votre réseau</em></h2>
+          <span class="hp-kicker">Ce qui change pour votre réseau</span>
+          <h2 class="hp-h2">Votre juridique avance <em class="hp-em hp-em--br">au rythme de votre réseau</em></h2>
         </div>
 
         <div class="hp-bento">
-          <article class="hp-bcard hp-bcard--time" data-reveal>
-            <span class="hp-bcard-big"><span data-countup="5">5</span>–<span data-countup="10">10</span> h</span>
-            <h3 class="hp-bcard-h">Par mois, en moyenne</h3>
-            <p class="hp-bcard-p">Gagnées sur la rédaction et la recherche de contrats, réinvesties dans le recrutement de franchisés.</p>
-          </article>
-
-          <article class="hp-bcard hp-bcard--cost" data-reveal>
-            <h3 class="hp-bcard-h">Des coûts juridiques prévisibles</h3>
-            <p class="hp-bcard-p">Un abonnement mensuel, et des crédits d'heures d'avocat que vous activez quand vous en avez besoin. Vous savez ce que coûte votre juridique avant de recruter.</p>
-            <!-- Avant / après sur 6 mois : honoraires au temps passé (barres
-                 fantômes : toujours au-dessus de Legaleo, et irréguliers, avec des
-                 pics à l'ouverture en mars et au litige en juin) face à Legaleo
-                 (abonnement constant + crédits d'heures activés ces mêmes mois),
-                 toujours sous la ligne de budget. -->
-            <div class="hp-costchart" aria-hidden="true">
-              <div class="hp-costchart-row hp-costchart-row--flat">
-                <span class="hp-costchart-legend"><span class="hp-costchart-key">Abonnement</span><span class="hp-costchart-key hp-costchart-key--credit">Crédits d'heures</span><span class="hp-costchart-key hp-costchart-key--ghost">Honoraires au temps passé</span></span>
-                <span class="hp-costchart-bars">
-                  <span class="hp-costchart-budget"><span>Budget prévu</span></span>
-                  <span class="hp-costchart-m" style="--m: 0"><i class="is-ghost" style="--h: 58%"></i><i style="--h: 42%"></i></span>
-                  <span class="hp-costchart-m" style="--m: 1"><i class="is-ghost" style="--h: 47%"></i><i style="--h: 42%"></i></span>
-                  <span class="hp-costchart-m" style="--m: 2"><i class="is-ghost" style="--h: 100%"></i><i style="--h: 42%"><u style="--c: 80%"></u></i></span>
-                  <span class="hp-costchart-m" style="--m: 3"><i class="is-ghost" style="--h: 52%"></i><i style="--h: 42%"></i></span>
-                  <span class="hp-costchart-m" style="--m: 4"><i class="is-ghost" style="--h: 66%"></i><i style="--h: 42%"></i></span>
-                  <span class="hp-costchart-m" style="--m: 5"><i class="is-ghost" style="--h: 92%"></i><i style="--h: 42%"><u style="--c: 60%"></u></i></span>
-                </span>
-                <span class="hp-costchart-x"><b>J</b><b>F</b><b>M</b><b>A</b><b>M</b><b>J</b></span>
-              </div>
-            </div>
-          </article>
-
           <article class="hp-bcard hp-bcard--simple" data-reveal>
             <h3 class="hp-bcard-h">Vos contrats, pas un modèle standard</h3>
-            <p class="hp-bcard-p">Zones, redevances, durées, clauses particulières : les paramètres de votre réseau irriguent chaque document. Chaque réseau a son propre contrat.</p>
+            <p class="hp-bcard-p">Vous saisissez vos paramètres une fois, ils alimentent chaque document.</p>
             <!-- Les paramètres du réseau s'allument, puis chaque document les
                  reçoit (css/why.css : .hp-params). -->
             <div class="hp-params" aria-hidden="true">
@@ -1025,11 +1146,41 @@
             </div>
           </article>
 
+          <article class="hp-bcard hp-bcard--time" data-reveal>
+            <span class="hp-bcard-big"><span data-countup="5">5</span>–<span data-countup="10">10</span> h</span>
+            <h3 class="hp-bcard-h">Gagnées chaque mois, en moyenne</h3>
+            <p class="hp-bcard-p">Un DIP prêt en quelques heures, du temps réinvesti dans le recrutement.</p>
+          </article>
+
+          <article class="hp-bcard hp-bcard--cost" data-reveal>
+            <h3 class="hp-bcard-h">Votre budget juridique, connu avant de recruter</h3>
+            <p class="hp-bcard-p">Un abonnement mensuel, des crédits avocat que vous choisissez : pas de facture surprise.</p>
+            <!-- 6 mois avec Legaleo : abonnement constant + crédits avocat
+                 activés en mars (ouverture) et en juin (litige), toujours sous
+                 la ligne de budget. -->
+            <div class="hp-costchart" aria-hidden="true">
+              <div class="hp-costchart-row hp-costchart-row--flat">
+                <span class="hp-costchart-legend"><span class="hp-costchart-key">Abonnement</span><span class="hp-costchart-key hp-costchart-key--credit">Crédits avocat</span></span>
+                <span class="hp-costchart-bars">
+                  <span class="hp-costchart-budget"><span>Budget prévu</span></span>
+                  <span class="hp-costchart-m" style="--m: 0"><i style="--h: 42%"></i></span>
+                  <span class="hp-costchart-m" style="--m: 1"><i style="--h: 42%"></i></span>
+                  <span class="hp-costchart-m" style="--m: 2"><i style="--h: 42%"><u style="--c: 80%"></u></i></span>
+                  <span class="hp-costchart-m" style="--m: 3"><i style="--h: 42%"></i></span>
+                  <span class="hp-costchart-m" style="--m: 4"><i style="--h: 42%"></i></span>
+                  <span class="hp-costchart-m" style="--m: 5"><i style="--h: 42%"><u style="--c: 60%"></u></i></span>
+                </span>
+                <span class="hp-costchart-x"><b>J</b><b>F</b><b>M</b><b>A</b><b>M</b><b>J</b></span>
+              </div>
+            </div>
+          </article>
+
           <article class="hp-bcard hp-bcard--leo" data-reveal>
             <span class="hp-leo-tile" aria-hidden="true"><span class="hp-leo-glyph"></span><span class="hp-leo-lottie" data-leo-anim="idle.json"></span></span>
             <div>
-              <h3 class="hp-bcard-h">Une réponse sourcée en quelques secondes, avec notre agent Leo <span class="hp-beta">Bêta</span></h3>
-              <p class="hp-bcard-p">Leo répond à vos questions du quotidien et cite ses sources. Tout ce qui engage votre réseau reste validé par un avocat, dédié au droit de la franchise.</p>
+              <h3 class="hp-bcard-h">Une réponse sourcée en quelques secondes <span class="hp-beta">Bêta</span></h3>
+              <p class="hp-bcard-p">Leo répond à vos questions du quotidien. Ce qui engage votre réseau reste validé par un avocat.</p>
+              <a href="https://www.legaleo.ai/agent-ia-franchise-leo" target="_top" class="hp-bcard-link">Découvrir Leo <span aria-hidden="true">→</span></a>
             </div>
           </article>
         </div>
@@ -1041,7 +1192,7 @@
       <div class="hp-wrap hp-trust">
         <div data-reveal>
           <span class="hp-kicker">La première Legal Tech du droit de la franchise</span>
-          <h2 class="hp-h2 hp-h2-left">Une solution <em class="hp-em">reconnue par des écosystèmes de référence</em></h2>
+          <h2 class="hp-h2 hp-h2-left">Une solution reconnue par <em class="hp-em">des écosystèmes de référence</em></h2>
           <p class="hp-lede2">Trois mondes qui ne se parlent pas assez travaillent ensemble chez Legaleo : le droit, avec plus de vingt ans de pratique du droit de la franchise, la franchise, avec dix ans de développement de réseaux, et la tech, avec une équipe produit dédiée. Près d'une cinquantaine de têtes de réseau ont été interrogées avant le lancement pour construire la plateforme.</p>
         </div>
         <div class="hp-trust-cards" data-reveal>
@@ -1102,11 +1253,16 @@
     <section class="hp-block hp-leo" id="leo">
       <div class="hp-wrap hp-leo-grid">
         <div class="hp-leo-copy" data-reveal>
-          <span class="hp-kicker hp-kicker--cyan">Pour aller plus loin</span>
-          <h2 class="hp-h2 hp-h2-left hp-h2-light">Leo, <em class="hp-em">le premier agent IA dédié à la franchise</em></h2>
-          <p class="hp-lede2 hp-lede2-light">Leo intervient à chaque étape, de votre onboarding à la génération de vos documents. Il répond à vos questions du quotidien en quelques secondes et vous guide de l'onboarding à vos premiers contrats. Tout ce qui engage votre réseau reste validé par un avocat dédié au droit de la franchise.</p>
-          <p class="hp-lede2 hp-lede2-light">Posez une question, demandez comment est structurée une clause de renouvellement, vérifiez une mention obligatoire du DIP : Leo répond, dans le contexte précis de la franchise. Leo propose et vous décidez.</p>
-          <a href="https://www.legaleo.ai/agent-ia-franchise-leo" target="_top" class="hp-btn hp-btn-cyan">Découvrir Leo <span class="hp-beta">Bêta</span></a>
+          <span class="hp-kicker hp-kicker--cyan">Pour aller plus loin <span class="hp-beta">Bêta</span></span>
+          <h2 class="hp-h2 hp-h2-left hp-h2-light">Leo, le premier agent&nbsp;IA <em class="hp-em">dédié à la franchise</em></h2>
+          <p class="hp-lede2 hp-lede2-light">Vous posez déjà vos questions juridiques à une IA généraliste ? Leo, lui, connaît votre réseau, cite ses sources, et votre avocat valide ce qui vous engage.</p>
+          <!-- Les trois moments où Leo intervient, une ligne chacun -->
+          <ul class="hp-leo-moments">
+            <li><strong>À l'onboarding :</strong> il vous guide pas à pas.</li>
+            <li><strong>Au quotidien :</strong> il répond à vos questions juridiques, en quelques secondes.</li>
+            <li><strong>À la rédaction :</strong> il vous aide à rédiger vos documents.</li>
+          </ul>
+          <a href="https://www.legaleo.ai/agent-ia-franchise-leo" target="_top" class="hp-btn hp-btn-cyan">Découvrir Leo</a>
         </div>
 
         <!-- Chat démo (js/main.js : initLeoChat) -->
@@ -1135,10 +1291,10 @@
     <section class="hp-block hp-cta">
       <div class="hp-wrap hp-sechead-center" data-reveal>
         <span class="hp-kicker">Parlons de votre réseau</span>
-        <h2 class="hp-h2 hp-h2-xl">Reprenez le contrôle <em class="hp-em">sur le juridique de votre réseau</em></h2>
-        <p class="hp-lede-c">30 minutes en visio pour découvrir comment la plateforme peut accélérer le juridique de votre réseau.</p>
+        <h2 class="hp-h2 hp-h2-xl">Reprenez le contrôle <em class="hp-em hp-em--br">sur le juridique de votre réseau</em></h2>
+        <p class="hp-lede-c">Au travers d'une visio de 30 min, découvrez comment Legaleo peut accélérer le juridique de votre réseau.</p>
         <div class="hp-ctarow hp-ctarow--center">
-          <a href="https://www.legaleo.ai/contact" target="_top" class="hp-btn hp-btn-primary">Réserver une démo de 30 min</a>
+          <a href="https://www.legaleo.ai/contact" target="_top" class="hp-btn hp-btn-primary">Réserver une démo</a>
         </div>
       </div>
     </section>
@@ -1153,31 +1309,31 @@
         <div class="hp-faq" data-reveal>
           <details class="hp-faq-i">
             <summary>Legaleo est-il adapté à tous les types et tailles de réseaux ?</summary>
-            <div class="hp-faq-a"><p>Oui. Que vous lanciez votre réseau ou que vous gériez déjà plusieurs dizaines de franchisés, Legaleo s'adapte à votre niveau de maturité juridique.</p></div>
+            <div class="hp-faq-a"><p>Oui, Legaleo est adapté à toutes les tailles et à tous les types de réseaux. Que vous lanciez votre réseau ou que vous gériez déjà plusieurs dizaines de franchisés ou plus, Legaleo s'adapte à votre niveau de maturité juridique.</p></div>
           </details>
           <details class="hp-faq-i">
-            <summary>Puis-je garder mon propre avocat ?</summary>
-            <div class="hp-faq-a"><p>Oui. Invitez l'avocat qui connaît déjà votre réseau, ou faites appel à un avocat partenaire dédié au droit de la franchise, avec des crédits d'heures (5, 10 ou 20 h).</p></div>
+            <summary>J'ai déjà un avocat : que devient-il ?</summary>
+            <div class="hp-faq-a"><p>Si vous souhaitez garder votre avocat, il garde son rôle. Invitez-le sur la plateforme en un e-mail : il retrouve vos modèles, vos contrats et leur historique dans son propre espace, et vous gardez votre relation et vos conditions.</p><p>Vous n'avez pas d'avocat en droit de la franchise ? Vous pouvez consulter un avocat partenaire, qui intervient sur la plateforme, sur crédits avocat (5, 10 ou 20 h).</p></div>
           </details>
           <details class="hp-faq-i">
             <summary>Un avocat relit-il chaque contrat ?</summary>
-            <div class="hp-faq-a"><p>Non. Un avocat dédié au droit de la franchise valide vos modèles, en 48 h en moyenne. Vous générez ensuite vos contrats en autonomie. Vous pouvez soumettre un cas particulier à tout moment, avec vos crédits d'heures.</p></div>
+            <div class="hp-faq-a"><p>Non. Un avocat dédié au droit de la franchise valide d'abord vos modèles, en 48 h en moyenne. Ensuite, vous générez vos contrats en autonomie. Vous pouvez bien sûr soumettre un cas particulier à tout moment, avec vos crédits avocat.</p></div>
           </details>
           <details class="hp-faq-i">
             <summary>Puis-je faire signer mes contrats directement dans la plateforme ?</summary>
-            <div class="hp-faq-a"><p>Oui. Legaleo intègre une signature électronique conforme eIDAS, envoyée, signée et archivée directement dans la plateforme.</p></div>
+            <div class="hp-faq-a"><p>Oui. Legaleo intègre une signature électronique conforme eIDAS : le contrat est envoyé, signé et archivé directement dans la plateforme.</p></div>
           </details>
           <details class="hp-faq-i">
             <summary>Puis-je importer mes contrats existants ?</summary>
-            <div class="hp-faq-a"><p>Oui. Importez vos contrats déjà signés au format Word : les dates clés sont extraites automatiquement, à vérifier avant de valider.</p></div>
+            <div class="hp-faq-a"><p>Oui, et c'est même recommandé si vous en avez. Importez vos contrats déjà signés au format Word : les dates clés sont extraites automatiquement (à vérifier avant de valider). Vous retrouvez ainsi toutes les dates de renouvellement de vos franchisés, et bien d'autres informations utiles.</p></div>
           </details>
           <details class="hp-faq-i">
             <summary>Combien de temps puis-je réellement gagner ?</summary>
-            <div class="hp-faq-a"><p>En moyenne 5 à 10 heures par mois grâce à l'automatisation et à la centralisation des documents.</p></div>
+            <div class="hp-faq-a"><p>En moyenne, nos clients gagnent entre 5 et 10 h par mois, grâce à l'automatisation et à l'IA intégrée, mais aussi à la centralisation de toute leur documentation juridique.</p></div>
           </details>
           <details class="hp-faq-i">
             <summary>Où sont hébergées mes données ?</summary>
-            <div class="hp-faq-a"><p>Vos données sont hébergées en France. Vos contrats, vos DIP et vos échanges avec votre avocat restent sur des serveurs français.</p></div>
+            <div class="hp-faq-a"><p>Vos données sont hébergées en France. Vos contrats, vos DIP, vos CRZ et vos échanges avec votre avocat restent sur des serveurs français. Nous n'utilisons pas vos données pour entraîner nos modèles d'IA.</p></div>
           </details>
         </div>
       </div>

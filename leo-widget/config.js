@@ -4,6 +4,10 @@
 // webflow-embed.html (page parente, sur legaleo.ai).
 window.LEO_CONFIG = {
   position: "right", // 'right' ou 'left'
+  // Bulle d'accroche : une seule, au bout de 30 s (défaut : 5 s puis une
+  // seconde à 28 s, jugé trop intrusif). teaserMax: 0 la supprime.
+  teaserDelay: 30000,
+  teaserMax: 1,
   hubspot: {
     mode: "forms", // 'forms' (API Formulaires) | 'endpoint' | 'simulate'
     portalId: "147898530",

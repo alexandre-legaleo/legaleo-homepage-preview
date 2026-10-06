@@ -770,40 +770,91 @@
   }
 
   // ---------- Mockup 1 : modèle, champs dynamiques ----------
-  // Chaque ligne du panneau « Champs Dynamiques » est survolée puis cliquée :
-  // son chip violet s'insère dans le préambule, à sa place.
+  // Chaque champ du panneau « Champs Dynamiques » est glissé dans le
+  // préambule : le curseur attrape la ligne, l'étiquette du champ le suit,
+  // un emplacement s'ouvre dans le texte et le chip s'y pose au lâcher.
   function mockGenerate(root, { hold = 3400 } = {}) {
     const win = $('[data-mock="generate"]', root);
     if (!win) return null;
     const items = $$("[data-gen-item]", win);
     const chips = $$("[data-gen-var]", win);
     const saved = $("[data-gen-saved]", win);
+    const ghost = $("[data-gen-ghost]", win);
+    const cursor = $("[data-gen-cursor]", win);
+
+    // Point (fx, fy) de la boîte de `el`, relatif à la fenêtre
+    const at = (el, fx, fy) => {
+      const w = win.getBoundingClientRect();
+      const r = el.getBoundingClientRect();
+      return { x: r.left - w.left + r.width * fx, y: r.top - w.top + r.height * fy };
+    };
+    const place = (node, p, t) => {
+      node.style.setProperty("--t", t + "ms");
+      node.style.setProperty("--x", p.x + "px");
+      node.style.setProperty("--y", p.y + "px");
+    };
 
     const finalState = () => {
-      chips.forEach((c) => c.classList.remove("is-pending", "is-in"));
+      chips.forEach((c) => c.classList.remove("is-pending", "is-in", "is-target"));
       items.forEach((it) => it.classList.remove("is-hover"));
+      ghost.classList.remove("is-on");
+      cursor.classList.remove("is-on");
       setPill(saved, "teal", "Sauvegardé");
     };
 
     const cycle = async () => {
-      chips.forEach((c) => c.classList.add("is-pending"));
+      chips.forEach((c) => {
+        c.classList.add("is-pending");
+        c.classList.remove("is-target", "is-in");
+      });
+      ghost.classList.remove("is-on");
       setPill(saved, "teal", "Sauvegardé");
-      await wait(900);
+      // Le curseur part du bas du panneau, sans trajet
+      place(cursor, at(items[items.length - 1], 0.5, 2.2), 0);
+      cursor.classList.add("is-on");
+      await wait(800);
+
       for (let i = 0; i < chips.length; i++) {
+        // 1. Le curseur va sur la ligne du champ
+        place(cursor, at(items[i], 0.35, 0.55), 600);
+        await wait(600);
         items[i].classList.add("is-hover");
-        await wait(550);
+        await wait(200);
+
+        // 2. Il l'attrape : l'étiquette apparaît sous la pointe, un
+        // emplacement s'ouvre dans le texte
+        cursor.classList.add("is-down");
+        ghost.textContent = chips[i].textContent;
+        const grab = at(items[i], 0.35, 0.55);
+        place(ghost, { x: grab.x - 6, y: grab.y - 5 }, 0);
+        void ghost.offsetWidth;
+        ghost.classList.add("is-on");
+        chips[i].classList.remove("is-pending");
+        chips[i].classList.add("is-target");
+        await wait(150);
+
+        // 3. Glissé jusqu'à l'emplacement
+        const drop = at(chips[i], 0, 0);
+        place(ghost, drop, 750);
+        place(cursor, { x: drop.x + 6, y: drop.y + 5 }, 750);
+        await wait(780);
+
+        // 4. Lâcher : le chip se pose
+        cursor.classList.remove("is-down");
         items[i].classList.remove("is-hover");
-        chips[i].classList.remove("is-pending", "is-in");
+        ghost.classList.remove("is-on");
+        chips[i].classList.remove("is-target");
         void chips[i].offsetWidth; // rejoue le ressort d'insertion
         chips[i].classList.add("is-in");
         // Sauvegarde automatique groupée : « Enregistrement… » dès la
-        // première insertion, un seul « Sauvegardé » après la dernière (pas
-        // d'aller-retour à chaque champ).
+        // première insertion, un seul « Sauvegardé » après la dernière.
         if (i === 0) setPill(saved, "orange", "Enregistrement…");
-        await wait(500);
+        await wait(350);
       }
       await wait(200);
       setPill(saved, "teal", "Sauvegardé");
+      // Le curseur s'écarte pour laisser lire le résultat
+      place(cursor, at(items[items.length - 1], 0.5, 2.2), 800);
       await wait(hold);
     };
 
@@ -814,7 +865,6 @@
   function mockEditor(root, { hold = 3400 } = {}) {
     const win = $('[data-mock="editor"]', root);
     if (!win) return null;
-    const field = $('[data-ed-field="ville"]', win);
     const btn = $("[data-ed-btn]", win);
     const saved = $("[data-ed-saved]", win);
 
@@ -830,14 +880,10 @@
       smoothHeight(win, () => win.classList.remove("is-flagged", "is-amended"));
       btn.classList.remove("is-sent", "is-pressed");
       btn.textContent = "Soumettre à l'avocat";
-      setPill(saved, "orange", "Enregistrement…");
-      field.classList.add("is-typing");
-      field.textContent = "";
-      await wait(500);
-      await typeInto(field, "Lyon 6e", 90);
-      field.classList.remove("is-typing");
       setPill(saved, "teal", "Sauvegardé");
-      await wait(700);
+      // « Lyon 6e » est déjà écrit : l'avocat le relève, le surlignage
+      // violet le balaie (css : .hp-field--lawyer), comme dans le hero.
+      await wait(1200);
       win.classList.add("is-flagged");
       await wait(1600);
       btn.classList.add("is-pressed");
@@ -1188,6 +1234,130 @@
   }
 
 
+  // ---------- Mockup : du modèle validé au contrat ----------
+  // Le vrai parcours de legaleo-ai : sur Modèles, le modèle de franchise
+  // validé est choisi ; le paramétrage s'ouvre (franchisé choisi dans la
+  // liste, puis dates et modalités) et le contrat se génère ; l'éditeur
+  // s'ouvre sur le contrat rempli, les commentaires arrivent.
+  function mockCreate(root, { hold = 3400 } = {}) {
+    const flow = $('[data-mock="create"]', root);
+    if (!flow) return null;
+    const row = $("[data-md-row]", flow);
+    const form = $(".hp-fl-form", flow);
+    const select = $("[data-fl-select]", flow);
+    const selectV = $("[data-fl-select-v]", flow);
+    const pick = $("[data-fl-pick]", flow);
+    const duree = $("[data-fl-duree]", flow);
+    const next = $("[data-fl-next]", flow);
+    const stepWho = $('[data-fl-step="who"]', flow);
+    const stepDates = $('[data-fl-step="dates"]', flow);
+    const cursor = $("[data-fl-cursor]", flow);
+    const PLACEHOLDER = selectV.textContent;
+
+    const press = async (el) => {
+      el.classList.add("is-pressed");
+      await wait(160);
+      el.classList.remove("is-pressed");
+    };
+    // Curseur : pointe posée à (fx, fy) de la boîte de `el`, coordonnées
+    // relatives au parcours (même curseur que l'onboarding).
+    const moveTo = async (el, fx = 0.5, fy = 0.6, t = 600) => {
+      const f = flow.getBoundingClientRect();
+      const r = el.getBoundingClientRect();
+      cursor.style.setProperty("--t", t + "ms");
+      cursor.style.setProperty("--x", r.left - f.left + r.width * fx + "px");
+      cursor.style.setProperty("--y", r.top - f.top + r.height * fy + "px");
+      await wait(t);
+    };
+    const click = async (el) => {
+      cursor.classList.add("is-down");
+      await press(el);
+      cursor.classList.remove("is-down");
+    };
+    const step = (who) => {
+      stepWho.className = `hp-onb-step ${who ? "is-current" : "is-done"}`;
+      stepDates.className = `hp-onb-step${who ? "" : " is-current"}`;
+    };
+
+    const finalState = () => {
+      flow.classList.add("is-editor", "is-comments");
+      cursor.classList.remove("is-on");
+    };
+
+    const cycle = async () => {
+      flow.classList.remove("is-setup", "is-editor", "is-comments");
+      row.classList.remove("is-hover");
+      form.classList.remove("is-dates", "is-gen");
+      select.classList.remove("is-open", "is-filled");
+      selectV.textContent = PLACEHOLDER;
+      pick.classList.remove("is-hover", "is-selected");
+      duree.textContent = "";
+      next.textContent = "Suivant";
+      step(true);
+      // Curseur : repart du coin bas droit, sans trajet
+      cursor.style.setProperty("--t", "0ms");
+      cursor.style.setProperty("--x", "88%");
+      cursor.style.setProperty("--y", "92%");
+      cursor.classList.add("is-on");
+      await wait(700);
+
+      // 1. Modèles : le modèle de franchise validé
+      await moveTo(row, 0.42, 0.55, 750);
+      row.classList.add("is-hover");
+      await wait(300);
+      await click(row);
+      flow.classList.add("is-setup");
+      await wait(900);
+
+      // 2a. Co-contractant : choisi dans la liste
+      await moveTo(select, 0.7, 0.6, 650);
+      await click(select);
+      select.classList.add("is-open");
+      await wait(350);
+      await moveTo(pick, 0.4, 0.6, 450);
+      pick.classList.add("is-hover");
+      await wait(250);
+      cursor.classList.add("is-down");
+      await wait(150);
+      cursor.classList.remove("is-down");
+      pick.classList.replace("is-hover", "is-selected");
+      selectV.textContent = pick.textContent;
+      select.classList.remove("is-open");
+      select.classList.add("is-filled");
+      await wait(400);
+      await moveTo(next, 0.5, 0.6, 650);
+      await click(next);
+
+      // 2b. Dates et modalités, puis génération
+      form.classList.add("is-dates");
+      step(false);
+      next.textContent = "Générer le contrat";
+      await wait(300);
+      await moveTo(duree, 0.3, 0.6, 600);
+      await click(duree);
+      duree.classList.add("is-typing");
+      // Deux chiffres seulement : frappe lente, précédée d'une courte
+      // hésitation, pour qu'on la voie
+      await wait(350);
+      await typeInto(duree, duree.dataset.v, 380);
+      duree.classList.remove("is-typing");
+      await wait(250);
+      await moveTo(next, 0.5, 0.6, 600);
+      await click(next);
+      cursor.classList.remove("is-on");
+      form.classList.add("is-gen");
+      await wait(1700);
+
+      // 3. Éditeur : contrat rempli, puis les commentaires
+      flow.classList.replace("is-setup", "is-editor");
+      await wait(1500);
+      flow.classList.add("is-comments");
+      await wait(hold);
+    };
+
+    return { win: flow, cycle, finalState };
+  }
+
   // ---------- Mockup 5 : contrathèque, import de contrats existants ----------
   // « Importer des contrats » ouvre la modale ; trois fichiers glissés depuis
   // le bureau tombent dans la zone de dépôt ; « Importer » : le widget Leo
@@ -1329,6 +1499,7 @@
     generate: mockGenerate,
     editor: mockEditor,
     lawyer: mockLawyer,
+    create: mockCreate,
     sign: mockSign,
     kanban: mockKanban,
     library: mockLibrary,
@@ -1420,10 +1591,14 @@
       const chips = $$(".hp-sc-var", el);
       const para = $(".hp-sc-paper-p", el);
       const paper = $(".hp-sc-paper", el);
+      const cam = $(".hp-sc-cam", el);
+      const drag = $(".hp-sc-dragchip", el);
+      const cursor = $(".hp-sc-gen-cursor", el);
       // Le paragraphe s'écrit comme au clavier. Il est découpé une fois en
       // segments : texte à taper, ou chip (champ dynamique). Arrivé à un
-      // chip, la ligne correspondante du panneau est survolée puis cliquée,
-      // le chip s'insère, puis la frappe reprend.
+      // chip, le curseur attrape la ligne correspondante du panneau et la
+      // glisse jusqu'au curseur de frappe ; le chip s'insère au lâcher, puis
+      // la frappe reprend.
       const segments = Array.from(para.childNodes).map((node) =>
         node.nodeType === Node.TEXT_NODE ? node.textContent : chips.indexOf(node)
       );
@@ -1439,6 +1614,14 @@
         resetHeight(paper);
         chips.forEach((c) => c.classList.remove("is-in"));
         rows.forEach((r) => r.classList.remove("is-on", "is-press"));
+        drag.classList.remove("is-on");
+        cursor.classList.remove("is-on", "is-down");
+        cursor.style.translate = "";
+      };
+      // Position (px, dans la caméra) d'un point de `node`
+      const pt = (node, fx, fy) => {
+        const p = posIn(node, cam);
+        return `${p.x + node.offsetWidth * fx}px ${p.y + node.offsetHeight * fy}px`;
       };
       const write = async () => {
         const my = ++run;
@@ -1455,23 +1638,42 @@
               await wait(5.6 + Math.random() * 7.2); // ~2,5× plus vite que 14–32 ms
             }
           } else {
-            // Clic sur la ligne : surbrillance, enfoncement et insertion du
-            // chip dans le texte, en même temps
+            // Glisser-déposer : le curseur va sur la ligne et l'attrape,
+            // l'étiquette du champ le suit jusqu'au curseur de frappe, le
+            // chip s'insère au lâcher
             const row = rows[seg];
-            await wait(250);
+            cursor.classList.add("is-on");
+            cursor.style.translate = pt(row, 0.3, 0.6);
+            await wait(650);
             if (!alive()) return;
             row.classList.add("is-on", "is-press");
+            cursor.classList.add("is-down");
+            drag.textContent = chips[seg].textContent;
+            drag.style.transition = "none";
+            drag.style.translate = pt(row, 0.3, 0.6).replace(/(-?[\d.]+)px (-?[\d.]+)px/, (m, x, y) => `${x - 10}px ${y - 8}px`);
+            void drag.offsetWidth;
+            drag.style.transition = "";
+            drag.classList.add("is-on");
+            await wait(180);
+            if (!alive()) return;
+            row.classList.remove("is-press");
+            drag.style.translate = pt(caret, 0, 0);
+            cursor.style.translate = pt(caret, 0, 0).replace(/(-?[\d.]+)px (-?[\d.]+)px/, (m, x, y) => `${+x + 10}px ${+y + 8}px`);
+            await wait(700);
+            if (!alive()) return;
+            cursor.classList.remove("is-down");
+            drag.classList.remove("is-on");
+            row.classList.remove("is-on");
             para.insertBefore(chips[seg], caret);
             chips[seg].classList.add("is-in");
             fitHeight(paper);
-            await wait(160);
-            row.classList.remove("is-press");
-            await wait(320);
-            row.classList.remove("is-on");
-            await wait(120);
+            await wait(250);
           }
         }
-        if (alive()) caret.remove();
+        if (alive()) {
+          caret.remove();
+          cursor.classList.remove("is-on");
+        }
       };
       clear();
 
@@ -1486,6 +1688,8 @@
             ...segments.map((seg) => (typeof seg === "string" ? document.createTextNode(seg) : chips[seg]))
           );
           chips.forEach((c) => c.classList.add("is-in"));
+          drag.classList.remove("is-on");
+          cursor.classList.remove("is-on", "is-down");
         },
       };
     },
@@ -1702,6 +1906,14 @@
         },
       };
     },
+    create() {
+      // Tout le mouvement est en CSS (.hp-sc--md) : ligne choisie (2),
+      // document rempli (3), contrat prêt (4).
+      return {
+        steps: [[50, 1], [1100, 2], [800, 3], [1800, 4]],
+        hold: 2400,
+      };
+    },
     library() {
       // Tout le mouvement est en CSS (.hp-sc--lib) : glisser (2), déposer et
       // importer (3), finaliser + Leo (4), alerte (5).
@@ -1737,7 +1949,8 @@
         const scene = { el, reset: null, final: null, ...make(el) };
 
         const n = $(".hp-step-n", feature).firstChild.textContent.trim();
-        const verb = $(".hp-step-verb", feature).textContent.trim();
+        const verbEl = $(".hp-step-verb", feature);
+        const verb = verbEl.textContent.trim();
 
         const tab = document.createElement("button");
         tab.type = "button";
@@ -1747,7 +1960,8 @@
         tabN.textContent = n;
         const bar = document.createElement("span");
         bar.className = "hp-player-tab-bar";
-        tab.append(tabN, verb, bar);
+        // Onglet étroit : forme courte du verbe (data-short) si elle existe
+        tab.append(tabN, verbEl.dataset.short || verb, bar);
         nav.appendChild(tab);
 
         // est : durée de la scène (estimée, puis mesurée) pour la barre de l'onglet
@@ -1891,7 +2105,9 @@
       const key = $("[data-mock]", visual)?.dataset.mock;
       const mock = key && MOCKS[key]?.(visual);
       if (!mock) return;
+      // data-mock-once : joué une fois à l'arrivée, puis figé sur l'état final
       if (reduced) mock.finalState();
+      else if ("mockOnce" in mock.win.dataset) onceVisible(mock.win, mock.cycle);
       else loopWhileVisible(mock.win, mock.cycle);
     });
   }
