@@ -312,7 +312,7 @@
   color: var(--color-black);
   font-size: 13.5px;
   font-weight: 500;
-  line-height: 1.45;
+  line-height: 1.35;
   text-wrap: pretty;
 }
 
@@ -349,7 +349,8 @@
   text-align: center;
 }
 
-.hp-sv + .hp-h3 {
+/* Seulement si le mini-visuel est affiché (masqué : attribut hidden) */
+.hp-sv:not([hidden]) + .hp-h3 {
   margin-top: 30px;
 }
 

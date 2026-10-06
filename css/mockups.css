@@ -2951,12 +2951,18 @@
   opacity: 0;
   pointer-events: none;
   translate: var(--x) var(--y);
-  rotate: -3deg;
-  transition: translate var(--t) cubic-bezier(0.45, 0.05, 0.25, 1), opacity 0.2s ease;
+  rotate: 0deg;
+  /* Penché quand on l'attrape (.is-lift), il se redresse pendant le trajet
+     et arrive droit à sa place */
+  transition: translate var(--t) cubic-bezier(0.45, 0.05, 0.25, 1), rotate var(--t) cubic-bezier(0.45, 0.05, 0.25, 1), opacity 0.2s ease;
 }
 
 .hp-gen-ghost.is-on {
   opacity: 1;
+}
+
+.hp-gen-ghost.is-lift {
+  rotate: -4deg;
 }
 
 /* Emplacement ouvert dans le texte pendant le glisser : même taille que le

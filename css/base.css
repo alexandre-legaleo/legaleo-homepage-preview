@@ -163,7 +163,7 @@ body {
 }
 
 .hp-h3 {
-  margin-top: 14px;
+  margin-top: 0;
   font-family: var(--font-sans);
   font-size: 22px;
   font-weight: 700;
@@ -389,7 +389,7 @@ body {
   border-radius: var(--radius-pill);
   padding: 2px 8px;
   color: var(--color-black);
-  background-color: var(--color-lime);
+  background-color: var(--color-cyan);
   font-family: var(--font-sans);
   font-size: 10.5px;
   font-weight: 800;

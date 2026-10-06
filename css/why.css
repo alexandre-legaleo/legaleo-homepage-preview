@@ -165,11 +165,17 @@
 .hp-costchart-bars u {
   position: absolute;
   right: 0;
-  bottom: calc(100% + 2px);
+  bottom: 100%;
   left: 0;
   height: var(--c);
-  border-radius: 4px 4px 2px 2px;
+  border-radius: 4px 4px 0 0;
   background-color: var(--color-cyan);
+}
+
+/* Barre avec crédits : collée à l'abonnement, sans arrondi à la jonction */
+.hp-costchart-bars i:has(u) {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 /* Budget prévu : abonnement + crédits restent dessous. */

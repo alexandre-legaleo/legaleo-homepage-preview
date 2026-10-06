@@ -807,7 +807,7 @@
         c.classList.add("is-pending");
         c.classList.remove("is-target", "is-in");
       });
-      ghost.classList.remove("is-on");
+      ghost.classList.remove("is-on", "is-lift");
       setPill(saved, "teal", "Sauvegardé");
       // Le curseur part du bas du panneau, sans trajet
       place(cursor, at(items[items.length - 1], 0.5, 2.2), 0);
@@ -827,6 +827,7 @@
         ghost.textContent = chips[i].textContent;
         const grab = at(items[i], 0.35, 0.55);
         place(ghost, { x: grab.x - 6, y: grab.y - 5 }, 0);
+        ghost.classList.add("is-lift");
         void ghost.offsetWidth;
         ghost.classList.add("is-on");
         chips[i].classList.remove("is-pending");
@@ -836,6 +837,7 @@
         // 3. Glissé jusqu'à l'emplacement
         const drop = at(chips[i], 0, 0);
         place(ghost, drop, 750);
+        ghost.classList.remove("is-lift"); // se redresse en chemin
         place(cursor, { x: drop.x + 6, y: drop.y + 5 }, 750);
         await wait(780);
 
@@ -1650,6 +1652,7 @@
             cursor.classList.add("is-down");
             drag.textContent = chips[seg].textContent;
             drag.style.transition = "none";
+            drag.classList.add("is-lift");
             drag.style.translate = pt(row, 0.3, 0.6).replace(/(-?[\d.]+)px (-?[\d.]+)px/, (m, x, y) => `${x - 10}px ${y - 8}px`);
             void drag.offsetWidth;
             drag.style.transition = "";
@@ -1658,6 +1661,7 @@
             if (!alive()) return;
             row.classList.remove("is-press");
             drag.style.translate = pt(caret, 0, 0);
+            drag.classList.remove("is-lift"); // se redresse en chemin
             cursor.style.translate = pt(caret, 0, 0).replace(/(-?[\d.]+)px (-?[\d.]+)px/, (m, x, y) => `${+x + 10}px ${+y + 8}px`);
             await wait(700);
             if (!alive()) return;
@@ -1749,9 +1753,9 @@
     },
     sign(el) {
       // Un seul contrat : les signataires apparaissent (1), le contrat émane
-      // du franchiseur et se pose au centre (2). Il passe au premier plan et
-      // les deux signatures se tracent en même temps ; il se repose et les
-      // signataires passent à « Signé ». Puis dédoublement — chaque
+      // du franchiseur et se pose au centre (2). Il passe au premier plan :
+      // le franchiseur signe et passe à « Signé », puis le franchisé signe à
+      // son tour ; le contrat se repose. Puis dédoublement — chaque
       // exemplaire se pose au-dessus de sa partie (3) — et accord (4).
       const doc = $("[data-sig-doc]", el);
       const parts = ["a", "b"].map((k) => ({
@@ -1779,18 +1783,22 @@
           at += dur + SIG_LIFT_MS;
         });
       });
+      // Signature asynchrone : le franchiseur signe, puis, après une
+      // attente, le franchisé signe à son tour.
+      const SIG_GAP_MS = 0;
       const signAll = async () => {
         const my = run;
         doc.classList.add("is-focus");
-        await wait(250);
-        if (my !== run) return;
-        parts.forEach(({ slot }) => slot.classList.add("is-signing"));
-        await wait(SIG_MS + 150);
-        if (my !== run) return;
-        parts.forEach(({ slot, signer }) => {
+        await wait(150);
+        for (const [i, { slot, signer }] of parts.entries()) {
+          if (i > 0) await wait(SIG_GAP_MS);
+          if (my !== run) return;
+          slot.classList.add("is-signing");
+          await wait(SIG_MS + 60);
+          if (my !== run) return;
           slot.classList.replace("is-signing", "is-signed");
           signer.classList.add("is-signed");
-        });
+        }
         await wait(120);
         doc.classList.remove("is-focus");
         await wait(250);
@@ -1806,7 +1814,7 @@
         copy.classList.remove("is-new");
       };
       return {
-        steps: [[50, 1], [400, 2], [900, signAll], [300, duplicate], [650, 3], [800, 4]],
+        steps: [[50, 1], [400, 2], [600, signAll], [300, duplicate], [650, 3], [800, 4]],
         hold: 2000,
         reset() {
           run++;
@@ -1906,12 +1914,32 @@
         },
       };
     },
-    create() {
-      // Tout le mouvement est en CSS (.hp-sc--md) : ligne choisie (2),
-      // document rempli (3), contrat prêt (4).
+    create(el) {
+      // Mouvement des cartes en CSS (.hp-sc--md) : ligne choisie (2),
+      // document rempli (3), contrat prêt (4). Le curseur (JS) va sur la
+      // ligne du modèle de franchise, clique, puis s'écarte.
+      const cam = $(".hp-sc-cam", el);
+      const row = $(".hp-sc-md-row--pick", el);
+      const cursor = $(".hp-sc-md-cursor", el);
+      const toRow = () => {
+        const p = posIn(row, cam);
+        cursor.classList.add("is-on");
+        cursor.style.translate = `${p.x + row.offsetWidth * 0.42}px ${p.y + row.offsetHeight * 0.6}px`;
+      };
+      const click = async () => {
+        cursor.classList.add("is-down");
+        await wait(180);
+        cursor.classList.remove("is-down");
+      };
+      const away = () => {
+        cursor.style.translate = "";
+        cursor.classList.remove("is-on");
+      };
       return {
-        steps: [[50, 1], [1100, 2], [800, 3], [1800, 4]],
+        steps: [[50, 1], [400, toRow], [750, 2], [350, click], [150, 3], [400, away], [1400, 4]],
         hold: 2400,
+        reset: away,
+        final: away,
       };
     },
     library() {

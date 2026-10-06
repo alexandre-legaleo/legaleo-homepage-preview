@@ -103,18 +103,19 @@
   margin-top: 8px;
 }
 
+/* Passage relevé par l'avocat : surligné en violet, sa couleur (comme
+   dans « Faites valider » et la scène « Validez » du hero) */
 .hp-av-field {
   border-radius: 4px;
-  padding: 0 4px;
-  color: var(--color-teal-text);
-  background-color: var(--color-cyan-light);
-  font-weight: 700;
+  padding-inline: 1px;
+  background-color: var(--color-purple-bg);
 }
 
-/* Ajout de l'avocat : surligné comme une suggestion */
+/* Ajout de l'avocat : vert, comme les autres ajouts, révélé en balayage */
 .hp-av-add {
   border-radius: 3px;
-  background: linear-gradient(var(--color-orange-bg), var(--color-orange-bg)) 0 0 / 0% 100% no-repeat;
+  color: var(--color-green-text);
+  background: linear-gradient(var(--color-green-bg), var(--color-green-bg)) 0 0 / 0% 100% no-repeat;
   transition: background-size 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.5s;
 }
 
@@ -125,12 +126,14 @@
 .hp-av-note {
   position: absolute;
   right: -24px;
-  bottom: 0;
+  bottom: -18px;
   width: min(330px, 80%);
-  border: 1px solid rgb(255 254 251 / 0.14);
+  /* Violet de l'avocat, comme son commentaire dans le hero (.hp-sc-comment) */
+  border: 1px solid var(--color-purple-line);
   border-radius: var(--radius-lg);
   padding: 16px 18px;
-  background-color: #2a1c17;
+  color: var(--color-black);
+  background-color: var(--color-purple-bg);
   box-shadow: 0 30px 60px -20px rgb(0 0 0 / 0.6);
   font-size: 13.5px;
   line-height: 1.5;
@@ -152,7 +155,7 @@
 }
 
 .hp-av-note-who span span {
-  color: rgb(255 254 251 / 0.6);
+  color: var(--color-muted);
   font-size: 11.5px;
 }
 
@@ -164,8 +167,8 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  color: var(--color-black);
-  background-color: var(--color-cyan);
+  color: var(--color-white);
+  background-color: var(--color-purple-text);
   font-size: 11px;
   font-weight: 800;
 }
@@ -173,7 +176,7 @@
 .hp-av-note-ok {
   display: block;
   margin-top: 8px;
-  color: var(--color-cyan);
+  color: var(--color-purple-text);
   font-weight: 700;
 }
 
@@ -313,6 +316,7 @@
 
 .hp-av-lawyer {
   margin-top: 64px;
+  text-align: center;
   color: rgb(255 254 251 / 0.65);
   font-size: 15px;
 }
