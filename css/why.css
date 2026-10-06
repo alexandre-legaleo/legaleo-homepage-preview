@@ -1,4 +1,5 @@
-/* Bento « 3 raisons » (+ carte Leo) */
+/* Bento « Ce qui change pour votre réseau » : diagramme | chiffre, puis
+   budget | Leo */
 .hp-bento {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -21,10 +22,10 @@
   border-color: rgb(31 18 14 / 0.22);
 }
 
-.hp-bcard--time { grid-column: span 2; }
-.hp-bcard--cost { grid-column: span 4; }
-.hp-bcard--simple { grid-column: span 3; --reveal-delay: 80ms; }
-.hp-bcard--leo { grid-column: span 3; --reveal-delay: 160ms; }
+.hp-bcard--simple { grid-column: span 4; }
+.hp-bcard--time { grid-column: span 2; --reveal-delay: 80ms; }
+.hp-bcard--cost { grid-column: span 3; }
+.hp-bcard--leo { grid-column: span 3; --reveal-delay: 80ms; }
 
 .hp-bcard-h {
   font-family: var(--font-sans);
@@ -61,32 +62,11 @@
 
 /* Mini graphique coûts : abonnement constant, crédits d'heures empilés les
    mois où ils sont activés */
-.hp-bcard--cost {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-  gap: 28px;
-  align-items: center;
-}
-
-.hp-bcard--cost > .hp-bcard-h,
-.hp-bcard--cost > .hp-bcard-p {
-  grid-column: 1;
-}
-
-.hp-bcard--cost > .hp-bcard-h {
-  align-self: end;
-}
-
-.hp-bcard--cost > .hp-bcard-p {
-  align-self: start;
-  margin-top: -18px;
-}
-
+/* Carte d'une demi-largeur : texte, puis le graphique dessous */
 .hp-costchart {
-  grid-column: 2;
-  grid-row: 1 / span 2;
   display: grid;
   gap: 10px;
+  margin-top: 22px;
 }
 
 /* Un panneau teinté par série, pour bien les distinguer */
@@ -128,12 +108,6 @@
   background-color: var(--color-cyan);
 }
 
-.hp-costchart-key--ghost::before {
-  box-sizing: border-box;
-  border: 1.5px dashed rgb(31 18 14 / 0.35);
-  background-color: transparent;
-}
-
 /* Repères légers : ligne de base marquée, grille discrète en haut et à
    mi-hauteur (deux dégradés d'1px répétés tous les 50 %). */
 .hp-costchart-bars {
@@ -149,7 +123,7 @@
   background: linear-gradient(to bottom, rgb(31 18 14 / 0.07) 1px, transparent 1px) 0 0 / 100% 50%;
 }
 
-/* Un mois = une paire : honoraires au temps passé (fantôme) | Legaleo */
+/* Un mois = une barre Legaleo (abonnement + crédits avocat) */
 .hp-costchart-m {
   display: flex;
   flex: 1;
@@ -181,30 +155,30 @@
   background-color: var(--color-teal);
   transform-origin: bottom;
   transition: transform 0.8s var(--ease-out);
-  /* Legaleo monte après les honoraires, mois par mois */
-  transition-delay: calc(0.5s + var(--m) * 60ms);
-}
-
-.hp-costchart-bars i.is-ghost {
-  box-sizing: border-box;
-  border: 1.5px dashed rgb(31 18 14 / 0.3);
-  background-color: rgb(31 18 14 / 0.03);
-  transition-delay: calc(var(--m) * 60ms);
+  max-width: 34px;
+  margin-inline: auto;
+  /* Les barres montent mois par mois */
+  transition-delay: calc(0.2s + var(--m) * 60ms);
 }
 
 /* Crédits d'heures empilés sur l'abonnement : --c en % de la barre */
 .hp-costchart-bars u {
   position: absolute;
   right: 0;
-  bottom: calc(100% + 2px);
+  bottom: 100%;
   left: 0;
   height: var(--c);
-  border-radius: 4px 4px 2px 2px;
+  border-radius: 4px 4px 0 0;
   background-color: var(--color-cyan);
 }
 
-/* Budget prévu : abonnement + crédits restent dessous, les honoraires au
-   temps passé la traversent. */
+/* Barre avec crédits : collée à l'abonnement, sans arrondi à la jonction */
+.hp-costchart-bars i:has(u) {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* Budget prévu : abonnement + crédits restent dessous. */
 .hp-costchart-budget {
   position: absolute;
   right: 0;
@@ -344,25 +318,24 @@
   }
 }
 
-/* Carte Leo */
+/* Carte Leo : même style que les autres cartes, badge Leo à gauche */
 .hp-bcard--leo {
   flex-direction: row;
   align-items: center;
   gap: 20px;
-  border-color: transparent;
-  color: var(--color-white);
-  background:
-    radial-gradient(70% 90% at 100% 100%, rgb(98 231 235 / 0.2), transparent 70%),
-    var(--color-leo-badge);
 }
 
-.hp-bcard--leo .hp-leo-tile {
-  background-color: rgb(98 231 235 / 0.12);
-  box-shadow: inset 0 0 0 1px rgb(98 231 235 / 0.2);
+.hp-bcard-link {
+  display: inline-block;
+  margin-top: 14px;
+  color: var(--color-teal);
+  font-size: 15px;
+  font-weight: 700;
 }
 
-.hp-bcard--leo .hp-bcard-p {
-  color: rgb(255 254 251 / 0.72);
+.hp-bcard-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 @media (max-width: 991px) {
@@ -384,21 +357,6 @@
 
   .hp-bcard-big {
     font-size: 52px;
-  }
-
-  .hp-bcard--cost {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
-  }
-
-  .hp-bcard--cost > .hp-bcard-p {
-    margin-top: 10px;
-  }
-
-  .hp-costchart {
-    grid-column: 1;
-    grid-row: auto;
-    margin-top: 20px;
   }
 
   .hp-bcard--leo {

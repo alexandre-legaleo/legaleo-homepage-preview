@@ -466,7 +466,7 @@
 
 .hp-sc--onb.is-s6 .hp-sc-onb-toast { opacity: 1; transform: none; }
 
-/* ---------- 02 Générer ---------- */
+/* ---------- 02 Créer son modèle ---------- */
 .hp-sc-gen-fields {
   top: 120px;
   left: 30px;
@@ -718,7 +718,133 @@
   transition-delay: 0.25s;
 }
 
-/* ---------- 04 Signer ----------
+/* ---------- 04 Générer les contrats ----------
+   Page Modèles : cases illustrées + modèles validés (1) ; la ligne du
+   modèle de franchise s'allume (2) ; le document du candidat glisse à côté
+   et se remplit (3) ; le contrat est prêt (4).
+   js/main.js : scène create. */
+.hp-sc-md {
+  top: 40px;
+  left: 40px;
+  width: 500px;
+  padding: 24px 26px 18px;
+}
+
+/* Cases carrées à largeur fixe, comme CreateModelButton (et le mockup de
+   la section) */
+.hp-sc-md-tiles {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.hp-sc-md-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: 96px;
+  border: 1px dashed #63aaac;
+  border-radius: 9px;
+  padding: 6px 6px 7px;
+  background-color: #edf1f1;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.hp-sc-md-tile img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  background-color: #78a4a41c;
+}
+
+.hp-sc-md-row {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13.5px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hp-sc-md-row + .hp-sc-md-row {
+  margin-top: 0;
+  border-top: 1px solid #eee;
+}
+
+.hp-sc-md-row b {
+  overflow: hidden;
+  color: var(--color-teal);
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.hp-sc-md-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.hp-sc-md-row .hp-pill {
+  padding: 2px 9px;
+  font-size: 11.5px;
+}
+
+.hp-sc--md.is-s2 .hp-sc-md-row--pick {
+  background-color: var(--color-teal-bg);
+  box-shadow: inset 0 0 0 1px rgb(8 127 131 / 0.3);
+}
+
+/* Document du candidat : glisse à côté au choix du modèle (3), ses champs
+   se remplissent un à un */
+.hp-sc-md-doc {
+  top: 90px;
+  left: 440px;
+  z-index: 2;
+  width: 400px;
+  padding: 30px 32px;
+}
+
+.hp-sc.is-s1 .hp-sc-md-doc {
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+.hp-sc--md.is-s3 .hp-sc-md-doc {
+  opacity: 1;
+  transform: none;
+}
+
+.hp-sc--md.is-s3 .hp-sc-md {
+  translate: -20px 10px;
+  scale: 0.94;
+}
+
+.hp-sc--md.is-s3 .hp-sc-var {
+  display: inline-block;
+  animation: hp-var-in 0.5s var(--pop) backwards;
+  animation-delay: 0.4s;
+}
+
+.hp-sc--md.is-s3 .hp-sc-var:nth-of-type(2) { animation-delay: 0.65s; }
+.hp-sc--md.is-s3 .hp-sc-var:nth-of-type(3) { animation-delay: 0.9s; }
+
+.hp-sc-md-toast {
+  top: 350px;
+  right: 50px;
+  z-index: 3;
+}
+
+.hp-sc--md.is-s4 .hp-sc-md-toast { opacity: 1; transform: none; }
+
+/* ---------- 06 Signer ----------
    Un seul contrat, avec un emplacement de signature par partie (A :
    franchiseur, B : franchisé). Chronologie (js/main.js, scène sign) : les
    signataires apparaissent (1) ; le contrat émane de A et vient se poser au
@@ -821,7 +947,7 @@
 
 .hp-sc-sigsvg path {
   stroke: var(--color-black);
-  stroke-width: 15; /* unités du viewBox, comme dans Illustrator */
+  stroke-width: 12.5; /* unités du viewBox, comme dans Illustrator */
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: var(--len);
@@ -1016,7 +1142,7 @@
   border-color: var(--color-teal);
 }
 
-/* ---------- 06 Centraliser ----------
+/* ---------- 07 Centraliser ----------
    Même idée que #pf-centraliser : 3 fichiers glissés depuis le bureau
    (.is-s2) et déposés dans la Contrathèque (.is-s3) deviennent des lignes en
    cours d'import (fichier + barre), finalisées une à une (.is-s4 : contrat +
@@ -1421,3 +1547,44 @@
 }
 
 /* Sur mobile : pas de player (css/hero.css, .hp-hero-visual). */
+
+/* ---------- 02 Créer son modèle : glisser-déposer ----------
+   Le curseur attrape une ligne du panneau, l'étiquette du champ le suit
+   jusqu'au curseur de frappe, puis le chip s'insère dans le texte
+   (js/main.js, scène editor). Positions en px dans la caméra. */
+.hp-sc-dragchip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  border: 1px solid rgb(8 127 131 / 0.3);
+  border-radius: 5px;
+  padding: 0 6px;
+  color: var(--color-teal-text);
+  background-color: var(--color-teal-bg);
+  box-shadow: 0 12px 24px -8px rgb(8 127 131 / 0.45);
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.6;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  rotate: 0deg;
+  /* Penché quand on l'attrape (.is-lift), il se redresse pendant le trajet
+     et arrive droit à sa place */
+  transition: translate 0.65s cubic-bezier(0.45, 0.05, 0.25, 1), rotate 0.65s cubic-bezier(0.45, 0.05, 0.25, 1), opacity 0.2s ease;
+}
+
+.hp-sc-dragchip.is-on {
+  opacity: 1;
+}
+
+.hp-sc-dragchip.is-lift {
+  rotate: -4deg;
+}
+
+/* Curseurs pilotés par le JS (scènes editor et create) */
+.hp-sc-gen-cursor.is-on,
+.hp-sc-md-cursor.is-on {
+  opacity: 1;
+}

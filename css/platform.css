@@ -155,7 +155,9 @@
     font-size: 11px;
   }
 
+  /* Plus petit : « Générez vos contrats » tient sur la largeur d'un mobile */
   .hp-step-verb {
+    font-size: 36px;
     letter-spacing: -1px;
   }
 

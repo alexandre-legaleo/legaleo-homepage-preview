@@ -77,6 +77,8 @@
 .hp-shell-i[data-i="plus"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='M12 5v14'/%3E%3C/svg%3E"); }
 .hp-shell-i[data-i="layout-dashboard"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='7' height='9' x='3' y='3' rx='1'/%3E%3Crect width='7' height='5' x='14' y='3' rx='1'/%3E%3Crect width='7' height='9' x='14' y='12' rx='1'/%3E%3Crect width='7' height='5' x='3' y='16' rx='1'/%3E%3C/svg%3E"); }
 .hp-shell-i[data-i="file-text"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z'/%3E%3Cpath d='M14 2v4a2 2 0 0 0 2 2h4'/%3E%3Cpath d='M10 9H8'/%3E%3Cpath d='M16 13H8'/%3E%3Cpath d='M16 17H8'/%3E%3C/svg%3E"); }
+.hp-shell-i[data-i="handshake"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m11 17 2 2a1 1 0 1 0 3-3'/%3E%3Cpath d='m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4'/%3E%3Cpath d='m21 3 1 11h-2'/%3E%3Cpath d='M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3'/%3E%3Cpath d='M3 4h8'/%3E%3C/svg%3E"); }
+.hp-shell-i[data-i="map-pinned"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8c0 3.613-3.869 7.429-5.393 8.795a1 1 0 0 1-1.214 0C9.87 15.429 6 11.613 6 8a6 6 0 0 1 12 0'/%3E%3Ccircle cx='12' cy='8' r='2'/%3E%3Cpath d='M8.714 14h-3.71a1 1 0 0 0-.948.683l-2.004 6A1 1 0 0 0 3 22h18a1 1 0 0 0 .948-1.316l-2-6a1 1 0 0 0-.949-.684h-3.712'/%3E%3C/svg%3E"); }
 .hp-shell-i[data-i="archive"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='20' height='5' x='2' y='3' rx='1'/%3E%3Cpath d='M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8'/%3E%3Cpath d='M10 12h4'/%3E%3C/svg%3E"); }
 .hp-shell-i[data-i="users"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2'/%3E%3Cpath d='M16 3.128a4 4 0 0 1 0 7.744'/%3E%3Cpath d='M22 21v-2a4 4 0 0 0-3-3.87'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3C/svg%3E"); }
 .hp-shell-i[data-i="files"] { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 2a2 2 0 0 1 1.414.586l4 4A2 2 0 0 1 21 8v7a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z'/%3E%3Cpath d='M15 2v4a2 2 0 0 0 2 2h4'/%3E%3Cpath d='M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1'/%3E%3C/svg%3E"); }
@@ -621,6 +623,22 @@
   background-color: #b8f4f5;
 }
 
+/* Passage relevé par l'avocat : le surlignage violet le balaie de gauche
+   à droite, comme dans la scène « Validez » du hero (.hp-sc-mark) */
+.hp-field--lawyer {
+  /* Débord du surlignage réduit : sans surlignage, le mot reste près de
+     ses voisins, et le surlignage ne touche pas le mot précédent */
+  padding-inline: 1px;
+  color: inherit;
+  background: linear-gradient(var(--color-purple-bg), var(--color-purple-bg)) 0 0 / 0% 100% no-repeat;
+  font-weight: inherit;
+  transition: background-size 0.8s var(--ease-out);
+}
+
+.is-flagged .hp-field--lawyer {
+  background-size: 100% 100%;
+}
+
 /* Paragraphe signalé par la reco */
 .hp-ed-flag {
   margin-inline: -6px;
@@ -630,9 +648,10 @@
   transition: outline-color 0.4s ease, background-color 0.4s ease;
 }
 
+/* Paragraphe relevé par l'avocat : liseré violet, la couleur de l'avocat
+   (le passage lui-même est surligné, .hp-field--lawyer) */
 .is-flagged .hp-ed-flag {
-  outline-color: var(--color-cyan);
-  background-color: #f2fefe;
+  outline-color: var(--color-purple-line);
 }
 
 /* Ajout proposé par l'avocat : se dévoile une fois validé. display: none
@@ -731,12 +750,19 @@
   transform: none;
 }
 
+/* Recommandation de l'avocat : même violet que son commentaire dans le
+   hero (.hp-sc-comment) */
 .hp-ed-reco-card {
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-purple-line);
   border-radius: 8px;
   padding: 8px;
+  background-color: var(--color-purple-bg);
   font-size: 9px;
   line-height: 1.45;
+}
+
+.hp-ed-reco-card .hp-mini-kicker {
+  color: var(--color-purple-text);
 }
 
 .hp-ed-reco-card p {
@@ -823,6 +849,14 @@
 
 .hp-var.is-pending {
   display: none;
+}
+
+/* Modèle (étape 02) : champ inséré en teal, comme dans le hero
+   (.hp-sc-var) — le violet reste réservé à l'avocat */
+[data-mock="generate"] .hp-var {
+  border-color: rgb(8 127 131 / 0.3);
+  color: var(--color-teal-text);
+  background-color: var(--color-teal-bg);
 }
 
 .hp-var.is-in {
@@ -2486,4 +2520,456 @@
     left: 8px;
     bottom: -30px;
   }
+}
+
+/* Badge Leo fixe sur un visuel de « La plateforme » (étapes 01 et 04) :
+   toujours affiché, en haut à droite, hors de la trajectoire des toasts
+   animés (en bas). */
+.hp-float--leo {
+  top: -22px;
+  right: -20px;
+  align-items: center;
+}
+
+/* ---------- 4. Générer : du modèle validé au contrat ----------
+   Le vrai parcours de legaleo-ai, en trois fenêtres superposées dans la
+   même case de grille (même hauteur pour les trois) ; js/main.js
+   (mockCreate) passe de l'une à l'autre (.is-setup, .is-editor) :
+   1. Modèles (dashboard/modeles) : cases de création illustrées
+      (CreateModelButton, en version compacte), modèles validés ;
+   2. Paramétrage (projets/franchise-contrat-v2) : gabarit de l'onboarding,
+      étapes « co-contractant » puis « dates et modalités », génération ;
+   3. Éditeur du contrat (contracts/[id]) : valeurs du franchisé dans le
+      texte, commentaires interne / avocat / franchisé. */
+.hp-flow {
+  position: relative;
+  display: grid;
+}
+
+.hp-fl-w {
+  grid-area: 1 / 1;
+  transition: opacity 0.45s ease, transform 0.6s var(--ease-out), visibility 0s linear 0.45s;
+}
+
+.hp-fl-w--setup,
+.hp-fl-w--editor {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px) scale(0.98);
+}
+
+.hp-flow.is-setup .hp-fl-w--list,
+.hp-flow.is-editor .hp-fl-w--list,
+.hp-flow.is-editor .hp-fl-w--setup {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.98);
+}
+
+.hp-flow.is-setup .hp-fl-w--setup,
+.hp-flow.is-editor .hp-fl-w--editor {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 0s;
+}
+
+/* 1. Modèles : cases carrées comme CreateModelButton (largeur fixe,
+   illustration 4:3 au-dessus du libellé), à échelle réduite */
+.hp-md-tiles {
+  display: flex;
+  gap: 8px;
+}
+
+.hp-md-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 64px;
+  border: 1px dashed #63aaac;
+  border-radius: 6px;
+  padding: 5px;
+  background-color: #edf1f1;
+}
+
+.hp-md-ill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 3;
+  border-radius: 3px;
+  background-color: #78a4a41c;
+}
+
+.hp-md-ill img {
+  width: 78%;
+  height: auto;
+}
+
+.hp-md-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid var(--app-soft);
+  border-radius: 50%;
+  color: #fff;
+  background-color: #087f83;
+}
+
+.hp-md-badge .hp-shell-i {
+  width: 6px;
+  height: 6px;
+}
+
+.hp-md-tile-l {
+  font-size: 7.5px;
+  font-weight: 600;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.hp-md-k {
+  display: block;
+  margin: 14px 0 6px;
+  color: var(--color-muted);
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hp-md-tbl {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--app-radius);
+  background-color: var(--color-white);
+}
+
+.hp-md-tr {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 2.2fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 10px;
+  font-size: 9.5px;
+  white-space: nowrap;
+  transition: background-color 0.25s ease, transform 0.15s ease;
+}
+
+.hp-md-tr + .hp-md-tr {
+  border-top: 1px solid var(--color-border);
+}
+
+.hp-md-tr > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hp-md-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.hp-md-type .hp-shell-i {
+  width: 10px;
+  height: 10px;
+}
+
+.hp-md-name {
+  color: #087f83;
+  font-weight: 600;
+}
+
+.hp-md-tr .hp-pill {
+  font-size: 8.5px;
+}
+
+.hp-md-tr.is-hover {
+  background-color: var(--color-teal-bg);
+}
+
+.hp-md-tr.is-pressed {
+  transform: scale(0.99);
+}
+
+/* 2. Paramétrage : une étape affichée à la fois */
+.hp-fl-form {
+  position: relative;
+}
+
+.hp-fl-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.hp-fl-pane--dates,
+.hp-fl-form.is-dates .hp-fl-pane--who {
+  display: none;
+}
+
+.hp-fl-form.is-dates .hp-fl-pane--dates {
+  display: flex;
+  animation: hp-fl-in 0.45s var(--ease-out);
+}
+
+@keyframes hp-fl-in {
+  from { opacity: 0; transform: translateX(12px); }
+}
+
+.hp-fl-form .hp-onb-actions {
+  margin-top: auto;
+}
+
+/* Choix radio (SegmentedControl / Radio du design-system) */
+.hp-fl-radio {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--app-radius-btn);
+  padding: 6px 8px;
+  background-color: var(--color-white);
+  font-size: 9.5px;
+}
+
+.hp-fl-radio::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border: 1.5px solid var(--color-border);
+  border-radius: 50%;
+}
+
+.hp-fl-radio.is-on {
+  border-color: var(--color-teal);
+  background-color: var(--color-teal-bg);
+}
+
+.hp-fl-radio.is-on::before {
+  border: 3px solid var(--color-teal);
+}
+
+/* Champ texte : libellé gris tant qu'il est vide (data-ph), valeur tapée
+   ensuite par le JS */
+.hp-cr-input {
+  display: flex;
+  align-items: center;
+  min-height: 25px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--app-radius-btn);
+  padding: 5px 8px;
+  background-color: var(--color-white);
+  font-size: 9.5px;
+  font-weight: 600;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hp-cr-input:empty::before {
+  content: attr(data-ph);
+  color: var(--color-faint);
+  font-weight: 500;
+}
+
+.hp-cr-input.is-typing {
+  border-color: var(--color-teal);
+  box-shadow: 0 0 0 3px rgb(8 127 131 / 0.12);
+}
+
+.hp-cr-input.is-typing::after {
+  content: "";
+  width: 1.5px;
+  height: 11px;
+  margin-left: 1px;
+  background-color: var(--color-teal);
+  opacity: 0;
+  animation: hp-blink 0.9s steps(1) infinite;
+}
+
+/* Génération du contrat : couvre le formulaire, Leo + barre */
+.hp-fl-gen {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: var(--app-soft);
+  font-size: 11px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.hp-fl-form.is-gen .hp-fl-gen {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.hp-fl-gen-bar {
+  width: 140px;
+  height: 4px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background-color: var(--app-line);
+}
+
+.hp-fl-gen-bar i {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background-color: var(--color-teal);
+}
+
+.hp-fl-form.is-gen .hp-fl-gen-bar i {
+  width: 100%;
+  transition: width 1.3s var(--ease-out) 0.2s;
+}
+
+/* 3. Éditeur : sans panneau de variables, le panneau des commentaires */
+.hp-fl-ed {
+  grid-template-columns: 92px minmax(0, 1fr) 26px 128px;
+}
+
+/* Valeur du franchisé à la place du champ du modèle : teal */
+.hp-var.is-value {
+  border-color: rgb(8 127 131 / 0.3);
+  color: var(--color-teal-text);
+  background-color: var(--color-teal-bg);
+}
+
+.hp-flow.is-editor [data-fl-var] {
+  animation: hp-var-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  animation-delay: 0.6s;
+}
+
+.hp-flow.is-editor [data-fl-var]:nth-of-type(2) { animation-delay: 0.8s; }
+.hp-flow.is-editor [data-fl-var]:nth-of-type(3) { animation-delay: 1s; }
+
+.hp-fl-cm {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 7px;
+  background-color: var(--color-white);
+  font-size: 8.5px;
+  line-height: 1.4;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity 0.4s ease, transform 0.5s var(--ease-out);
+  transition-delay: calc(var(--i) * 0.45s);
+}
+
+.hp-flow.is-comments .hp-fl-cm {
+  opacity: 1;
+  transform: none;
+}
+
+.hp-fl-cm-who {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.hp-fl-cm-who .hp-avatar {
+  width: 16px;
+  height: 16px;
+  font-size: 6.5px;
+}
+
+.hp-fl-cm-who b {
+  display: block;
+  font-size: 8.5px;
+}
+
+.hp-fl-cm-who small {
+  display: block;
+  color: var(--color-muted);
+  font-size: 7px;
+}
+
+.hp-fl-cm p {
+  margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+  /* Comme les autres éditeurs : document + panneau (sommaire et rail
+     masqués plus haut) */
+  .hp-fl-ed {
+    grid-template-columns: minmax(0, 1fr) 110px;
+  }
+}
+
+/* Variante en bas à gauche : sur l'éditeur (étape 02), le coin haut droit
+   porte l'état « Sauvegardé » */
+.hp-float--leo-bl {
+  top: auto;
+  right: auto;
+  bottom: -26px;
+  left: -20px;
+}
+
+/* ---------- 2. Modèle : glisser-déposer des champs dynamiques ----------
+   Le curseur attrape une ligne du panneau ; une étiquette du champ (ghost)
+   le suit jusqu'au texte, où un emplacement en pointillés s'est ouvert
+   (.is-target) ; au lâcher, le chip s'y pose. Coordonnées --x / --y
+   relatives à la fenêtre, posées par js/main.js (mockGenerate). */
+[data-mock="generate"] {
+  position: relative;
+}
+
+.hp-gen-ghost {
+  --x: 0;
+  --y: 0;
+  --t: 0ms;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  border: 1px solid rgb(8 127 131 / 0.3);
+  border-radius: 4px;
+  padding: 0 4px;
+  color: var(--color-teal-text);
+  background-color: var(--color-teal-bg);
+  box-shadow: 0 8px 16px -6px rgb(8 127 131 / 0.45);
+  font-size: 8.5px;
+  font-weight: 600;
+  line-height: 1.45;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  translate: var(--x) var(--y);
+  rotate: 0deg;
+  /* Penché quand on l'attrape (.is-lift), il se redresse pendant le trajet
+     et arrive droit à sa place */
+  transition: translate var(--t) cubic-bezier(0.45, 0.05, 0.25, 1), rotate var(--t) cubic-bezier(0.45, 0.05, 0.25, 1), opacity 0.2s ease;
+}
+
+.hp-gen-ghost.is-on {
+  opacity: 1;
+}
+
+.hp-gen-ghost.is-lift {
+  rotate: -4deg;
+}
+
+/* Emplacement ouvert dans le texte pendant le glisser : même taille que le
+   chip, en pointillés, texte masqué */
+[data-mock="generate"] .hp-var.is-target {
+  border-style: dashed;
+  border-color: rgb(8 127 131 / 0.55);
+  color: transparent;
+  background-color: transparent;
 }

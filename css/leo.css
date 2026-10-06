@@ -12,6 +12,27 @@
   gap: 64px;
 }
 
+/* Les trois moments où Leo intervient : une ligne chacun, sans icône */
+.hp-leo-moments {
+  display: grid;
+  gap: 10px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+  color: rgb(255 254 251 / 0.72);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.hp-leo-moments + .hp-btn {
+  margin-top: 30px;
+}
+
+.hp-leo-moments strong {
+  color: var(--color-white);
+  font-weight: 700;
+}
+
 /* ---------- Chat démo ---------- */
 .hp-chat {
   display: flex;
