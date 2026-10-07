@@ -29,7 +29,11 @@ pnpm dev   # http://localhost:5174
 - `webflow-embed.html` : snippet à coller dans l'élément Embed Webflow.
 - `leo-widget/` : agent Leo (bulle de pré-vente et de support), build copié
   de `leo-agent-pour-alex/dist/` (à recopier après chaque `build.py`).
-  Réglages dans `leo-widget/config.js` (`hubspot.formGuid` à renseigner).
+  Réglages dans `leo-widget/config.js`. Leo propose les deux mêmes choix
+  que la page contact (réserver une démo, envoyer un message) et passe par
+  son script Google (mode « script » : mêmes HubSpot, Encharge, Slack et
+  agenda ; e-mail de confirmation de démo désactivé, `LEO_CONFIRM_MAIL`) : actions `leo` et
+  `leo-book` de `apps-script/contact.gs`.
   Chargé par `index.html` quand la page est ouverte directement, et par
   `webflow-embed.html` côté page parente quand elle est dans l'iframe.
 - `contact.html` (+ `css/contact.css`, `js/contact.js`) : nouvelle page
