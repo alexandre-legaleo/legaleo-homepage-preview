@@ -8,15 +8,19 @@ window.LEO_CONFIG = {
   // seconde à 28 s, jugé trop intrusif). teaserMax: 0 la supprime.
   teaserDelay: 30000,
   teaserMax: 1,
+  // Mêmes deux choix que la page contact (démo ou message), même circuit, via
+  // son script Google (apps-script/contact.gs, actions « leo » et « leo-book ») :
+  // HubSpot (contact, deal, note), Encharge, Slack #sales, agenda Google de
+  // Mehdi (invitation avec le lien Meet). Même URL que API_URL dans
+  // js/contact.js.
+  script: {
+    url: "https://script.google.com/macros/s/AKfycbwH1XasqUgamR6kw4-OPh5Glo0ZpbjqMPtNrynXPmwIQQ8sQ-wmEkc2Srql0Wti4AmuTQ/exec",
+    contactUrl: "https://www.legaleo.ai/contact", // repli si l'agenda ne répond pas
+  },
   hubspot: {
-    mode: "forms", // 'forms' (API Formulaires) | 'endpoint' | 'simulate'
-    portalId: "147898530",
-    formGuid: "", // À RENSEIGNER : formulaire « Leo (chat) ». Vide : Leo affiche un message d'erreur au lieu de perdre la demande
-    region: "eu1",
-    leadSource: "", // 'Chat Leo (site)' une fois l'option créée dans HubSpot
+    mode: "script", // 'script' (page contact) | 'forms' | 'endpoint' | 'simulate'
   },
   meetings: {
-    mode: "link", // 'link' | 'iframe' | 'simulate'
-    url: "https://meetings-eu1.hubspot.com/mehdi3/legaleo-ai",
+    mode: "script", // 'script' (agenda Google de la page contact) | 'link' | 'iframe' | 'simulate'
   },
 };

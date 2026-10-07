@@ -11,6 +11,12 @@
  *     -> circuit franchiseur : Mehdi, pipeline de vente, score HOT.
  *   - Avocat : message seulement (cabinet au lieu de l'enseigne, pas de points de vente)
  *     -> circuit avocat : Jean-Philippe, pipeline Partenaires, tag lawyer, pas de score.
+ *   - Agent Leo (widget du site, mode « script ») : les deux mêmes choix que la page
+ *     (démo ou message), même circuit, plus les réponses de qualification (note
+ *     HubSpot, Slack), un score Encharge selon la priorité calculée par Leo (A : HOT,
+ *     B : tiède, C : aucun) et, pour une démo, l'invitation Agenda avec le lien Meet
+ *     (e-mail de confirmation en plus : CONFIG.LEO_CONFIRM_MAIL).
+ *     Franchisés et clients (support) : contact, note, Slack, sans deal.
  *
  * ⚠️ NOUVEAU projet Apps Script (pas celui des franchiseurs : mêmes noms de fonctions).
  * ⚠️ Aucune clé dans ce fichier : elles sont dans les Propriétés du script (étape 4).
@@ -78,6 +84,18 @@ const CONFIG = {
 
   ENCHARGE_SCORE: 70,              // bande HOT, comme le script franchiseur
 
+  // Agent Leo
+  LEO_ENCHARGE_SCORE: { A: 70, B: 45 },   // priorité calculée par Leo ; C : pas de score
+  LEO_MIN_FILL_MS: 1200,           // formulaire de Leo plus court que celui de la page
+  // E-mail de confirmation de démo en plus de l'invitation Agenda (qui contient déjà
+  // le lien Meet). Désactivé tant que l'autorisation d'envoi d'e-mails n'est pas
+  // accordée par le compte de Mehdi. Pour l'activer : passer à true, ajouter
+  // https://www.googleapis.com/auth/script.send_mail dans appsscript.json (oauthScopes),
+  // lancer testSetup depuis le compte de Mehdi, puis déployer une nouvelle version.
+  LEO_CONFIRM_MAIL: false,
+  MAIL_FROM_NAME: 'Mehdi de Legaleo',
+  MAIL_REPLY_TO: 'hello@legaleo.ai',
+
   MIN_FILL_MS: 3000,               // envoyé plus vite : robot
   RATE_MAX: 5,                     // demandes max par e-mail (créneau déjà pris compris)…
   RATE_WINDOW_S: 6 * 3600          // … sur 6 h
@@ -117,6 +135,7 @@ function doPost(e) {
     return json({ ok: false, error: 'invalid' });
   }
   try {
+    if (data.action === 'leo' || data.action === 'leo-book') return json(leoPost(data));
     var lead = readLead(data);
     if (!lead) return json({ ok: false, error: 'invalid' });
     if (lead.bot) return json({ ok: true });            // robot : on fait comme si, sans rien faire
@@ -250,7 +269,9 @@ function pad(n) {
 }
 
 // ============================ RÉSERVATION ============================
-function book(lead, startIso) {
+// opts (Leo) : { description, dispatch(ctx) } remplacent la description de l'événement
+// et la diffusion de la page contact.
+function book(lead, startIso, opts) {
   var start = new Date(startIso);
   if (isNaN(start.getTime())) return { ok: false, error: 'invalid' };
   var end = new Date(start.getTime() + CONFIG.SLOT_MIN * 60e3);
@@ -263,7 +284,7 @@ function book(lead, startIso) {
     if (freeSlots(true).indexOf(start.toISOString()) === -1) return { ok: false, error: 'taken' };
     event = Calendar.Events.insert({
       summary: meetingTitle(lead),
-      description:
+      description: (opts && opts.description) ||
         lead.firstname + ' ' + lead.lastname + ' · ' + lead.company + '\n' +
         'Points de vente : ' + lead.outlets + (lead.stage ? ' (' + lead.stage + ')' : '') + '\n' +
         (lead.message ? '\nMessage :\n' + lead.message + '\n' : '') +
@@ -279,8 +300,10 @@ function book(lead, startIso) {
     lock.releaseLock();
   }
 
-  dispatch(lead, { kind: 'demo', start: start, end: end, meet: event.hangoutLink || '' });
-  return { ok: true };
+  var ctx = { kind: 'demo', start: start, end: end, meet: event.hangoutLink || '' };
+  if (opts && opts.dispatch) opts.dispatch(ctx);
+  else dispatch(lead, ctx);
+  return { ok: true, meet: ctx.meet, label: frDate(start) };
 }
 
 // Titre du rendez-vous (agenda et HubSpot) :
@@ -360,9 +383,12 @@ function upsertHubspotContact(lead) {
   if (res.code === 409) {
     var m = res.text.match(/Existing ID:\s*(\d+)/);
     if (m) {
-      hubspot('patch', '/crm/v3/objects/contacts/' + m[1], {
-        properties: { hubspot_owner_id: ownerOf(lead), hs_lead_status: 'NEW' }
-      });
+      // Client ou franchisé passé par Leo (support) : contact existant laissé tel quel
+      if (!lead.keepOwner) {
+        hubspot('patch', '/crm/v3/objects/contacts/' + m[1], {
+          properties: { hubspot_owner_id: ownerOf(lead), hs_lead_status: 'NEW' }
+        });
+      }
       return m[1];
     }
   }
@@ -456,7 +482,9 @@ function createHubspotMeeting(lead, contactId, dealId, ctx) {
     properties: {
       hs_timestamp: ctx.start.toISOString(),
       hs_meeting_title: meetingTitle(lead),
-      hs_meeting_body: 'Réservée depuis la page contact. Points de vente : ' + lead.outlets + '.',
+      hs_meeting_body: lead.leo
+        ? 'Réservée avec Leo (chat du site).' + (lead.outlets ? ' Points de vente : ' + lead.outlets + '.' : '')
+        : 'Réservée depuis la page contact. Points de vente : ' + lead.outlets + '.',
       hs_meeting_location: ctx.meet,
       hs_meeting_start_time: ctx.start.toISOString(),
       hs_meeting_end_time: ctx.end.toISOString(),
@@ -521,6 +549,186 @@ function postToSlack(lead, contactId, ctx) {
   });
 }
 
+// ============================ AGENT LEO (widget du site) ============================
+// Le widget envoie { action: 'leo' | 'leo-book', type, next, coordonnées, réponses… }.
+//   leo      : message ; ou démo dont le créneau n'est pas encore choisi (contact +
+//              note + Slack, le deal vient avec la réservation)
+//   leo-book : réservation d'un créneau (agenda, deal, rendez-vous, confirmation)
+var LEO_TYPES = ['franchiseur', 'avocat', 'franchise', 'client'];
+var LEO_NEXT = ['demo', 'message'];
+var LEO_OUTLETS = { '1-5': '1 à 5', '6-30': '6 à 30', '31-100': '31 à 100', '100+': '100 et plus' };
+
+function leoPost(data) {
+  var lead = readLeoLead(data);
+  if (!lead) return { ok: false, error: 'invalid' };
+  if (lead.bot) return { ok: true };            // robot : on fait comme si, sans rien faire
+  if (!underRate(lead.email)) return { ok: false, error: 'rate' };
+  if (data.action === 'leo-book') {
+    lead.next = 'demo';
+    return book(lead, data.start, {
+      description: leoEventDescription(lead),
+      dispatch: function (ctx) { dispatchLeo(lead, ctx); }
+    });
+  }
+  dispatchLeo(lead, { kind: lead.next === 'demo' ? 'pending' : lead.next });
+  return { ok: true };
+}
+
+function readLeoLead(d) {
+  function text(v, max) {
+    return String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, max);
+  }
+  function block(v, max) {
+    return String(v == null ? '' : v).replace(/[\u0000-\u0009\u000b-\u001f\u007f]/g, ' ').trim().slice(0, max);
+  }
+  if (text(d.website, 200) || !(Number(d.elapsed) >= CONFIG.LEO_MIN_FILL_MS)) return { bot: true };
+  var type = LEO_TYPES.indexOf(d.type) !== -1 ? d.type : 'contact';
+  var lead = {
+    leo: true,
+    type: type,
+    lawyer: type === 'avocat',
+    prospect: type === 'franchiseur',
+    // Client, franchisé ou visiteur non identifié : pas de deal, contact existant inchangé
+    keepOwner: type !== 'franchiseur' && type !== 'avocat',
+    next: LEO_NEXT.indexOf(d.next) !== -1 ? d.next : 'message',
+    demande: text(d.demande, 30),
+    firstname: text(d.firstname, 80),
+    lastname: text(d.lastname, 80),
+    email: text(d.email, 120).toLowerCase(),
+    company: text(d.company, 120),
+    interest: text(d.interest, 120),
+    outlets: LEO_OUTLETS[d.taille] || '',
+    stage: '',
+    priority: ['A', 'B', 'C'].indexOf(d.priority) !== -1 ? d.priority : '',
+    score: Number(d.score) || 0,
+    answers: (Array.isArray(d.answers) ? d.answers : []).slice(0, 8).map(function (a) {
+      return [text(a && a[0], 40), text(a && a[1], 80)];
+    }).filter(function (a) { return a[0] && a[1]; }),
+    summary: block(d.summary, 3000),
+    message: block(d.message, 2000)
+  };
+  if (!lead.firstname || !lead.lastname) return null;
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(lead.email)) return null;
+  if (!lead.company && !lead.lawyer) return null;
+  if (!lead.company) lead.company = 'Cabinet non précisé';
+  return lead;
+}
+
+function dispatchLeo(lead, ctx) {
+  var pending = ctx.kind === 'pending';
+  var contactId = safe('contact', function () { return upsertHubspotContact(lead); });
+  var dealId = null;
+  if (!pending && lead.prospect) dealId = safe('deal', function () { return createHubspotDeal(lead, contactId, ctx); });
+  if (!pending && lead.lawyer) dealId = safe('deal', function () { return createLawyerDeal(lead, contactId); });
+  safe('note', function () { return createLeoNote(lead, contactId, dealId, ctx); });
+  if (ctx.kind === 'demo') safe('meeting', function () { return createHubspotMeeting(lead, contactId, dealId, ctx); });
+  if (!pending && (lead.prospect || lead.lawyer)) safe('encharge', function () { pushLeoToEncharge(lead, ctx); });
+  safe('slack', function () { postLeoToSlack(lead, contactId, ctx); });
+  if (ctx.kind === 'demo' && CONFIG.LEO_CONFIRM_MAIL) safe('mail', function () { sendLeoMail(lead, ctx); });
+}
+
+function leoEventDescription(lead) {
+  return lead.firstname + ' ' + lead.lastname + ' · ' + lead.company + '\n' +
+    (lead.answers.length ? '\n' + lead.answers.map(function (a) { return a[0] + ' : ' + a[1]; }).join('\n') + '\n' : '') +
+    (lead.message ? '\nQuestion :\n' + lead.message + '\n' : '') +
+    '\nRéservé avec Leo, l\'agent IA de legaleo.ai.';
+}
+
+var LEO_KIND_TITLE = {
+  pending: 'Leo : démo demandée, créneau en cours de choix',
+  demo: 'Leo : démo réservée',
+  message: 'Leo : message'
+};
+
+function createLeoNote(lead, contactId, dealId, ctx) {
+  var associations = [];
+  if (contactId) associations.push(assoc(contactId, 202));   // note -> contact
+  if (dealId) associations.push(assoc(dealId, 214));         // note -> deal
+  var lines = [];
+  if (lead.priority) lines.push('Priorité Leo : ' + lead.priority + ' (score ' + lead.score + '/100)');
+  var body = '<p><strong>' + LEO_KIND_TITLE[ctx.kind] + '</strong></p>' +
+    (lines.length ? '<p>' + lines.map(escapeHtml).join('<br>') + '</p>' : '') +
+    '<p>' + escapeHtml(lead.summary || '').replace(/\n/g, '<br>') + '</p>';
+  var res = hubspot('post', '/crm/v3/objects/notes', {
+    properties: { hs_timestamp: new Date().toISOString(), hs_note_body: body, hubspot_owner_id: ownerOf(lead) },
+    associations: associations
+  });
+  if (res.code !== 201) console.error('HubSpot note Leo ' + res.code + ' : ' + res.text);
+}
+
+// Tags Encharge : provenance leo-chat + suite demandée ; score selon la priorité de Leo
+// (A : HOT, comme la page contact ; B : tiède ; C : aucun). Avocat : comme la page.
+function pushLeoToEncharge(lead, ctx) {
+  var headers = { 'X-Encharge-Token': secret('ENCHARGE_TOKEN') };
+  var person = { email: lead.email, firstName: lead.firstname, lastName: lead.lastname };
+  var score = lead.prospect ? CONFIG.LEO_ENCHARGE_SCORE[lead.priority] : null;
+  if (score) person.leadScore = score;
+  UrlFetchApp.fetch('https://api.encharge.io/v1/people', {
+    method: 'post', contentType: 'application/json', headers: headers,
+    payload: JSON.stringify(person), muteHttpExceptions: true
+  });
+  var kindTag = ctx.kind === 'demo' ? 'demo-reservee' : 'message-site';
+  var tags = lead.lawyer
+    ? ['lawyer', 'avocat-leo']
+    : ['lead-franchiseur', 'leo-chat', kindTag]
+      .concat(lead.priority === 'A' ? ['score-hot', 'hot-alerted'] : lead.priority === 'B' ? ['score-warm'] : []);
+  tags.forEach(function (t) {
+    var res = UrlFetchApp.fetch('https://api.encharge.io/v1/tags', {
+      method: 'post', contentType: 'application/json', headers: headers,
+      payload: JSON.stringify({ tag: t, email: lead.email }), muteHttpExceptions: true
+    });
+    if (res.getResponseCode() >= 300) console.error('Encharge tag "' + t + '" ' + res.getResponseCode() + ' : ' + res.getContentText());
+  });
+}
+
+function postLeoToSlack(lead, contactId, ctx) {
+  var link = contactId ? 'https://app.hubspot.com/contacts/' + CONFIG.HUBSPOT_PORTAL_ID + '/record/0-1/' + contactId : '';
+  var icon = { pending: ':hourglass_flowing_sand:', demo: ':calendar:', message: ':speech_balloon:' }[ctx.kind];
+  var who = { franchiseur: '', avocat: ' · avocat', franchise: ' · franchisé', client: ' · client (support)', contact: '' }[lead.type] || '';
+  var head = icon + ' *' + LEO_KIND_TITLE[ctx.kind] + '*' + (ctx.kind === 'demo' ? ' le ' + frDate(ctx.start) : '') + ' — ' + lead.company + who;
+  var text =
+    head + '\n' +
+    '• *' + lead.firstname + ' ' + lead.lastname + '* · ' + lead.email + '\n' +
+    (lead.priority ? '• Priorité *' + lead.priority + '* (score ' + lead.score + '/100)\n' : '') +
+    lead.answers.map(function (a) { return '• ' + a[0] + ' : ' + a[1] + '\n'; }).join('') +
+    (lead.interest ? '• Attente : ' + lead.interest + '\n' : '') +
+    (ctx.meet ? '• Visio : ' + ctx.meet + '\n' : '') +
+    (lead.message ? '• Message : ' + lead.message.slice(0, 500) + '\n' : '') +
+    (link ? '• <' + link + '|Ouvrir la fiche HubSpot> — assigné à ' + (lead.lawyer ? 'Jean-Philippe' : 'Mehdi') + ' ✅' : '• ⚠️ Fiche HubSpot non créée, à vérifier (journaux d\'exécution)');
+  UrlFetchApp.fetch(secret('SLACK_WEBHOOK_URL'), {
+    method: 'post', contentType: 'application/json',
+    payload: JSON.stringify({ text: text }), muteHttpExceptions: true
+  });
+}
+
+// ---- E-mail de confirmation de démo (compte du script : Mehdi), réponse vers
+// hello@legaleo.ai : le lien Meet et les réponses du prospect, en plus de l'invitation.
+function sendLeoMail(lead, ctx) {
+  var answers = lead.answers.length
+    ? '<p style="margin:24px 0 8px;font-weight:700">Ce que vous nous avez dit</p><ul style="margin:0;padding-left:20px">' +
+      lead.answers.map(function (a) { return '<li>' + escapeHtml(a[0]) + ' : ' + escapeHtml(a[1]) + '</li>'; }).join('') + '</ul>'
+    : '';
+  var meet = ctx.meet
+    ? '<p style="margin:24px 0"><a href="' + escapeHtml(ctx.meet) + '" style="display:inline-block;padding:12px 22px;border-radius:999px;background:#087f83;color:#fff;font-weight:700;text-decoration:none">Rejoindre la visio</a></p>' +
+      '<p style="color:#6f6757;font-size:14px">Lien de la visio : <a href="' + escapeHtml(ctx.meet) + '">' + escapeHtml(ctx.meet) + '</a>. L\'invitation est aussi dans votre agenda.</p>'
+    : '<p>L\'invitation, avec le lien de la visio, est dans votre agenda.</p>';
+  var html = '<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#1f120e;max-width:560px">' +
+    '<p>Bonjour ' + escapeHtml(lead.firstname) + ',</p>' +
+    '<p>Votre démo est confirmée <strong>' + escapeHtml(frDate(ctx.start)) + '</strong> (heure de Paris) : 30 minutes en visio avec Mehdi, co-fondateur de Legaleo, ' +
+      (lead.lawyer ? 'sur votre pratique et vos clients franchiseurs' : 'sur le cas de votre réseau') + '.</p>' +
+    meet +
+    '<p>Rien à préparer. Si vous avez un DIP ou un contrat existant, gardez-le sous la main : on vous montre comment il se reprend dans la plateforme.</p>' +
+    answers +
+    '<p style="margin-top:28px">À très vite,<br>Mehdi Taleb<br><span style="color:#6f6757">Co-fondateur, Legaleo</span></p></div>';
+  MailApp.sendEmail({
+    to: lead.email,
+    subject: 'Votre démo Legaleo, ' + frDate(ctx.start),
+    htmlBody: html,
+    name: CONFIG.MAIL_FROM_NAME,
+    replyTo: CONFIG.MAIL_REPLY_TO
+  });
+}
+
 // ============================ TEST D'INSTALLATION ============================
 // À lancer une fois depuis l'éditeur (étape 6) : autorisations + vérifications.
 // Ne crée rien, n'envoie rien.
@@ -529,6 +737,12 @@ function testSetup() {
     console.log(name + ' : ' + (secret(name) ? 'renseignée' : '⚠️ MANQUANTE'));
   });
   console.log('Étape des deals : ' + dealStage() + ' (« ' + CONFIG.DEAL_STAGE_LABEL + ' »)');
+  if (CONFIG.LEO_CONFIRM_MAIL) try {
+    console.log('E-mails (Leo) : ' + MailApp.getRemainingDailyQuota() + ' envois restants aujourd\'hui');
+  } catch (err) {
+    console.error('⚠️ E-mails (Leo) bloqués : ' + err.message +
+      ' -> ajouter https://www.googleapis.com/auth/script.send_mail dans appsscript.json (oauthScopes), puis relancer testSetup.');
+  }
   var slots = freeSlots(true);
   console.log('OK · ' + slots.length + ' créneaux libres, premier : ' +
     (slots[0] ? frDate(new Date(slots[0])) : 'aucun'));
