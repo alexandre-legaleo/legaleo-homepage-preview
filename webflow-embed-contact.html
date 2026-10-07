@@ -7,9 +7,9 @@
   Même mécanique que webflow-embed.html (homepage) :
   - affiche contact.html (GitHub Pages) dans un iframe pleine largeur ;
   - la page (js/embed.js) envoie sa hauteur, l'iframe s'ajuste (pas de barre
-    de défilement propre), y compris quand l'agenda HubSpot s'affiche ;
-  - le widget HubSpot Meetings est chargé dans la page (js/contact.js), rien
-    à ajouter côté Webflow ;
+    de défilement propre), y compris quand l'agenda s'affiche ;
+  - créneaux et envoi passent par le script Google (API_URL de js/contact.js),
+    rien à ajouter côté Webflow ;
   - les paramètres de l'URL (ex. /contact?reseau=lancement) sont transmis à
     la page, qui pré-sélectionne la situation ;
   - la partie visible de l'iframe est envoyée à la page au défilement, pour
