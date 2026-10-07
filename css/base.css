@@ -278,16 +278,6 @@ body {
   translate: 0 -50%;
 }
 
-/* Fonctionnalité à venir : en grisé, puce creuse */
-.hp-bars li.is-soon {
-  color: var(--color-faint);
-}
-
-.hp-bars li.is-soon::before {
-  background-color: transparent;
-  box-shadow: inset 0 0 0 1.5px var(--color-faint);
-}
-
 /* Pastilles / tags réutilisés par les mockups */
 .hp-pill {
   display: inline-flex;
