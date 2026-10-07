@@ -27,7 +27,7 @@
 <!-- COLLER DEPUIS ICI -->
 <iframe
   id="legaleo-contact-frame"
-  data-src="https://alexandre-legaleo.github.io/legaleo-homepage-preview/contact.html"
+  src="https://alexandre-legaleo.github.io/legaleo-homepage-preview/contact.html"
   title="Réserver une démo de Legaleo"
   style="display:block;width:100%;height:100vh;border:0"
 ></iframe>
@@ -38,8 +38,9 @@
     var frame = document.getElementById("legaleo-contact-frame");
 
     // Paramètres de l'URL transmis à la page (ex. ?reseau=lancement :
-    // situation pré-sélectionnée dans le formulaire)
-    frame.src = frame.getAttribute("data-src") + window.location.search;
+    // situation pré-sélectionnée dans le formulaire). L'adresse est aussi en dur
+    // dans src : si ce script ne s'exécute pas, la page s'affiche quand même.
+    if (window.location.search) frame.src = frame.src.split("?")[0] + window.location.search;
 
     // Partie de l'iframe visible à l'écran (bouton « Réserver ma démo »
     // collé en bas de l'écran sur mobile), une fois par image au plus.
