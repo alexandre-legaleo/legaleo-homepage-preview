@@ -1,7 +1,2 @@
 .lg-page { --lg-keep: 0; }
-.hp-sc.is-active { opacity: 1; visibility: visible; transition-delay: 0s; }
-.hp-sc.is-active { will-change: opacity; }
-.hp-sc-gen-row.is-on { border-color: rgb(8 127 131 / 0.3); background-color: var(--color-teal-bg); box-shadow: 0 4px 12px -4px rgb(8 127 131 / 0.25); transform: translateX(4px); }
-.hp-sc-dragchip.is-on { opacity: 1; }
-.hp-sc-gen-cursor.is-on { opacity: 1; }
-.hp-sc-md-cursor.is-on { opacity: 1; }
+
