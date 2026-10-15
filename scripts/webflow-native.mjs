@@ -110,6 +110,9 @@ const unsafeDecl = (d) =>
   d.prop.startsWith("--") ||
   d.important ||
   ["translate", "content", "font"].includes(d.prop) ||
+  // background à plusieurs couches avec taille (« … 0 0 / 18px 18px, … ») :
+  // l'import ne garde que la dernière couche
+  (d.prop === "background" && d.value.includes(",") && d.value.includes("/")) ||
   // data URI avec « ; » (styles SVG embarqués) : refusée par l'import
   (/url\(\s*["']?data:/.test(d.value) && d.value.includes(";")) ||
   (d.prop === "font-family" && !/^var\(/.test(d.value));

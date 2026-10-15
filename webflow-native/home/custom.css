@@ -205,6 +205,10 @@
 
 .hp-avatar--purple { background-color: var(--color-purple-text); }
 
+.hp-leo-glyph {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2362e7eb' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M12 2.5v6M12 15.5v6M2.5 12h6M15.5 12h6M5.3 5.3l4.2 4.2M14.5 14.5l4.2 4.2M18.7 5.3l-4.2 4.2M9.5 14.5l-4.2 4.2'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
 .has-lottie > .hp-leo-glyph {
   visibility: hidden;
 }
@@ -982,6 +986,12 @@
   font-weight: 600;
 }
 
+.hp-sv--launch {
+  background:
+    radial-gradient(rgb(8 127 131 / 0.12) 1px, transparent 1.5px) 0 0 / 18px 18px,
+    linear-gradient(160deg, #eefaf9, #dff3f2);
+}
+
 .hp-sv-doc {
   --line-t: 0.42s; /* durée d'écriture d'une ligne */
   --line-gap: 0.26s; /* décalage entre deux lignes (stagger) */
@@ -1085,6 +1095,12 @@
   opacity: 1;
   transform: none;
   transition: opacity 0.25s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hp-sv--network, .hp-sv--fleet {
+  background:
+    radial-gradient(rgb(8 127 131 / 0.12) 1px, transparent 1.5px) 0 0 / 18px 18px,
+    linear-gradient(160deg, #eefaf9, #dff3f2);
 }
 
 .hp-sv-col {
@@ -5782,6 +5798,12 @@
   opacity: 1;
 }
 
+.hp-avocat-sec {
+  background:
+    radial-gradient(50% 60% at 90% 10%, rgb(98 231 235 / 0.1), transparent 70%),
+    var(--color-black);
+}
+
 .hp-avocat-sec .hp-h2 .hp-em {
   color: var(--color-cyan);
   font-style: italic;
@@ -6067,6 +6089,12 @@
 .hp-bcard--leo { --reveal-delay: 80ms;
 }
 
+.hp-bcard--time {
+  background:
+    radial-gradient(80% 70% at 100% 0%, rgb(98 231 235 / 0.22), transparent 70%),
+    var(--color-white);
+}
+
 .hp-costchart-row {
   display: grid;
   gap: 8px;
@@ -6340,6 +6368,12 @@
   }
 }
 
+.hp-audiences {
+  background:
+    radial-gradient(60% 80% at 100% 0%, rgb(98 231 235 / 0.16), transparent 70%),
+    var(--color-teal-deep);
+}
+
 .hp-audiences .hp-h2 {
   max-width: 760px;
 }
@@ -6531,6 +6565,12 @@ a.hp-aud:hover .hp-aud-btn span {
   .hp-aud {
     padding: 24px;
   }
+}
+
+.hp-leo {
+  background:
+    radial-gradient(50% 60% at 85% 60%, rgb(8 127 131 / 0.35), transparent 70%),
+    var(--color-black);
 }
 
 .hp-leo-moments + .hp-btn {
