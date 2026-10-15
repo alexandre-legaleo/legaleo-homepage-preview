@@ -63,6 +63,10 @@ const PAGES = [
     body: (h) => h.slice(h.indexOf("<main>") + 6, h.lastIndexOf("</main>")),
     wrapperTag: "main",
     embeds: {},
+    // Mockups animés : conteneur natif (classes, taille), contenu injecté par
+    // le JS depuis includes.json (voir plus bas). Données de démo, rien à
+    // éditer dans Webflow ni à indexer.
+    includes: [".hp-hero-visual", ".hp-marquee", ".hp-feature-visual", ".hp-av-visual", ".hp-params", ".hp-costchart", ".hp-chat", ".hp-sv", ".hp-stades-curve", ".hp-aud-net"],
   },
   {
     name: "leo",
@@ -234,6 +238,18 @@ function processHtml(page, html) {
     el.replaceWith(parse(`<div class="lg-slot" data-lg-slot="${name}"></div>`).firstChild);
   }
 
+  // Includes : le conteneur reste (vide, data-lg-include), le contenu part
+  // dans includes.json.
+  const includes = {};
+  for (const selector of page.includes || []) {
+    wrapper.querySelectorAll(selector).forEach((el, i) => {
+      const name = `${selector.replace(/^[.#]/, "")}-${i + 1}`;
+      includes[name] = el.innerHTML;
+      el.set_content("");
+      el.setAttribute("data-lg-include", name);
+    });
+  }
+
   const classes = new Set(["lg-page"]);
   const classLists = [];
   wrapper.querySelectorAll("[class]").forEach((el) => {
@@ -243,7 +259,7 @@ function processHtml(page, html) {
 
   // Blocs de premier niveau : un appel d'import par bloc (taille raisonnable).
   const sections = wrapper.childNodes.filter((n) => n.nodeType === 1).map((n) => n.outerHTML);
-  return { wrapperTag: page.wrapperTag, sections, embeds, classes, classLists };
+  return { wrapperTag: page.wrapperTag, sections, embeds, includes, classes, classLists };
 }
 
 const classesIn = (html) => {
@@ -258,7 +274,7 @@ rmSync(OUT, { recursive: true, force: true });
 for (const page of PAGES) {
   if (!existsSync(join(page.root, page.html))) continue;
   const html = readFileSync(join(page.root, page.html), "utf8");
-  const { wrapperTag, sections, embeds, classes, classLists } = processHtml(page, html);
+  const { wrapperTag, sections, embeds, includes, classes, classLists } = processHtml(page, html);
   const { native, customCss } = processCss(page, html, classes, classLists);
 
   const dir = join(OUT, page.name);
@@ -297,7 +313,30 @@ for (const page of PAGES) {
     page.name === "home" ? `<script>document.documentElement.classList.add("js-reveal");</script>` : "",
   ].filter(Boolean).join("\n");
   writeFileSync(join(dir, "head.html"), head + "\n");
-  writeFileSync(join(dir, "footer.html"), readFileSync(join(page.root, "webflow", page.name, "footer.html"), "utf8"));
+  let footer = readFileSync(join(page.root, "webflow", page.name, "footer.html"), "utf8");
+  if (Object.keys(includes).length) {
+    const json = JSON.stringify(includes);
+    writeFileSync(join(dir, "includes.json"), json);
+    const iv = createHash("sha1").update(json).digest("hex").slice(0, 8);
+    // Le JS de la page attend les mockups : il est chargé après l'injection.
+    footer = footer.replace(/<script src="([^"]*\/page\.js\?v=[^"]*)"><\/script>/, (m, src) => `<script>
+(function () {
+  // Mockups (includes.json, GitHub Pages) injectés dans leurs conteneurs
+  // [data-lg-include], puis JS de la page. Généré par webflow-native.mjs.
+  function run() { var s = document.createElement("script"); s.src = "${src}"; document.body.appendChild(s); }
+  fetch("${HOME_BASE}webflow-native/${page.name}/includes.json?v=${iv}")
+    .then(function (r) { return r.json(); })
+    .then(function (m) {
+      document.querySelectorAll("[data-lg-include]").forEach(function (el) {
+        if (m[el.getAttribute("data-lg-include")] != null) el.innerHTML = m[el.getAttribute("data-lg-include")];
+      });
+    })
+    .catch(function () {})
+    .then(run);
+})();
+</script>`);
+  }
+  writeFileSync(join(dir, "footer.html"), footer);
   writeFileSync(join(dir, "manifest.json"), JSON.stringify({ wrapperTag, sections: sections.length, embeds: Object.keys(embeds) }, null, 1));
   console.log(`${page.name}: ${sections.length} bloc(s), ${native.length} règles natives, custom.css ${customCss.length} car.\n  ${report.join("\n  ")}`);
 }

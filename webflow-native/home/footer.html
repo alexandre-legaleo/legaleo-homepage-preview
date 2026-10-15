@@ -1,6 +1,21 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie.min.js"></script>
-<script src="https://alexandre-legaleo.github.io/legaleo-homepage-preview/webflow/home/page.js?v=9bdac623"></script>
+<script>
+(function () {
+  // Mockups (includes.json, GitHub Pages) injectés dans leurs conteneurs
+  // [data-lg-include], puis JS de la page. Généré par webflow-native.mjs.
+  function run() { var s = document.createElement("script"); s.src = "https://alexandre-legaleo.github.io/legaleo-homepage-preview/webflow/home/page.js?v=9bdac623"; document.body.appendChild(s); }
+  fetch("https://alexandre-legaleo.github.io/legaleo-homepage-preview/webflow-native/home/includes.json?v=0a8bb51b")
+    .then(function (r) { return r.json(); })
+    .then(function (m) {
+      document.querySelectorAll("[data-lg-include]").forEach(function (el) {
+        if (m[el.getAttribute("data-lg-include")] != null) el.innerHTML = m[el.getAttribute("data-lg-include")];
+      });
+    })
+    .catch(function () {})
+    .then(run);
+})();
+</script>
 <!-- Agent Leo (bulle en bas à droite). S'il passe un jour dans le Footer
      code du site (toutes les pages), retirer ces trois lignes. -->
 <link rel="stylesheet" href="https://alexandre-legaleo.github.io/legaleo-homepage-preview/leo-widget/leo-widget.min.css?v=0921906e">
