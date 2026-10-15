@@ -110,6 +110,8 @@ const unsafeDecl = (d) =>
   d.prop.startsWith("--") ||
   d.important ||
   ["translate", "content", "font"].includes(d.prop) ||
+  // data URI avec « ; » (styles SVG embarqués) : refusée par l'import
+  (/url\(\s*["']?data:/.test(d.value) && d.value.includes(";")) ||
   (d.prop === "font-family" && !/^var\(/.test(d.value));
 
 // reset.css confiné au wrapper, comme pour le build Code Embed : le CSS du
@@ -198,7 +200,10 @@ function processCss(page, htmlSource, nativeClasses, classLists) {
     const safe = decls.filter((d) => !unsafeDecl(d));
     const unsafe = decls.filter(unsafeDecl);
     for (const { sel, classes } of nativeSels) {
-      if (safe.length) native.push({ media, selector: sel, classes, decls: safe.map((d) => `${d.prop}: ${d.value}`) });
+      // Une propriété déclarée deux fois : seule la dernière compte (l'import
+      // pourrait garder la première).
+      const last = [...new Map(safe.map((d) => [d.prop, d])).values()];
+      if (safe.length) native.push({ media, selector: sel, classes, decls: last.map((d) => `${d.prop}: ${d.value.replace(/\s*\n\s*/g, " ")}`) });
     }
     const residualSels = [...otherSels, ...(unsafe.length ? nativeSels.map((s) => s.sel) : [])];
     if (otherSels.length) residualParent.append(rule.clone({ selectors: otherSels }));

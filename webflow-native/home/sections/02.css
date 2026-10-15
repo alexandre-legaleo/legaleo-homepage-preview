@@ -24,12 +24,9 @@
 .hp-stade-range { display: none; margin-bottom: 14px; color: var(--color-muted); font-size: 13.5px; font-weight: 600; text-align: center; }
 .hp-stade-stat { display: flex; flex-direction: column; gap: 6px; min-height: calc(20px + 38px + 6px + 3em); margin-top: auto; padding-top: 20px; border-top: 1px solid var(--color-border); color: var(--color-black); font-size: 15px; font-weight: 500; line-height: 1.5; text-wrap: balance; }
 .hp-sv { position: relative; display: flex; align-items: center; gap: 18px; height: 212px; overflow: hidden; border-radius: 10px; padding: 22px; font-size: 11.5px; line-height: 1.35; }
-.hp-sv--launch { background: radial-gradient(rgb(8 127 131 / 0.12) 1px, transparent 1.5px) 0 0 / 18px 18px,
-    linear-gradient(160deg, #eefaf9, #dff3f2); }
-.hp-sv--network { align-items: stretch; gap: 12px; padding: 16px; background: radial-gradient(rgb(8 127 131 / 0.12) 1px, transparent 1.5px) 0 0 / 18px 18px,
-    linear-gradient(160deg, #eefaf9, #dff3f2); }
-.hp-sv--fleet { align-items: stretch; gap: 12px; padding: 16px; background: radial-gradient(rgb(8 127 131 / 0.12) 1px, transparent 1.5px) 0 0 / 18px 18px,
-    linear-gradient(160deg, #eefaf9, #dff3f2); }
+.hp-sv--launch { background: radial-gradient(rgb(8 127 131 / 0.12) 1px, transparent 1.5px) 0 0 / 18px 18px, linear-gradient(160deg, #eefaf9, #dff3f2); }
+.hp-sv--network { align-items: stretch; gap: 12px; padding: 16px; background: radial-gradient(rgb(8 127 131 / 0.12) 1px, transparent 1.5px) 0 0 / 18px 18px, linear-gradient(160deg, #eefaf9, #dff3f2); }
+.hp-sv--fleet { align-items: stretch; gap: 12px; padding: 16px; background: radial-gradient(rgb(8 127 131 / 0.12) 1px, transparent 1.5px) 0 0 / 18px 18px, linear-gradient(160deg, #eefaf9, #dff3f2); }
 @media screen and (max-width: 991px) {
   .hp-block { padding: 88px 28px; }
   .hp-h2 { font-size: 36px; }
