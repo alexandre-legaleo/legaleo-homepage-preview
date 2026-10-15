@@ -3,8 +3,7 @@
 .hp-btn-cyan:hover { background-color: color-mix(in srgb, var(--color-cyan) 85%, #000 10%); }
 .hp-btn-cyan { margin-top: 32px; }
 .hp-lede2-light { color: rgb(255 254 251 / 0.72); }
-.hp-leo { color: var(--color-white); background: radial-gradient(50% 60% at 85% 60%, rgb(8 127 131 / 0.35), transparent 70%),
-    var(--color-black); }
+.hp-leo { color: var(--color-white); background: radial-gradient(50% 60% at 85% 60%, rgb(8 127 131 / 0.35), transparent 70%), var(--color-black); }
 .hp-leo-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 64px; }
 .hp-leo-moments { display: grid; gap: 10px; margin: 22px 0 0; padding: 0; list-style: none; color: rgb(255 254 251 / 0.72); font-size: 16px; line-height: 1.5; }
 .hp-chat { display: flex; flex-direction: column; border: 1px solid rgb(255 254 251 / 0.1); border-radius: var(--radius-xl); padding: 20px; background-color: rgb(255 254 251 / 0.04); box-shadow: 0 30px 80px -30px rgb(0 0 0 / 0.6); }
