@@ -124,7 +124,11 @@ const SCOPED_RESET = `
 .lg-page .w-embed::before, .lg-page .w-embed::after { content: none; }
 `;
 
-function processCss(page, htmlSource, nativeClasses) {
+function processCss(page, htmlSource, nativeClasses, classLists) {
+  // Une classe combinée (.a.b) n'est créée par l'import que si un élément
+  // porte déjà toutes ces classes : les états ajoutés par le JS
+  // (.hp-sc.is-active…) restent donc dans custom.css.
+  const comboExists = (classes) => classes.length === 1 || classLists.some((list) => classes.every((c) => list.includes(c)));
   const files = [...htmlSource.matchAll(/<link rel="stylesheet" href="css\/([^"]+)"/g)]
     .map((m) => m[1])
     .filter((f) => f !== "reset.css" && !(page.skipCss || []).includes(f));
@@ -174,7 +178,7 @@ function processCss(page, htmlSource, nativeClasses) {
     const otherSels = [];
     for (const sel of rule.selectors) {
       const classes = nativeSelector(sel);
-      if (classes && classes.every((c) => nativeClasses.has(c))) nativeSels.push({ sel, classes });
+      if (classes && classes.every((c) => nativeClasses.has(c)) && comboExists(classes)) nativeSels.push({ sel, classes });
       else otherSels.push(sel);
     }
     const decls = rule.nodes.filter((n) => n.type === "decl");
@@ -230,13 +234,16 @@ function processHtml(page, html) {
     el.replaceWith(parse(`<div class="lg-slot" data-lg-slot="${name}"></div>`).firstChild);
   }
 
-  const classes = new Set();
-  wrapper.querySelectorAll("[class]").forEach((el) => el.classList.value.forEach((c) => classes.add(c)));
-  classes.add("lg-page");
+  const classes = new Set(["lg-page"]);
+  const classLists = [];
+  wrapper.querySelectorAll("[class]").forEach((el) => {
+    classLists.push(el.classList.value);
+    el.classList.value.forEach((c) => classes.add(c));
+  });
 
   // Blocs de premier niveau : un appel d'import par bloc (taille raisonnable).
   const sections = wrapper.childNodes.filter((n) => n.nodeType === 1).map((n) => n.outerHTML);
-  return { wrapperTag: page.wrapperTag, sections, embeds, classes };
+  return { wrapperTag: page.wrapperTag, sections, embeds, classes, classLists };
 }
 
 const classesIn = (html) => {
@@ -251,8 +258,8 @@ rmSync(OUT, { recursive: true, force: true });
 for (const page of PAGES) {
   if (!existsSync(join(page.root, page.html))) continue;
   const html = readFileSync(join(page.root, page.html), "utf8");
-  const { wrapperTag, sections, embeds, classes } = processHtml(page, html);
-  const { native, customCss } = processCss(page, html, classes);
+  const { wrapperTag, sections, embeds, classes, classLists } = processHtml(page, html);
+  const { native, customCss } = processCss(page, html, classes, classLists);
 
   const dir = join(OUT, page.name);
   mkdirSync(join(dir, "sections"), { recursive: true });

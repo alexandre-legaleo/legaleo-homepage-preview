@@ -1981,6 +1981,10 @@
   translate: var(--x) var(--y);
 }
 
+.hp-lib-drag.is-on {
+  opacity: 1;
+}
+
 .hp-lib-drag.is-dropped {
   opacity: 0;
   scale: 0.6;
@@ -2186,6 +2190,7 @@
   transition: transform 0.25s var(--ease-out);
 }
 
+.hp-onb-select.is-on,
 .hp-onb-select.is-open {
   border-color: var(--color-teal);
   box-shadow: 0 0 0 3px rgb(8 127 131 / 0.12);
@@ -2223,6 +2228,12 @@
   width: 10px;
   height: 10px;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23087f83' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.hp-onb-opt.is-on {
+  border-color: var(--color-teal);
+  color: var(--color-teal-text);
+  background-color: var(--color-teal-bg);
 }
 
 .hp-onb-opt.is-pressed {
@@ -2291,6 +2302,10 @@
   --y: 80%;
   --t: 600ms;
   translate: var(--x) var(--y);
+}
+
+.hp-cursor.is-on {
+  opacity: 1;
 }
 
 .hp-cursor.is-down {
@@ -2503,6 +2518,10 @@
   translate: var(--x) var(--y);
 }
 
+.hp-gen-ghost.is-on {
+  opacity: 1;
+}
+
 .hp-gen-ghost.is-lift {
   rotate: -4deg;
 }
@@ -2549,6 +2568,12 @@
   transition: none !important;
 }
 
+.hp-sc.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
 .hp-sc.is-active .hp-sc-cam,
 .hp-sc.is-leaving .hp-sc-cam {
   animation: hp-cam 7s var(--ease-out) both;
@@ -2559,6 +2584,7 @@
   to { transform: none; }
 }
 
+.hp-sc.is-active,
 .hp-sc.is-leaving {
   will-change: opacity;
 }
@@ -2729,6 +2755,13 @@
   font-size: 13.5px;
   font-weight: 600;
   transition: color 0.2s ease;
+}
+
+.hp-sc-gen-row.is-on {
+  border-color: rgb(8 127 131 / 0.3);
+  background-color: var(--color-teal-bg);
+  box-shadow: 0 4px 12px -4px rgb(8 127 131 / 0.25);
+  transform: translateX(4px);
 }
 
 .hp-sc-gen-row.is-on b {
@@ -3247,8 +3280,17 @@
   }
 }
 
+.hp-sc-dragchip.is-on {
+  opacity: 1;
+}
+
 .hp-sc-dragchip.is-lift {
   rotate: -4deg;
+}
+
+.hp-sc-gen-cursor.is-on,
+.hp-sc-md-cursor.is-on {
+  opacity: 1;
 }
 
 .hp-avocat-sec .hp-h2 .hp-em {
