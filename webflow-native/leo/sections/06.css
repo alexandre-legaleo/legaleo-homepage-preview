@@ -1,8 +1,8 @@
-.lb-h2center { color: var(--color-black); font-family: var(--font-serif); font-size: 32px; font-weight: 600; text-wrap: balance; }
-.lb-lede2c { max-width: 560px; margin: 14px auto 0; color: var(--color-muted); font-family: var(--font-sans); font-size: 16px; line-height: 1.55; }
-.lb-states { text-align: center; background-color: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: 44px 40px; }
-.lb-statesrow { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 36px; }
-.lb-state { display: flex; flex-direction: column; align-items: center; gap: 10px; flex: 1; min-width: 150px; max-width: 220px; padding: 22px 14px 16px; background-color: var(--color-leo-badge); border-radius: var(--radius-lg); }
-.lb-stateanim { width: 64px; height: 64px; padding: 11px; }
-.lb-stateb { color: var(--color-white); font-family: var(--font-sans); font-size: 13.5px; font-weight: 700; }
-.lb-states-sub { color: #b8afa3; font-family: var(--font-sans); font-size: 12px; line-height: 1.4; }
+.lv-h2center { color: var(--color-black); font-family: var(--font-serif); font-size: 32px; font-weight: 600; text-wrap: balance; }
+.lv-lede2c { max-width: 560px; margin: 14px auto 0; color: var(--color-muted); font-family: var(--font-sans); font-size: 16px; line-height: 1.55; }
+.lv-states { text-align: center; background-color: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: 44px 40px; }
+.lv-statesrow { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 36px; }
+.lv-state { display: flex; flex-direction: column; align-items: center; gap: 10px; flex: 1; min-width: 150px; max-width: 220px; padding: 22px 14px 16px; background-color: var(--color-leo-badge); border-radius: var(--radius-lg); }
+.lv-stateanim { width: 64px; height: 64px; padding: 11px; }
+.lv-stateb { color: var(--color-white); font-family: var(--font-sans); font-size: 13.5px; font-weight: 700; }
+.lv-states-sub { color: #b8afa3; font-family: var(--font-sans); font-size: 12px; line-height: 1.4; }

@@ -77,6 +77,9 @@ const PAGES = [
     wrapperTag: "main",
     embeds: {},
     skipCss: ["footer.css"],
+    // Le CSS du site garde des classes lb-* d'un ancien import de la page :
+    // tout passe en lv-* (comme le build Code Embed et son JS, webflow/leo/).
+    rename: [/(?<![\w-])lb-(?=[a-zA-Z0-9])/g, "lv-"],
     extraCss: ["code-components/preview-dist/code-components.css"],
   },
 ];
@@ -145,6 +148,7 @@ function processCss(page, htmlSource, nativeClasses, classLists) {
   let src = files.map((f) => `/* ${f} */\n` + read(`css/${f}`)).join("\n");
   for (const f of page.extraCss || []) src += `\n/* ${f} */\n` + read(f);
 
+  if (page.rename) src = src.replace(...page.rename);
   // Ajustements « hors iframe » (même logique que build-webflow.mjs).
   src = src
     .replaceAll("../fonts/", `${page.base}fonts/`)
@@ -223,6 +227,7 @@ const nativeCssFor = (rules) => {
 
 function processHtml(page, html) {
   let body = page.body(html).replace(/<!--[\s\S]*?-->/g, "");
+  if (page.rename) body = body.replace(...page.rename);
   // Images -> médiathèque Webflow ; autres chemins relatifs -> GitHub Pages.
   body = body.replace(/(src|href)="((?:assets|fonts|leo-anims)\/[^"]+)"/g, (m, attr, path) =>
     ASSETS[path] ? `${attr}="${ASSETS[path]}"` : `${attr}="${page.base}${path}"`
@@ -262,6 +267,15 @@ function processHtml(page, html) {
     el.classList.value.forEach((c) => classes.add(c));
   });
 
+  // Styles inline : l'import les supprime. Chaque élément concerné reçoit
+  // data-lg-style="N" et sa déclaration part dans custom.css.
+  const inlineStyles = [];
+  wrapper.querySelectorAll("[style]").forEach((el) => {
+    inlineStyles.push(el.getAttribute("style"));
+    el.removeAttribute("style");
+    el.setAttribute("data-lg-style", String(inlineStyles.length));
+  });
+
   // Webflow retire l'attribut booléen hidden à la publication : il devient
   // data-lg-hidden (masqué par custom.css, remis en hidden au chargement,
   // voir LG_HIDDEN_SCRIPT), pour que le JS de la page le retrouve.
@@ -272,7 +286,7 @@ function processHtml(page, html) {
 
   // Blocs de premier niveau : un appel d'import par bloc (taille raisonnable).
   const sections = wrapper.childNodes.filter((n) => n.nodeType === 1).map((n) => n.outerHTML);
-  return { wrapperTag: page.wrapperTag, sections, embeds, includes, classes, classLists };
+  return { wrapperTag: page.wrapperTag, sections, embeds, includes, classes, classLists, inlineStyles };
 }
 
 const classesIn = (html) => {
@@ -291,8 +305,9 @@ rmSync(OUT, { recursive: true, force: true });
 for (const page of PAGES) {
   if (!existsSync(join(page.root, page.html))) continue;
   const html = readFileSync(join(page.root, page.html), "utf8");
-  const { wrapperTag, sections, embeds, includes, classes, classLists } = processHtml(page, html);
-  const { native, customCss } = processCss(page, html, classes, classLists);
+  const { wrapperTag, sections, embeds, includes, classes, classLists, inlineStyles } = processHtml(page, html);
+  let { native, customCss } = processCss(page, html, classes, classLists);
+  customCss += inlineStyles.map((st, i) => `.lg-page [data-lg-style="${i + 1}"] { ${st} }`).join("\n") + "\n";
 
   const dir = join(OUT, page.name);
   mkdirSync(join(dir, "sections"), { recursive: true });
