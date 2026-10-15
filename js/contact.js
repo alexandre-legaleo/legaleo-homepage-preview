@@ -451,8 +451,10 @@
   let view = { top: 0, height: window.innerHeight };
   const readView = () => (embedded ? view : { top: window.scrollY, height: window.innerHeight });
   const pageTop = (el) => el.getBoundingClientRect().top + window.scrollY;
+  // Page native Webflow : la nav fixe de legaleo.ai recouvre le haut de
+  // l'écran, sa hauteur est donnée par le snippet (webflow/contact/footer.html).
   const scrollToBook = () => {
-    const y = pageTop(book) - 16;
+    const y = pageTop(book) - 16 - (embedded ? 0 : window.legaleoNavOffset || 0);
     if (embedded && window.legaleoEmbed) window.legaleoEmbed.scrollTo(y);
     else window.scrollTo({ top: y, behavior: "smooth" });
   };

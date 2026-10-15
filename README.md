@@ -55,8 +55,38 @@ pnpm dev   # http://localhost:5174
 - la section newsletter (le formulaire Webflow ne peut pas fonctionner depuis
   l'iframe) : à garder en natif sous l'Embed.
 
-## Étape suivante prévue
+## Webflow natif (sans iframe)
 
-Migration native Webflow une fois le design validé (import HTMLtoflow du
-statique + recréation des animations), pour que le contenu de la homepage
-soit indexé sur legaleo.ai et non sur github.io.
+L'iframe GitHub Pages n'est pas indexée sur legaleo.ai. `pnpm build:webflow`
+(`scripts/build-webflow.mjs`) produit, par page, de quoi la mettre en natif
+dans Webflow : le HTML va dans des éléments Code Embed, rendus dans le source
+de la page (indexé), sans aucune animation à recréer. CSS et JS, trop gros
+pour le custom code Webflow (50 000 caractères), restent servis par GitHub
+Pages depuis `webflow/` : **relancer le build et pousser sur `main` après
+chaque modification de la page**.
+
+`webflow/home/` et `webflow/contact/` contiennent :
+
+- `embed-1.html`, `embed-2.html`… : un Code Embed chacun, dans l'ordre ;
+- `head.html` : Page settings > Custom code > Inside `<head>` tag ;
+- `footer.html` : Page settings > Custom code > Before `</body>` tag ;
+- `page.css`, `page.js` : chargés par ces deux snippets.
+
+Dans le Designer, sur la page :
+
+1. supprimer le Code Embed de l'iframe (`webflow-embed*.html`) ;
+2. à sa place, sous la nav, un Div Block de classe `lg-page`, sans aucun
+   style (homepage : Element settings > Tag `main` ; contact : laisser `div`,
+   le `<main>` est dans l'embed) ;
+3. dedans, un Code Embed par fichier `embed-N.html`, dans l'ordre ;
+4. coller `head.html` et `footer.html` dans les réglages de la page, vérifier
+   titre et meta description (repris de `<title>` et `<meta name="description">`
+   de la page source) ;
+5. newsletter et footer natifs inchangés, sous le wrapper. Publier.
+
+Le CSS est confiné au wrapper `.lg-page` : le reset et le CSS du site Webflow
+sur les balises nues (`p`, `h1`…`h6`, `ul`, `sup`…) sont neutralisés à
+l'intérieur, la nav et le footer ne sont pas touchés. Le dégagement de la
+nav fixe (ex-`.is-embedded`) s'applique toujours.
+
+Les pages GitHub Pages portent un `canonical` vers legaleo.ai.
