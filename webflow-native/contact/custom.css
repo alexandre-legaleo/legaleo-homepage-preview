@@ -15,6 +15,9 @@
 /* normalize Webflow : svg:not(:root) { overflow: hidden } bat les classes
    seules qui veulent overflow visible. */
 .lg-page svg:is(.hp-eco-svg, .hp-sc-sigsvg, .hp-stades-curve-svg) { overflow: visible; }
+/* <button> importé = lien .w-button Webflow (fond bleu, padding 9px 15px) :
+   retour à l'aspect du bouton remis à zéro (reset ci-dessus). */
+.lg-page .w-button { padding: 1px 6px; background-color: transparent; border-radius: 0; line-height: normal; }
 /* Code Embed Webflow : pas de clearfix autour des embeds de la page. */
 .lg-page .w-embed::before, .lg-page .w-embed::after { content: none; }
 
