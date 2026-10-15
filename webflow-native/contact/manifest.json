@@ -1,0 +1,7 @@
+{
+ "wrapperTag": "div",
+ "sections": 2,
+ "embeds": [
+  "reservation"
+ ]
+}

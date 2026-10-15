@@ -1,0 +1,24 @@
+.lb-ficon--risk { --lg-keep: 0; }
+.lb-ficon--tint { --lg-keep: 0; }
+.lb-ficon--teal { --lg-keep: 0; }
+.lb-block-notop { padding-top: 56px; }
+.lb-sechead { max-width: 700px; margin: 0 auto 8px; text-align: center; }
+.lb-feature { display: flex; flex-wrap: wrap; align-items: center; gap: 30px; padding: 96px 0 0; }
+.lb-feature-rev { flex-direction: row-reverse; }
+.lb-ftext { flex: 1; min-width: 320px; }
+.lb-tagmini { display: inline-block; color: var(--color-teal); font-family: var(--font-sans); font-size: 12.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.lb-badge-beta { display: inline-block; margin-left: 6px; color: var(--color-cyan); background-color: var(--color-black); border-radius: var(--radius-pill); padding: 3px 10px; font-family: var(--font-sans); font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
+.lb-h3b { margin: 12px 0 14px; color: var(--color-black); font-family: var(--font-serif); font-size: 28px; font-weight: 600; line-height: 1.15; text-wrap: balance; }
+.lb-p2 { color: var(--color-muted); font-family: var(--font-sans); font-size: 16px; font-weight: 400; line-height: 1.6; }
+.lb-frow { color: var(--color-muted); font-family: var(--font-sans); font-size: 16px; font-weight: 400; line-height: 1.6; }
+.lb-flist { display: flex; flex-direction: column; gap: 7px; margin-top: 20px; }
+.lb-frow { padding-left: 20px; text-indent: -20px; }
+.lb-ck { margin-right: 8px; color: var(--color-teal); font-weight: 800; }
+.lb-fnote { display: inline-block; margin-top: 18px; color: var(--color-teal-text); background-color: var(--color-teal-bg); border: 1px solid var(--color-cyan); border-radius: var(--radius-sm); padding: 10px 14px; font-family: var(--font-sans); font-size: 12.5px; font-weight: 600; }
+.lb-fvisual { position: relative; flex: 1; min-width: 320px; background-color: var(--color-teal); border: 1px solid var(--color-teal); border-radius: var(--radius-xl); padding: 22px; box-shadow: 0 50px 100px 20px #1e505229, 0 25px 45px -25px #1f120e40; will-change: transform; }
+.lb-fvisual--chat { display: flex; flex-direction: column; height: 400px; }
+.lb-fanim { top: -20px; right: -20px; width: 56px; height: 56px; padding: 10px; border-radius: 14px; background-color: var(--color-leo-badge); box-shadow: 0 20px 35px -12px #1f120e40; overflow: clip; }
+.lb-ficon { position: absolute; z-index: 2; will-change: transform; }
+.lb-ficon-inner { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: var(--radius-md); box-shadow: 0 20px 35px -12px #1f120e40; animation: lb-ficon-float 5s ease-in-out infinite; }
+.lb-ficon-b { top: 38%; right: -28px; }
+.lb-ficon-c { bottom: -16px; right: 24px; }

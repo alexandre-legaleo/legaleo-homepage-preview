@@ -1,0 +1,9 @@
+.lb-btn-ghost-light { color: var(--color-white); background-color: transparent; border-color: #ffffff4d; }
+.lb-btn-ghost-light:hover { border-color: var(--color-white); transform: translateY(-1px); }
+.lb-deonto { display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; padding: 56px; color: var(--color-white); background-color: var(--color-black); border-radius: var(--radius-xl); }
+.lb-deonto-text { flex: 1; min-width: 320px; }
+.lb-stats { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 56px; }
+.lb-stat { flex: 1; min-width: 180px; text-align: center; }
+.lb-statnum { color: var(--color-teal); font-family: var(--font-serif); font-size: 46px; font-weight: 600; line-height: 1; }
+.lb-statnum--word { font-size: 32px; line-height: 46px; }
+.lb-statlab { margin-top: 10px; color: var(--color-muted); font-family: var(--font-sans); font-size: 14px; }
