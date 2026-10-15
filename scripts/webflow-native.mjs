@@ -124,6 +124,11 @@ const SCOPED_RESET = `
 :where(.lg-page) button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 :where(.lg-page) ul { margin: 0; padding: 0; list-style: none; }
 :where(.lg-page) h1, :where(.lg-page) h2, :where(.lg-page) h3, :where(.lg-page) h4, :where(.lg-page) p { margin: 0; }
+/* hidden retiré par Webflow à la publication (voir processHtml). */
+[data-lg-hidden] { display: none !important; }
+/* normalize Webflow : svg:not(:root) { overflow: hidden } bat les classes
+   seules qui veulent overflow visible. */
+.lg-page svg:is(.hp-eco-svg, .hp-sc-sigsvg, .hp-stades-curve-svg) { overflow: visible; }
 /* Code Embed Webflow : pas de clearfix autour des embeds de la page. */
 .lg-page .w-embed::before, .lg-page .w-embed::after { content: none; }
 `;
@@ -257,6 +262,14 @@ function processHtml(page, html) {
     el.classList.value.forEach((c) => classes.add(c));
   });
 
+  // Webflow retire l'attribut booléen hidden à la publication : il devient
+  // data-lg-hidden (masqué par custom.css, remis en hidden au chargement,
+  // voir LG_HIDDEN_SCRIPT), pour que le JS de la page le retrouve.
+  wrapper.querySelectorAll("[hidden]").forEach((el) => {
+    el.removeAttribute("hidden");
+    el.setAttribute("data-lg-hidden", "");
+  });
+
   // Blocs de premier niveau : un appel d'import par bloc (taille raisonnable).
   const sections = wrapper.childNodes.filter((n) => n.nodeType === 1).map((n) => n.outerHTML);
   return { wrapperTag: page.wrapperTag, sections, embeds, includes, classes, classLists };
@@ -267,6 +280,10 @@ const classesIn = (html) => {
   for (const m of html.matchAll(/class="([^"]*)"/g)) m[1].split(/\s+/).filter(Boolean).forEach((c) => set.add(c));
   return set;
 };
+
+// Remet hidden sur les éléments marqués data-lg-hidden dès que le DOM est
+// prêt, avant le JS de la page (chargé en pied de page).
+const LG_HIDDEN_SCRIPT = `<script>document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll("[data-lg-hidden]").forEach(function(e){e.hidden=true;e.removeAttribute("data-lg-hidden")})});</script>`;
 
 // ---------- Pages ----------
 
@@ -311,6 +328,7 @@ for (const page of PAGES) {
       : `<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />\n<link rel="preload" href="${page.base}fonts/Fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />`,
     `<link rel="stylesheet" href="${HOME_BASE}webflow-native/${page.name}/custom.css?v=${v}" />`,
     page.name === "home" ? `<script>document.documentElement.classList.add("js-reveal");</script>` : "",
+    LG_HIDDEN_SCRIPT,
   ].filter(Boolean).join("\n");
   writeFileSync(join(dir, "head.html"), head + "\n");
   let footer = readFileSync(join(page.root, "webflow", page.name, "footer.html"), "utf8");

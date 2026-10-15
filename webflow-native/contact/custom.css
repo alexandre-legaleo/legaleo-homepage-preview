@@ -10,6 +10,11 @@
 :where(.lg-page) button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 :where(.lg-page) ul { margin: 0; padding: 0; list-style: none; }
 :where(.lg-page) h1, :where(.lg-page) h2, :where(.lg-page) h3, :where(.lg-page) h4, :where(.lg-page) p { margin: 0; }
+/* hidden retiré par Webflow à la publication (voir processHtml). */
+[data-lg-hidden] { display: none !important; }
+/* normalize Webflow : svg:not(:root) { overflow: hidden } bat les classes
+   seules qui veulent overflow visible. */
+.lg-page svg:is(.hp-eco-svg, .hp-sc-sigsvg, .hp-stades-curve-svg) { overflow: visible; }
 /* Code Embed Webflow : pas de clearfix autour des embeds de la page. */
 .lg-page .w-embed::before, .lg-page .w-embed::after { content: none; }
 
