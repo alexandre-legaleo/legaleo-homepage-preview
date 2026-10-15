@@ -4,7 +4,8 @@
   "private": true,
   "description": "Refonte de la homepage legaleo.ai (base : legaleo.webflow.io/homepage-v2) - HTML/CSS/JS statique, publiée sur GitHub Pages et intégrée dans Webflow via un Embed iframe, comme la page Agent Leo",
   "scripts": {
-    "dev": "live-server --port=5174 --open=index.html --watch=index.html,css,js,assets"
+    "dev": "live-server --port=5174 --open=index.html --watch=index.html,css,js,assets",
+    "build:webflow": "node scripts/build-webflow.mjs"
   },
   "devDependencies": {
     "live-server": "^1.2.2"
