@@ -1,6 +1,6 @@
-.lb-eyebrow-dark { display: inline-flex; align-items: center; color: var(--color-cyan); background-color: #62e7eb24; border-radius: var(--radius-pill); padding: 7px 15px; font-family: var(--font-sans); font-size: 12.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
-.lb-pourquoi { padding: 56px 32px; background: linear-gradient(to bottom, var(--color-white) 50%, var(--color-beige) 50%); }
-.lb-pourquoi-card { max-width: 920px; margin: 0 auto; padding: 56px 48px; color: var(--color-white); text-align: center; background-color: var(--color-black); border-radius: var(--radius-xl); }
-.lb-h2dark { max-width: 640px; margin-top: 20px; color: var(--color-white); font-family: var(--font-serif); font-size: 34px; font-weight: 600; line-height: 1.15; text-wrap: balance; }
-.lb-em3 { color: var(--color-cyan); font-style: normal; font-weight: 600; }
-.lb-lededark { max-width: 580px; margin-top: 18px; color: #fffefbb8; font-family: var(--font-sans); font-size: 16px; line-height: 1.55; }
+.lv-eyebrow-dark { display: inline-flex; align-items: center; color: var(--color-cyan); background-color: #62e7eb24; border-radius: var(--radius-pill); padding: 7px 15px; font-family: var(--font-sans); font-size: 12.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.lv-pourquoi { padding: 56px 32px; background: linear-gradient(to bottom, var(--color-white) 50%, var(--color-beige) 50%); }
+.lv-pourquoi-card { max-width: 920px; margin: 0 auto; padding: 56px 48px; color: var(--color-white); text-align: center; background-color: var(--color-black); border-radius: var(--radius-xl); }
+.lv-h2dark { max-width: 640px; margin-top: 20px; color: var(--color-white); font-family: var(--font-serif); font-size: 34px; font-weight: 600; line-height: 1.15; text-wrap: balance; }
+.lv-em3 { color: var(--color-cyan); font-style: normal; font-weight: 600; }
+.lv-lededark { max-width: 580px; margin-top: 18px; color: #fffefbb8; font-family: var(--font-sans); font-size: 16px; line-height: 1.55; }
