@@ -55,7 +55,52 @@ pnpm dev   # http://localhost:5174
 - la section newsletter (le formulaire Webflow ne peut pas fonctionner depuis
   l'iframe) : à garder en natif sous l'Embed.
 
-## Webflow natif (sans iframe)
+## Webflow natif : éléments et classes Webflow (pages *-v3)
+
+Version en place sur Webflow depuis le 15/10/2026 : pages brouillon
+`/home-v3`, `/contact-v3`, `/leo-v3` (hors sitemap), construites par le MCP
+Webflow. `pnpm` n'est pas nécessaire : `node scripts/webflow-native.mjs`
+régénère `webflow-native/<page>/` à partir des sources (index.html,
+contact.html, ../front-legaleo-leo/index.html).
+
+Ce qui est où :
+
+- **Natif Webflow** (éditable dans le Designer par l'équipe) : textes,
+  titres, boutons, liens, FAQ, images (médiathèque Webflow,
+  `webflow-assets.json`), mise en page via classes Webflow (`hp-*`, `ct-*`,
+  `lv-*` pour Leo) et breakpoint 991 px.
+- **Mockups animés** (player du hero, visuels de la plateforme, chat…) :
+  conteneur natif vide `data-lg-include`, contenu injecté au chargement
+  depuis `webflow-native/<page>/includes.json` (GitHub Pages). Données de
+  démo : ni à éditer dans Webflow ni à indexer.
+- **Code Embed** : carte de réservation de la page contact (pilotée par
+  `js/contact.js`).
+- **custom.css** (GitHub Pages, chargé dans le head de la page) : tout ce
+  que l'import natif refuse (sélecteurs imbriqués, `::before`, keyframes,
+  breakpoints 640/1100 px…, variables CSS, reset confiné à `.lg-page`).
+- **JS** : bundles `webflow/<page>/page.js` (build Code Embed), chargés en
+  pied de page.
+
+Pièges Webflow gérés par le convertisseur (détails en tête du script) :
+classe sans règle supprimée, classes combinées d'état (`.is-active`)
+créées seulement si présentes au départ, attribut `hidden` retiré à la
+publication (-> `data-lg-hidden`), styles inline supprimés
+(-> `data-lg-style`), `translate` abîmé, data URI avec `;` refusées,
+`<button>` converti en lien `.w-button`.
+
+Mettre à jour après une modification :
+
+- **CSS / mockups / JS** : `node scripts/webflow-native.mjs` (et
+  `node scripts/build-webflow.mjs` pour le JS), push sur `main`. Rien à
+  toucher dans Webflow, sauf le `?v=` des snippets head/footer si on veut
+  forcer le cache (10 min sinon).
+- **Texte d'une section** : directement dans le Designer (équipe), ou
+  depuis Claude Code via le MCP Webflow.
+- **Nouvelle section / nouvelle classe** : régénérer, puis réimporter le
+  bloc concerné avec le MCP (`data_whtml_builder`, HTML + CSS de
+  `sections/NN.*`).
+
+## Webflow par Code Embeds (étape intermédiaire, remplacée par les pages v3)
 
 L'iframe GitHub Pages n'est pas indexée sur legaleo.ai. `pnpm build:webflow`
 (`scripts/build-webflow.mjs`) produit, par page, de quoi la mettre en natif
