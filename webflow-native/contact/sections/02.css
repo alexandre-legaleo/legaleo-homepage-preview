@@ -1,0 +1,5 @@
+.hp-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; border-radius: var(--radius-pill); padding: 15px 28px; font-family: var(--font-sans); font-size: 15px; font-weight: 700; border: 1.5px solid transparent; transition: transform 0.2s var(--ease-out), box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease; }
+.hp-btn:active { transform: scale(0.97); }
+.hp-btn-primary { color: var(--color-black); background-color: var(--color-cyan); }
+.hp-btn-primary:hover { background-color: color-mix(in srgb, var(--color-cyan) 85%, #000 10%); }
+.ct-sticky { display: none; }

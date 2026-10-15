@@ -1,0 +1,5 @@
+.hp-block-notop { padding-top: 40px; }
+.hp-faq { margin-top: 48px; border-top: 1px solid var(--color-border); }
+.hp-faq-i { border-bottom: 1px solid var(--color-border); }
+.hp-faq-a { overflow: hidden; }
+.hp-faq-wrap { max-width: 820px; }

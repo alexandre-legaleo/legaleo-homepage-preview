@@ -1,0 +1,296 @@
+// Migration native Webflow (éléments + classes Webflow, sans Code Embed
+// géant) : `node scripts/webflow-native.mjs`.
+//
+// Pour chaque page (homepage, contact, Leo), prépare ce que le MCP Webflow
+// importe avec data_whtml_builder (HTML + CSS -> éléments et classes natifs) :
+//
+//   webflow-native/<page>/sections/NN.html  HTML d'un bloc de premier niveau,
+//                                           à insérer dans l'ordre dans le
+//                                           wrapper .lg-page ;
+//   webflow-native/<page>/sections/NN.css   règles CSS natives de ce bloc ;
+//   webflow-native/<page>/embeds/<nom>.html sous-arbres gardés en Code Embed
+//                                           (mini-applis pilotées par le JS :
+//                                           formulaire de réservation…),
+//                                           repérés dans le HTML par
+//                                           <div class="lg-slot" data-lg-slot="<nom>"> ;
+//   webflow-native/<page>/custom.css        tout ce que l'import natif refuse,
+//                                           servi par GitHub Pages et chargé
+//                                           dans le head de la page.
+//
+// Ce que l'import natif accepte (vérifié sur le site) : sélecteurs d'une
+// classe ou de classes combinées (.a, .a.b), états :hover/:focus…, media
+// queries des breakpoints Webflow (991 / 767 / 479 px). Il refuse les
+// sélecteurs imbriqués et les pseudo-éléments, ignore les variables CSS, et
+// abîme `translate` (« -50% 0 » -> « -50%0 ») et les listes de polices.
+// Tout le reste part dans custom.css, avec les keyframes, les autres
+// breakpoints (640, 1100 px…), prefers-reduced-motion et les variables.
+// Une classe sans règle native est supprimée à l'import : chaque classe du
+// HTML natif reçoit au moins une règle (vide si besoin) pour que le JS et
+// custom.css la retrouvent.
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import postcss from "postcss";
+import selectorParser from "postcss-selector-parser";
+import { parse } from "node-html-parser";
+import { createHash } from "node:crypto";
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const LEO_ROOT = join(ROOT, "..", "front-legaleo-leo");
+const OUT = join(ROOT, "webflow-native");
+const HOME_BASE = "https://alexandre-legaleo.github.io/legaleo-homepage-preview/";
+const LEO_BASE = "https://alexandre-legaleo.github.io/legaleo-leo-preview/";
+const NAV_OFFSET = 80; // nav fixe de legaleo.ai
+
+// Images déjà dans la médiathèque Webflow (chemin local -> URL CDN Webflow).
+const ASSETS = JSON.parse(readFileSync(join(ROOT, "webflow-assets.json"), "utf8"));
+
+const PAGES = [
+  {
+    name: "contact",
+    root: ROOT,
+    base: HOME_BASE,
+    html: "contact.html",
+    body: (h) => h.slice(h.indexOf("<body>") + 6, h.indexOf('<script src="js/contact.js">')),
+    wrapperTag: "div", // le <main class="ct-page"> est dans le contenu
+    embeds: { reservation: "[data-book]" },
+  },
+  {
+    name: "home",
+    root: ROOT,
+    base: HOME_BASE,
+    html: "index.html",
+    body: (h) => h.slice(h.indexOf("<main>") + 6, h.lastIndexOf("</main>")),
+    wrapperTag: "main",
+    embeds: {},
+  },
+  {
+    name: "leo",
+    root: LEO_ROOT,
+    base: LEO_BASE,
+    html: "index.html",
+    body: (h) => h.slice(h.indexOf("<main>") + 6, h.lastIndexOf("</main>")),
+    wrapperTag: "main",
+    embeds: {},
+    skipCss: ["footer.css"],
+    extraCss: ["code-components/preview-dist/code-components.css"],
+  },
+];
+
+// ---------- CSS ----------
+
+const NATIVE_MEDIA = /^(screen and )?\(max-width:\s*991px\)$/;
+const NATIVE_PSEUDO = new Set([":hover", ":focus", ":active"]); // seuls états acceptés
+
+// Sélecteur importable tel quel : une ou plusieurs classes collées, plus un
+// état éventuel. Renvoie la liste des classes, ou null.
+function nativeSelector(sel) {
+  let ok = true;
+  const classes = [];
+  selectorParser((root) => {
+    if (root.nodes.length !== 1) return (ok = false);
+    root.nodes[0].each((n) => {
+      if (n.type === "class") classes.push(n.value);
+      else if (n.type === "pseudo" && NATIVE_PSEUDO.has(n.value) && !n.nodes.length) return;
+      else ok = false;
+    });
+  }).processSync(sel);
+  return ok && classes.length ? classes : null;
+}
+
+// Déclaration que l'import ne restitue pas fidèlement.
+const unsafeDecl = (d) =>
+  d.prop.startsWith("--") ||
+  d.important ||
+  ["translate", "content", "font"].includes(d.prop) ||
+  (d.prop === "font-family" && !/^var\(/.test(d.value));
+
+// reset.css confiné au wrapper, comme pour le build Code Embed : le CSS du
+// site style les balises nues (p, h1…h6, ul…), la page compte sur les valeurs
+// du navigateur. Spécificité 0,0,1 chargée après le CSS du site : les classes
+// (natives ou non) passent toujours devant.
+const SCOPED_RESET = `
+:where(.lg-page) :is(p, h1, h2, h3, h4, h5, h6, ul, ol, li, a, b, strong, em, small, sub, sup, img, label, blockquote, figure, figcaption, button, input, select, textarea, summary, details, span, div, section, main, header, footer, nav, article) { all: revert; box-sizing: border-box; }
+:where(.lg-page) { font-size: 16px; line-height: normal; font-weight: 400; letter-spacing: normal; text-align: left; --anchor-offset: ${NAV_OFFSET + 16}px; }
+:where(.lg-page), :where(.lg-page) *, :where(.lg-page) *::before, :where(.lg-page) *::after { box-sizing: border-box; }
+:where(.lg-page) section[id] { scroll-margin-top: var(--anchor-offset, 0px); }
+:where(.lg-page) img, :where(.lg-page) svg { display: block; max-width: 100%; }
+:where(.lg-page) svg:not(:root) { overflow: revert; }
+:where(.lg-page) a { color: inherit; text-decoration: none; }
+:where(.lg-page) button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+:where(.lg-page) ul { margin: 0; padding: 0; list-style: none; }
+:where(.lg-page) h1, :where(.lg-page) h2, :where(.lg-page) h3, :where(.lg-page) h4, :where(.lg-page) p { margin: 0; }
+/* Code Embed Webflow : pas de clearfix autour des embeds de la page. */
+.lg-page .w-embed::before, .lg-page .w-embed::after { content: none; }
+`;
+
+function processCss(page, htmlSource, nativeClasses) {
+  const files = [...htmlSource.matchAll(/<link rel="stylesheet" href="css\/([^"]+)"/g)]
+    .map((m) => m[1])
+    .filter((f) => f !== "reset.css" && !(page.skipCss || []).includes(f));
+  const read = (p) => readFileSync(join(page.root, p), "utf8");
+  let src = files.map((f) => `/* ${f} */\n` + read(`css/${f}`)).join("\n");
+  for (const f of page.extraCss || []) src += `\n/* ${f} */\n` + read(f);
+
+  // Ajustements « hors iframe » (même logique que build-webflow.mjs).
+  src = src
+    .replaceAll("../fonts/", `${page.base}fonts/`)
+    .replaceAll("url('/assets/", `url('${page.base}assets/`)
+    .replace(/\.is-embedded \.hp-fold \{[^}]*\}\s*/g, "")
+    .replaceAll("var(--embed-vh, auto)", "100svh")
+    .replace(/^body \{/gm, ".lg-page {");
+
+  const root = postcss.parse(src);
+  // .is-embedded X : la nav fixe recouvre toujours le haut, la règle devient X.
+  root.walkRules((r) => {
+    r.selectors = r.selectors.map((s) => s.replace(/^\.is-embedded\s+/, ""));
+  });
+  if (page.name === "home") {
+    root.walkDecls("scroll-margin-top", (d) => {
+      if (d.value === "24px") d.value = `${NAV_OFFSET + 24}px`;
+    });
+  }
+
+  const native = []; // { media|null, selector, decls[], classes[] }
+  const custom = postcss.root();
+  const keep = (node) => custom.append(node.clone());
+
+  root.each((node) => {
+    if (node.type === "comment") return;
+    if (node.type === "atrule") {
+      if (node.name === "media" && NATIVE_MEDIA.test(node.params.trim())) {
+        const rest = postcss.atRule({ name: "media", params: node.params });
+        node.each((r) => splitRule(r, "screen and (max-width: 991px)", rest));
+        if (rest.nodes?.length) custom.append(rest);
+      } else keep(node);
+      return;
+    }
+    if (node.type === "rule") splitRule(node, null, custom);
+  });
+
+  function splitRule(rule, media, residualParent) {
+    if (rule.type !== "rule") return residualParent.append(rule.clone());
+    const nativeSels = [];
+    const otherSels = [];
+    for (const sel of rule.selectors) {
+      const classes = nativeSelector(sel);
+      if (classes && classes.every((c) => nativeClasses.has(c))) nativeSels.push({ sel, classes });
+      else otherSels.push(sel);
+    }
+    const decls = rule.nodes.filter((n) => n.type === "decl");
+    const safe = decls.filter((d) => !unsafeDecl(d));
+    const unsafe = decls.filter(unsafeDecl);
+    for (const { sel, classes } of nativeSels) {
+      if (safe.length) native.push({ media, selector: sel, classes, decls: safe.map((d) => `${d.prop}: ${d.value}`) });
+    }
+    const residualSels = [...otherSels, ...(unsafe.length ? nativeSels.map((s) => s.sel) : [])];
+    if (otherSels.length) residualParent.append(rule.clone({ selectors: otherSels }));
+    if (unsafe.length && nativeSels.length)
+      residualParent.append(postcss.rule({ selectors: nativeSels.map((s) => s.sel), nodes: unsafe.map((d) => d.clone()) }));
+    return residualSels;
+  }
+
+  // Classes sans règle native : règle vide, sinon l'import les supprime.
+  const covered = new Set(native.filter((r) => r.classes.length === 1 && r.selector === `.${r.classes[0]}`).map((r) => r.classes[0]));
+  for (const c of nativeClasses) {
+    if (!covered.has(c)) native.unshift({ media: null, selector: `.${c}`, classes: [c], decls: ["--lg-keep: 0"] });
+  }
+
+  const customCss = `/* Généré par scripts/webflow-native.mjs — ne pas éditer à la main. */\n${SCOPED_RESET}\n${custom.toString()}\n`;
+  return { native, customCss };
+}
+
+const nativeCssFor = (rules) => {
+  const base = rules.filter((r) => !r.media).map((r) => `${r.selector} { ${r.decls.join("; ")}; }`);
+  const mq = rules.filter((r) => r.media).map((r) => `  ${r.selector} { ${r.decls.join("; ")}; }`);
+  return base.join("\n") + (mq.length ? `\n@media screen and (max-width: 991px) {\n${mq.join("\n")}\n}` : "") + "\n";
+};
+
+// ---------- HTML ----------
+
+function processHtml(page, html) {
+  let body = page.body(html).replace(/<!--[\s\S]*?-->/g, "");
+  // Images -> médiathèque Webflow ; autres chemins relatifs -> GitHub Pages.
+  body = body.replace(/(src|href)="((?:assets|fonts|leo-anims)\/[^"]+)"/g, (m, attr, path) =>
+    ASSETS[path] ? `${attr}="${ASSETS[path]}"` : `${attr}="${page.base}${path}"`
+  );
+  body = body.replace(/\s+/g, " ").replace(/> </g, "><").trim();
+
+  const wrapper = parse(`<${page.wrapperTag} class="lg-page">${body}</${page.wrapperTag}>`, {
+    lowerCaseTagName: false,
+    comment: false,
+    blockTextElements: { script: true, style: true, template: true },
+  }).firstChild;
+
+  const embeds = {};
+  for (const [name, selector] of Object.entries(page.embeds)) {
+    const el = wrapper.querySelector(selector);
+    if (!el) throw new Error(`${page.name} : ${selector} introuvable`);
+    embeds[name] = el.outerHTML;
+    el.replaceWith(parse(`<div class="lg-slot" data-lg-slot="${name}"></div>`).firstChild);
+  }
+
+  const classes = new Set();
+  wrapper.querySelectorAll("[class]").forEach((el) => el.classList.value.forEach((c) => classes.add(c)));
+  classes.add("lg-page");
+
+  // Blocs de premier niveau : un appel d'import par bloc (taille raisonnable).
+  const sections = wrapper.childNodes.filter((n) => n.nodeType === 1).map((n) => n.outerHTML);
+  return { wrapperTag: page.wrapperTag, sections, embeds, classes };
+}
+
+const classesIn = (html) => {
+  const set = new Set();
+  for (const m of html.matchAll(/class="([^"]*)"/g)) m[1].split(/\s+/).filter(Boolean).forEach((c) => set.add(c));
+  return set;
+};
+
+// ---------- Pages ----------
+
+rmSync(OUT, { recursive: true, force: true });
+for (const page of PAGES) {
+  if (!existsSync(join(page.root, page.html))) continue;
+  const html = readFileSync(join(page.root, page.html), "utf8");
+  const { wrapperTag, sections, embeds, classes } = processHtml(page, html);
+  const { native, customCss } = processCss(page, html, classes);
+
+  const dir = join(OUT, page.name);
+  mkdirSync(join(dir, "sections"), { recursive: true });
+  mkdirSync(join(dir, "embeds"), { recursive: true });
+
+  // Règles natives réparties par bloc : celles dont toutes les classes sont
+  // dans le bloc ; une règle n'est envoyée qu'une fois (premier bloc qui l'a).
+  const sent = new Set();
+  const report = [];
+  sections.forEach((s, i) => {
+    const inSection = classesIn(s);
+    const rules = native.filter((r, k) => !sent.has(k) && r.classes.every((c) => inSection.has(c)) && sent.add(k));
+    const n = String(i + 1).padStart(2, "0");
+    writeFileSync(join(dir, "sections", `${n}.html`), s + "\n");
+    writeFileSync(join(dir, "sections", `${n}.css`), nativeCssFor(rules));
+    report.push(`${n}: html ${s.length}, ${rules.length} règles`);
+  });
+  const orphan = native.filter((_, k) => !sent.has(k));
+  if (orphan.length) console.warn(`${page.name}: ${orphan.length} règle(s) natives sans bloc (classes réparties sur plusieurs blocs) -> wrapper`);
+  writeFileSync(join(dir, "wrapper.css"), `.lg-page { --lg-keep: 0; }\n` + nativeCssFor(orphan.filter((r) => r.selector !== ".lg-page")));
+  for (const [name, h] of Object.entries(embeds)) writeFileSync(join(dir, "embeds", `${name}.html`), h + "\n");
+  writeFileSync(join(dir, "custom.css"), customCss);
+
+  // Custom code de la page (Page settings > Custom code), posé par le MCP :
+  // polices, custom.css (GitHub Pages) ; en pied de page, le JS de la page
+  // (même bundle que le build Code Embed : webflow/<page>/footer.html).
+  const v = createHash("sha1").update(customCss).digest("hex").slice(0, 8);
+  const head = [
+    `<link rel="preconnect" href="https://fonts.googleapis.com" />`,
+    `<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />`,
+    page.name === "leo"
+      ? `<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />`
+      : `<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />\n<link rel="preload" href="${page.base}fonts/Fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />`,
+    `<link rel="stylesheet" href="${HOME_BASE}webflow-native/${page.name}/custom.css?v=${v}" />`,
+    page.name === "home" ? `<script>document.documentElement.classList.add("js-reveal");</script>` : "",
+  ].filter(Boolean).join("\n");
+  writeFileSync(join(dir, "head.html"), head + "\n");
+  writeFileSync(join(dir, "footer.html"), readFileSync(join(page.root, "webflow", page.name, "footer.html"), "utf8"));
+  writeFileSync(join(dir, "manifest.json"), JSON.stringify({ wrapperTag, sections: sections.length, embeds: Object.keys(embeds) }, null, 1));
+  console.log(`${page.name}: ${sections.length} bloc(s), ${native.length} règles natives, custom.css ${customCss.length} car.\n  ${report.join("\n  ")}`);
+}

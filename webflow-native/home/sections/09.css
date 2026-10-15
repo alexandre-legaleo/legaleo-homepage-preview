@@ -1,0 +1,5 @@
+.hp-h2-xl { font-size: 54px; }
+.hp-cta { position: relative; overflow: hidden; background-color: var(--color-beige); }
+@media screen and (max-width: 991px) {
+  .hp-h2-xl { font-size: 42px; }
+}

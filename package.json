@@ -8,6 +8,9 @@
     "build:webflow": "node scripts/build-webflow.mjs"
   },
   "devDependencies": {
-    "live-server": "^1.2.2"
+    "live-server": "^1.2.2",
+    "node-html-parser": "6.1.13",
+    "postcss": "8.4.47",
+    "postcss-selector-parser": "6.1.2"
   }
 }
