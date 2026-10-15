@@ -2,7 +2,7 @@
 .hp-kicker--cyan { color: var(--color-cyan); }
 .hp-h2-left { text-align: left; }
 .hp-h2-light { color: var(--color-white); }
-.hp-avocat-sec { color: var(--color-white); background: radial-gradient(50% 60% at 90% 10%, rgb(98 231 235 / 0.1), transparent 70%), var(--color-black); }
+.hp-avocat-sec { color: var(--color-white); }
 .hp-avocat { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: center; gap: 64px; }
 .hp-av-visual { position: relative; padding-bottom: 70px; }
 .hp-av-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 72px; border-top: 1px solid rgb(255 254 251 / 0.14); padding: 44px 0 0; list-style: none; }
