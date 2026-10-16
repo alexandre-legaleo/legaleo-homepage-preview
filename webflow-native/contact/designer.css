@@ -72,6 +72,14 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+:where(.wf-design-mode) .lg-page {
+  font-family: var(--font-sans);
+  color: var(--color-black);
+  background-color: var(--color-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 :where(.wf-design-mode) .hp-block {
   padding: 112px 32px;
 }
@@ -499,6 +507,12 @@
     padding: 20px 40px 20px 0;
     font-size: 16px;
   }
+}
+
+:where(.wf-design-mode) .lg-page {
+  background-color: var(--color-beige);
+  color: var(--color-black);
+  font-family: var(--font-sans);
 }
 
 :where(.wf-design-mode) .ct-h1 .hp-em {
