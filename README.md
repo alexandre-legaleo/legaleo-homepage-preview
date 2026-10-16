@@ -63,7 +63,14 @@ GitHub Pages, le contenu est dans le HTML de la page. SEO (titres,
 descriptions, image Open Graph) repris des anciennes pages. Les anciennes
 pages iframe restent en brouillon dans Webflow (« Old Home », `contact-old`,
 `agent-ia-franchise-leo-old`) : retour arrière = rééchanger les slugs (et
-« Set as home page ») puis publier. `pnpm` n'est pas nécessaire : `node scripts/webflow-native.mjs`
+« Set as home page ») puis publier.
+
+Piège : un lien Webflow de type « page » suit l'ID de la page, pas son
+URL. Après l'échange des slugs, nav, footer et boutons du site pointaient
+vers `-old` ; ils ont été repointés vers les pages natives (nav, footer :
+propriétés « Link 1 » / « Link 2 » en URL `/` et `/contact`, boutons des
+pages et des modèles CMS). Tout nouvel échange de pages demande la même
+reprise : vérifier ensuite qu'aucun `href` du site ne contient `-old`. `pnpm` n'est pas nécessaire : `node scripts/webflow-native.mjs`
 régénère `webflow-native/<page>/` à partir des sources (index.html,
 contact.html, ../front-legaleo-leo/index.html).
 
