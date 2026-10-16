@@ -228,6 +228,44 @@ function processCss(page, htmlSource, nativeClasses, classLists) {
   return { native, customCss };
 }
 
+// Le Designer n'exécute pas le custom code de la page : sans custom.css, pas
+// de reset, de puces, de coches… Copie des règles de custom.css qui touchent
+// les éléments natifs (pas les mockups : leurs conteneurs sont vides dans le
+// Designer), servie par GitHub Pages (designer.css) et chargée par un Code
+// Embed en tête du wrapper (designer-embed.html). Chaque sélecteur est
+// préfixé par :where(.wf-design-mode), classe que Webflow pose sur <html>
+// dans le canvas seulement (vérifié) : spécificité inchangée, et sur le site
+// publié la copie ne s'applique pas (custom.css reste la seule source).
+const DESIGN_MODE = ":where(.wf-design-mode)";
+
+function designerCss(customCss, includeOnly) {
+  const root = postcss.parse(customCss);
+  const touchesInclude = (sel) => {
+    let hit = false;
+    selectorParser((r) => r.walkClasses((c) => { if (includeOnly.has(c.value)) hit = true; })).processSync(sel);
+    return hit;
+  };
+  const scope = (sel) => (/^:root\b/.test(sel) ? sel.replace(/^:root/, DESIGN_MODE) : `${DESIGN_MODE} ${sel}`);
+  const filter = (container) => {
+    container.each((node) => {
+      if (node.type === "comment") return node.remove();
+      if (node.type === "atrule") {
+        // keyframes, font-face… : inutiles dans le canvas
+        if (node.name !== "media" && node.name !== "supports") return node.remove();
+        filter(node);
+        if (!node.nodes?.length) node.remove();
+        return;
+      }
+      if (node.type !== "rule") return;
+      const sels = node.selectors.filter((s) => !touchesInclude(s));
+      if (!sels.length) return node.remove();
+      node.selectors = sels.map(scope);
+    });
+  };
+  filter(root);
+  return `/* Généré par scripts/webflow-native.mjs — ne pas éditer à la main. */\n${root.toString()}\n`;
+}
+
 const nativeCssFor = (rules) => {
   const base = rules.filter((r) => !r.media).map((r) => `${r.selector} { ${r.decls.join("; ")}; }`);
   const mq = rules.filter((r) => r.media).map((r) => `  ${r.selector} { ${r.decls.join("; ")}; }`);
@@ -341,6 +379,14 @@ for (const page of PAGES) {
   writeFileSync(join(dir, "wrapper.css"), `.lg-page { --lg-keep: 0; }\n` + nativeCssFor(orphan.filter((r) => r.selector !== ".lg-page")));
   for (const [name, h] of Object.entries(embeds)) writeFileSync(join(dir, "embeds", `${name}.html`), h + "\n");
   writeFileSync(join(dir, "custom.css"), customCss);
+
+  const sectionClasses = new Set(sections.flatMap((s) => [...classesIn(s)]).concat(Object.values(embeds).flatMap((h) => [...classesIn(h)])));
+  const includeOnly = new Set([...classesIn(Object.values(includes).join(""))].filter((c) => !sectionClasses.has(c)));
+  const designer = designerCss(customCss, includeOnly);
+  writeFileSync(join(dir, "designer.css"), designer);
+  // Contenu du Code Embed : URL fixe (pas de ?v=), le Designer recharge la
+  // feuille à l'ouverture de la page.
+  writeFileSync(join(dir, "designer-embed.html"), `<link rel="stylesheet" href="${HOME_BASE}webflow-native/${page.name}/designer.css" />\n`);
 
   // Custom code de la page (Page settings > Custom code), posé par le MCP :
   // polices, custom.css (GitHub Pages) ; en pied de page, le JS de la page
