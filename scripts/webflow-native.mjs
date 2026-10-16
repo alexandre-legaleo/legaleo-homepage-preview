@@ -199,7 +199,9 @@ function processCss(page, htmlSource, nativeClasses, classLists) {
     const otherSels = [];
     for (const sel of rule.selectors) {
       const classes = nativeSelector(sel);
-      if (classes && classes.every((c) => nativeClasses.has(c)) && comboExists(classes)) nativeSels.push({ sel, classes });
+      // .lg-page (ex-body) : classe commune aux trois pages, mais fond et
+      // couleur propres à chacune (contact : beige) -> custom.css de la page.
+      if (classes && !classes.includes("lg-page") && classes.every((c) => nativeClasses.has(c)) && comboExists(classes)) nativeSels.push({ sel, classes });
       else otherSels.push(sel);
     }
     const decls = rule.nodes.filter((n) => n.type === "decl");

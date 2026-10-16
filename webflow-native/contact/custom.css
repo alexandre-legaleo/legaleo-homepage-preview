@@ -96,6 +96,14 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.lg-page {
+  font-family: var(--font-sans);
+  color: var(--color-black);
+  background-color: var(--color-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .hp-block {
   padding: 112px 32px;
 }
@@ -523,6 +531,12 @@
     padding: 20px 40px 20px 0;
     font-size: 16px;
   }
+}
+
+.lg-page {
+  background-color: var(--color-beige);
+  color: var(--color-black);
+  font-family: var(--font-sans);
 }
 
 .ct-h1 .hp-em {

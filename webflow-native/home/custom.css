@@ -96,6 +96,14 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.lg-page {
+  font-family: var(--font-sans);
+  color: var(--color-black);
+  background-color: var(--color-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .hp-btn:focus-visible,
 .hp-chip:focus-visible,
 .hp-opt:focus-visible,
