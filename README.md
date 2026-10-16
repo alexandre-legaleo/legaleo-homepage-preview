@@ -57,9 +57,13 @@ pnpm dev   # http://localhost:5174
 
 ## Webflow natif : éléments et classes Webflow (pages *-v3)
 
-Version en place sur Webflow depuis le 15/10/2026 : pages brouillon
-`/home-v3`, `/contact-v3`, `/leo-v3` (hors sitemap), construites par le MCP
-Webflow. `pnpm` n'est pas nécessaire : `node scripts/webflow-native.mjs`
+En production sur legaleo.ai depuis le 16/10/2026 (`/`, `/contact`,
+`/agent-ia-franchise-leo`), construites par le MCP Webflow : plus d'iframe
+GitHub Pages, le contenu est dans le HTML de la page. SEO (titres,
+descriptions, image Open Graph) repris des anciennes pages. Les anciennes
+pages iframe restent en brouillon dans Webflow (« Old Home », `contact-old`,
+`agent-ia-franchise-leo-old`) : retour arrière = rééchanger les slugs (et
+« Set as home page ») puis publier. `pnpm` n'est pas nécessaire : `node scripts/webflow-native.mjs`
 régénère `webflow-native/<page>/` à partir des sources (index.html,
 contact.html, ../front-legaleo-leo/index.html).
 
