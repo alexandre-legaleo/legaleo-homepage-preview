@@ -88,6 +88,22 @@ publication (-> `data-lg-hidden`), styles inline supprimés
 (-> `data-lg-style`), `translate` abîmé, data URI avec `;` refusées,
 `<button>` converti en lien `.w-button`.
 
+Rendu dans le Designer (qui n'exécute pas custom.css) :
+
+- **Variables** : les tokens de `css/tokens.css` existent comme variables
+  Webflow dans « Base collection », sous le même nom (`color-black`,
+  `font-serif`, `radius-xl`…). Webflow leur donne le nom CSS
+  `--color-black` : les `var(--…)` des styles natifs se résolvent donc
+  dans le Designer sans lien explicite. Ne pas les créer dans une autre
+  collection (nom CSS préfixé `--_collection---`). Valeurs de la homepage ;
+  le mode « Leo » porte les valeurs de front-legaleo-leo qui diffèrent
+  (rayons xl/lg, `wrap-max`, orange et vert) et s'applique à `lv-hero`,
+  `lv-pourquoi`, `lv-block`. Pas de variable pour les ombres ni
+  `ease-out` (aucun type Webflow). Un token modifié dans `tokens.css` se
+  reporte à la main dans la variable.
+- **Fraunces** : installée sur le site (fichiers de `fonts/`, axe `wght`
+  300-700).
+
 Mettre à jour après une modification :
 
 - **CSS / mockups / JS** : `node scripts/webflow-native.mjs` (et
