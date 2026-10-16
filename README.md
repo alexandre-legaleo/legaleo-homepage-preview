@@ -101,8 +101,16 @@ Rendu dans le Designer (qui n'exécute pas custom.css) :
   `lv-pourquoi`, `lv-block`. Pas de variable pour les ombres ni
   `ease-out` (aucun type Webflow). Un token modifié dans `tokens.css` se
   reporte à la main dans la variable.
-- **Fraunces** : installée sur le site (fichiers de `fonts/`, axe `wght`
-  300-700).
+- **Fraunces** : installée sur le site sous le nom « Fraunces LG »
+  (fichiers de `fonts/`, axe `wght` 300-700). Les réglages du site chargent
+  aussi Fraunces depuis Google Fonts (autres pages, et Leo) : sous le même
+  nom, elle remplaçait la nôtre (glyphes « wonky », pas de taille optique).
+  Le convertisseur renomme donc la famille en `"Fraunces LG"` pour la
+  homepage et le contact ; la variable `font-serif` vaut
+  `Fraunces LG, Fraunces, Georgia, serif` (mode Leo : `Fraunces`).
+- **Fond de page** : les règles `body` des sources deviennent `.lg-page`,
+  classe commune aux trois pages ; elles restent dans le custom.css de
+  chaque page (contact : beige).
 - **Règles de custom.css** (reset, puces, coches, sélecteurs imbriqués) :
   copie dans `webflow-native/<page>/designer.css`, chargée par le premier
   Code Embed de `.lg-page` (`designer-embed.html`). Sélecteurs préfixés par
