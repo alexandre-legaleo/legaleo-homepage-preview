@@ -23,7 +23,7 @@
 
 
 @font-face {
-  font-family: "Fraunces";
+  font-family: "Fraunces LG";
   font-style: normal;
   font-weight: 300 700;
   font-display: swap;
@@ -31,7 +31,7 @@
 }
 
 @font-face {
-  font-family: "Fraunces";
+  font-family: "Fraunces LG";
   font-style: italic;
   font-weight: 300 700;
   font-display: swap;
@@ -74,7 +74,7 @@
   --color-purple-line: color-mix(in srgb, #8c3ddb 25%, transparent);
 
   /* Typo */
-  --font-serif: "Fraunces", Georgia, serif;
+  --font-serif: "Fraunces LG", Georgia, serif;
   --font-sans: "Manrope", Arial, sans-serif;
 
   /* Rayons */
