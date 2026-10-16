@@ -157,6 +157,12 @@ function processCss(page, htmlSource, nativeClasses, classLists) {
   for (const f of page.extraCss || []) src += `\n/* ${f} */\n` + read(f);
 
   if (page.rename) src = src.replace(...page.rename);
+  // Le site Webflow charge Fraunces depuis Google Fonts (réglages du site,
+  // utilisé par les autres pages) : même nom de famille, chargée après,
+  // elle remplace la Fraunces auto-hébergée (sans « wonky », taille optique
+  // automatique). Nom propre à la nôtre, comme la police installée sur le
+  // site (« Fraunces LG »). Leo garde Google Fraunces, comme sa source.
+  if (page.root === ROOT) src = src.replaceAll('"Fraunces"', '"Fraunces LG"');
   // Ajustements « hors iframe » (même logique que build-webflow.mjs).
   src = src
     .replaceAll("../fonts/", `${page.base}fonts/`)
