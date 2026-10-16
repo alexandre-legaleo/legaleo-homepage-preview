@@ -1,0 +1,46 @@
+<style>
+:where(.wf-design-mode) .edm-del.is-struck:after{transform:scaleX(1)}
+@media (prefers-reduced-motion:reduce){:where(.wf-design-mode) .edm-add,:where(.wf-design-mode) .edm-del,:where(.wf-design-mode) .edm-del:after{transition:none}}
+:where(.wf-design-mode) .edm-miniact{flex-flow:row-reverse wrap;justify-content:flex-end;align-items:center;gap:8px;padding:0 14px 14px;display:flex}
+:where(.wf-design-mode) .edm-minicheck{background-color:var(--color-leo-badge);opacity:0;border-radius:6px;flex-shrink:0;justify-content:center;align-items:center;width:22px;height:22px;padding:4px;transition:opacity .2s,transform .2s;display:flex;transform:scale(.6)}
+:where(.wf-design-mode) .edm-minicheck.is-visible{opacity:1;transform:scale(1)}
+:where(.wf-design-mode) .edm-sugg{cursor:pointer;color:var(--color-teal-text);background-color:var(--color-white);border:1px solid var(--color-teal);border-radius:var(--radius-pill);font-family:var(--font-sans);order:1;padding:8px 13px;font-size:12.5px;font-weight:600;transition:background-color .15s,color .15s;display:inline-block}
+:where(.wf-design-mode) .edm-sugg:hover{background-color:var(--color-teal-bg)}
+:where(.wf-design-mode) .edm-sugg-solid{color:var(--color-white);background-color:var(--color-teal);order:2}
+:where(.wf-design-mode) .edm-sugg-solid:hover{background-color:#076e71}
+:where(.wf-design-mode) .obm-mockup,:where(.wf-design-mode) .obm-mockup *,:where(.wf-design-mode) .obm-mockup :before,:where(.wf-design-mode) .obm-mockup :after{box-sizing:border-box}
+:where(.wf-design-mode) .obm-mockup{--color-white:#fffefb;--color-black:#1f120e;--color-beige:#f7f4ef;--color-border:#e6e0d3;--color-muted:#6f6757;--color-teal:#087f83;--color-teal-text:#065e61;--color-teal-bg:#e9fbfb;--color-cyan:#62e7eb;--color-leo-badge:#00383c;--font-serif:"Fraunces", Georgia, serif;--font-sans:"Manrope", Arial, sans-serif;--radius-md:16px;--radius-sm:8px;--radius-pill:100px;background-color:var(--color-white);border:1px solid var(--color-border);border-radius:var(--radius-md);align-self:stretch;width:100%;min-width:320px;padding:18px}
+:where(.wf-design-mode) .obm-fmtitle{color:var(--color-black);font-family:var(--font-serif);margin-bottom:12px;font-size:17px;font-weight:600}
+:where(.wf-design-mode) .obm-fmq{color:var(--color-muted);font-family:var(--font-sans);margin-bottom:6px;font-size:12.5px;font-weight:600;transition:opacity .15s}
+:where(.wf-design-mode) .obm-fmfields{flex-direction:column;justify-content:center;gap:12px;display:flex}
+:where(.wf-design-mode) .obm-fmfield-wrap{opacity:0;transition:height .45s,opacity .35s;position:relative;overflow:clip}
+:where(.wf-design-mode) .obm-fmfield-wrap[data-open=true]{opacity:1}
+:where(.wf-design-mode) .obm-fmfield-wrap.is-collapsed{height:0}
+@media (prefers-reduced-motion:reduce){:where(.wf-design-mode) .obm-fmfield-wrap{transition:none}}
+:where(.wf-design-mode) .obm-fmfield{height:100%;color:var(--color-muted);background-color:var(--color-beige);border:1px solid var(--color-border);border-radius:var(--radius-sm);font-family:var(--font-sans);padding:10px 32px 10px 12px;font-size:13px;line-height:1.5;transition:border-color .2s,box-shadow .2s;position:relative}
+:where(.wf-design-mode) .obm-fmleo{color:var(--color-teal-text);background-color:var(--color-teal-bg);border-color:var(--color-cyan)}
+:where(.wf-design-mode) .obm-fmfield:before{content:"";border-radius:inherit;background-color:var(--color-black);opacity:0;mix-blend-mode:multiply;pointer-events:none;transition:opacity .15s;position:absolute;inset:0}
+:where(.wf-design-mode) .obm-fmfield.is-hint:before{opacity:.03}
+:where(.wf-design-mode) .obm-fmfield.is-selected{border-color:var(--color-teal);box-shadow:inset 0 0 0 1px var(--color-teal);animation:.45s ease-in-out obm-select-flicker}
+:where(.wf-design-mode) .obm-fmfield.is-selected:after{content:"";background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2.5 6.2L4.8 8.5L9.5 3.5' stroke='%23087f83' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-size:contain;width:13px;height:13px;position:absolute;top:12px;right:12px}
+@media (prefers-reduced-motion:reduce){:where(.wf-design-mode) .obm-fmfield.is-selected{animation:none}}
+:where(.wf-design-mode) .obm-fm-thinking{z-index:1;background-color:var(--color-leo-badge);opacity:0;pointer-events:none;border-radius:6px;width:24px;height:24px;padding:4px;transition:opacity .25s;position:absolute;top:50%;left:12px;overflow:clip;transform:translateY(-50%);box-shadow:0 8px 16px -8px #1f120e40}
+:where(.wf-design-mode) .obm-fm-thinking.is-visible{opacity:1}
+@media (prefers-reduced-motion:reduce){:where(.wf-design-mode) .obm-fm-thinking{transition:none}}
+:where(.wf-design-mode) .obm-miniact{flex-flow:row-reverse wrap;justify-content:flex-end;align-items:center;gap:8px;margin-top:16px;display:flex}
+:where(.wf-design-mode) .obm-sugg{cursor:pointer;color:var(--color-teal-text);background-color:var(--color-white);border:1px solid var(--color-teal);border-radius:var(--radius-pill);font-family:var(--font-sans);order:1;padding:8px 13px;font-size:12.5px;font-weight:600;transition:background-color .15s,color .15s;display:inline-block}
+:where(.wf-design-mode) .obm-sugg:hover{background-color:var(--color-teal-bg)}
+:where(.wf-design-mode) .obm-sugg-solid{color:var(--color-white);background-color:var(--color-teal);order:2}
+:where(.wf-design-mode) .obm-sugg-solid:hover{background-color:#076e71}
+:where(.wf-design-mode) .obm-sugg:disabled{cursor:default;opacity:.5}
+:where(.wf-design-mode) .obm-sugg:disabled:hover{background-color:var(--color-white)}
+:where(.wf-design-mode) .obm-sugg-solid:disabled:hover{background-color:var(--color-teal)}
+:where(.wf-design-mode) .lg-page [data-lg-style="1"] { width:100%;height:100% }
+:where(.wf-design-mode) .lg-page [data-lg-style="2"] { width:100%;height:100% }
+:where(.wf-design-mode) .lg-page [data-lg-style="3"] { width:100%;height:100% }
+:where(.wf-design-mode) .lg-page [data-lg-style="4"] { width:100%;height:100% }
+:where(.wf-design-mode) .lg-page [data-lg-style="5"] { width:100%;height:100% }
+:where(.wf-design-mode) .lg-page [data-lg-style="6"] { width:100%;height:100% }
+:where(.wf-design-mode) .lg-page [data-lg-style="7"] { width:100%;height:100% }
+:where(.wf-design-mode) .lg-page [data-lg-style="8"] { width:100%;height:100% }
+</style>
