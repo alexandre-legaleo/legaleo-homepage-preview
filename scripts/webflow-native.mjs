@@ -231,11 +231,11 @@ function processCss(page, htmlSource, nativeClasses, classLists) {
 // Le Designer n'exécute pas le custom code de la page : sans custom.css, pas
 // de reset, de puces, de coches… Copie des règles de custom.css qui touchent
 // les éléments natifs (pas les mockups : leurs conteneurs sont vides dans le
-// Designer), posée dans un Code Embed <style> en tête du wrapper. Chaque
-// sélecteur est préfixé par :where(.wf-design-mode), classe que Webflow pose
-// sur <html> dans le canvas seulement : spécificité inchangée, et sur le site
+// Designer), servie par GitHub Pages (designer.css) et chargée par un Code
+// Embed en tête du wrapper (designer-embed.html). Chaque sélecteur est
+// préfixé par :where(.wf-design-mode), classe que Webflow pose sur <html>
+// dans le canvas seulement (vérifié) : spécificité inchangée, et sur le site
 // publié la copie ne s'applique pas (custom.css reste la seule source).
-const DESIGNER_EMBED_MAX = 49000; // limite Webflow : 50 000 caractères par embed
 const DESIGN_MODE = ":where(.wf-design-mode)";
 
 function designerCss(customCss, includeOnly) {
@@ -263,14 +263,7 @@ function designerCss(customCss, includeOnly) {
     });
   };
   filter(root);
-  // Découpe en blocs de moins de 50 000 caractères (un Code Embed chacun).
-  const chunks = [""];
-  for (const node of root.nodes) {
-    const css = node.toString().replace(/\n\s*/g, " ") + "\n";
-    if (chunks.at(-1).length + css.length > DESIGNER_EMBED_MAX) chunks.push("");
-    chunks[chunks.length - 1] += css;
-  }
-  return chunks.map((c) => `<style>\n${c}</style>`);
+  return `/* Généré par scripts/webflow-native.mjs — ne pas éditer à la main. */\n${root.toString()}\n`;
 }
 
 const nativeCssFor = (rules) => {
@@ -390,7 +383,10 @@ for (const page of PAGES) {
   const sectionClasses = new Set(sections.flatMap((s) => [...classesIn(s)]).concat(Object.values(embeds).flatMap((h) => [...classesIn(h)])));
   const includeOnly = new Set([...classesIn(Object.values(includes).join(""))].filter((c) => !sectionClasses.has(c)));
   const designer = designerCss(customCss, includeOnly);
-  designer.forEach((h, i) => writeFileSync(join(dir, `designer-${i + 1}.html`), h + "\n"));
+  writeFileSync(join(dir, "designer.css"), designer);
+  // Contenu du Code Embed : URL fixe (pas de ?v=), le Designer recharge la
+  // feuille à l'ouverture de la page.
+  writeFileSync(join(dir, "designer-embed.html"), `<link rel="stylesheet" href="${HOME_BASE}webflow-native/${page.name}/designer.css" />\n`);
 
   // Custom code de la page (Page settings > Custom code), posé par le MCP :
   // polices, custom.css (GitHub Pages) ; en pied de page, le JS de la page
