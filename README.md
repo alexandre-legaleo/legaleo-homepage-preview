@@ -103,6 +103,13 @@ Rendu dans le Designer (qui n'exécute pas custom.css) :
   reporte à la main dans la variable.
 - **Fraunces** : installée sur le site (fichiers de `fonts/`, axe `wght`
   300-700).
+- **Règles de custom.css** (reset, puces, coches, sélecteurs imbriqués) :
+  copie dans `webflow-native/<page>/designer.css`, chargée par le premier
+  Code Embed de `.lg-page` (`designer-embed.html`). Sélecteurs préfixés par
+  `:where(.wf-design-mode)`, classe posée sur `<html>` par le canvas
+  seulement : aucun effet sur le site publié (vérifié). Règles des mockups
+  exclues. Se met à jour avec le reste (`node scripts/webflow-native.mjs`,
+  push sur `main`). Ne pas supprimer cet embed.
 
 Mettre à jour après une modification :
 
