@@ -70,7 +70,13 @@ URL. Après l'échange des slugs, nav, footer et boutons du site pointaient
 vers `-old` ; ils ont été repointés vers les pages natives (nav, footer :
 propriétés « Link 1 » / « Link 2 » en URL `/` et `/contact`, boutons des
 pages et des modèles CMS). Tout nouvel échange de pages demande la même
-reprise : vérifier ensuite qu'aucun `href` du site ne contient `-old`. `pnpm` n'est pas nécessaire : `node scripts/webflow-native.mjs`
+reprise : vérifier ensuite qu'aucun `href` du site ne contient `-old`.
+
+Structure : `.lg-page` se place dans `.page-wrapper` (classe du site,
+`min-height: 100svh`), juste après `Div Block 2`, comme le contenu des
+autres pages. Laissé à côté, `.page-wrapper` ne contenait que newsletter et
+footer, et sa hauteur minimale laissait une bande vide sous le footer
+(contact : ~270 px sur un écran de 900 px de haut). `pnpm` n'est pas nécessaire : `node scripts/webflow-native.mjs`
 régénère `webflow-native/<page>/` à partir des sources (index.html,
 contact.html, ../front-legaleo-leo/index.html).
 
